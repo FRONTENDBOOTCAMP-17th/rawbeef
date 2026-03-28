@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 카테고리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="flex h-screen w-full border-4 border-black overflow-hidden">
+      <aside class="w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6">
+        <a href="./admin_open.html" class="block w-full">
+          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">관리자메뉴</button>
+        </a>
+
+        <a href="./admin_category.html" class="block w-full">
+          <button class="w-full py-4 border-2 border-black font-bold bg-blue-600 text-white">카테고리관리</button>
+        </a>
+
+        <a href="./admin_song.html" class="block w-full">
+          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 관리</button>
+        </a>
+
+        <a href="./admin_request.html" class="block w-full">
+          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 신청 관리</button>
+        </a>
+      </aside>
+
+      <main class="flex-1 bg-white p-8 relative overflow-y-auto">
+        <div class="flex justify-end mb-10">
+          <button id="addCategorylBtn" class="px-6 py-2 border-2 border-black font-bold text-lg hover:bg-black hover:text-white transition">카테고리 추가 +</button>
+        </div>
+
+        <div class="space-y-4 max-w-4xl">
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">가요</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">POP</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">JPOP</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">발라드</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">댄스</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">트로트</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">포크</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">OST</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">락/메탈</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">랩/힙합</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50">
+            <span class="text-xl font-bold">R&B/어반</span>
+            <div class="flex items-center gap-4">
+              <button class="upDown text-2xl hover:scale-125">≡</button>
+              <button class="text-2xl hover:text-red-500 hover:scale-125">✘</button>
+              <button class="text-l hover:text-blue-500 hover:scale-125">EDIT</button>
+            </div>
+          </div>
+          <div id="categoryList"></div>
+        </div>
+      </main>
+
+      <div id="modal" class="fixed inset-0 bg-black hidden flex items-center justify-center z-50">
+        <div class="bg-white border-4 border-black p-8 w-[400px]">
+          <h2 class="text-2xl font-black mb-6 uppercase">신규 카테고리 등록</h2>
+
+          <div class="space-y-4 text-lg">
+            <div>
+              <label class="block font-black mb-1">노래 카테고리</label>
+              <input type="text" id="titleInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-4 mt-8">
+            <button id="closeCategoryBtn" class="px-4 py-2 border-2 border-black font-bold hover:bg-gray-100">닫기</button>
+            <button id="saveCategoryBtn" class="px-6 py-2 bg-black text-white font-bold hover:bg-gray-800">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let category = [];
+
+      const modal = document.getElementById('modal');
+      const categoryList = document.getElementById('categoryList');
+
+      const addCategorylBtn = document.getElementById('addCategorylBtn');
+      addCategorylBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+      });
+
+      const closeCategoryBtn = document.getElementById('closeCategoryBtn');
+      closeCategoryBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+      const renderCategory = () => {
+        categoryList.innerHTML = '';
+
+        category.forEach((category, index) => {
+          const mainCreate = document.createElement('main');
+          mainCreate.className = ' flex-1 bg-white p-8 relative overflow-y-auto';
+
+          const divCreate = document.createElement('div');
+          divCreate.className = ' flex mb-4 justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50';
+
+          const spanTitle = document.createElement('span');
+          spanTitle.className = 'text-xl font-bold';
+          spanTitle.textContent = category.title;
+
+          const btnManage = document.createElement('div');
+          btnManage.className = 'flex items-center gap-4';
+
+          const scrollBtn = document.createElement('button');
+          scrollBtn.className = ' upDown text-2xl hover:scale-125';
+          scrollBtn.textContent = '≡';
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'text-2xl hover:text-red-500 hover:scale-125';
+          deleteBtn.textContent = '✘';
+
+          deleteBtn.addEventListener('click', function (click) {
+            deleteSong(index);
+          });
+
+          const editBtn = document.createElement('button');
+          editBtn.className = ' text-l hover:text-blue-500 hover:scale-125';
+          editBtn.textContent = 'EDIT';
+
+          btnManage.append(deleteBtn, editBtn, scrollBtn);
+          divCreate.append(spanTitle, btnManage);
+
+          categoryList.appendChild(divCreate);
+        });
+      };
+      const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+      saveCategoryBtn.addEventListener('click', () => {
+        const title = document.getElementById('titleInput').value;
+
+        if (title) {
+          category.push({ title: title });
+          renderCategory();
+          modal.classList.add('hidden');
+
+          document.getElementById('titleInput').value = '';
+        } else {
+          alert('내용이 입력되지 않았습니다!');
+        }
+      });
+
+      const deleteCategory = (index) => {
+        if (confirm('이 카테고리를 정말 삭제할까요?')) {
+          category.splice(index, 1);
+
+          renderCategory();
+        }
+      };
+
+      renderCategory();
+    </script>
+  </body>
+</html>
