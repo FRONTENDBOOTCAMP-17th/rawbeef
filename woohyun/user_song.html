@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko-KR">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,7 +40,7 @@
           <div class="chart-top">
             <div class="chart-search-area">
               <div class="chart-category">
-                <!-- 25.02.12 -->
+                <!-- 관리자가 만들어준 카테고리와 연동 필요함 -->
                 <ul class="chart-item color">
                   <li><a class="str_type on" href="javascript:void(0);" onclick="setStrType('', this)">종합</a></li>
                   <li><a class="str_type" href="javascript:void(0);" onclick="setStrType('1', this)">가요</a></li>
@@ -55,31 +55,25 @@
                   <li><a class="str_type" href="javascript:void(0);" onclick="setStrType('10', this)">랩/힙합</a></li>
                   <li><a class="str_type" href="javascript:void(0);" onclick="setStrType('11', this)">R&B/어반</a></li>
                 </ul>
-                <div class="calendar-area">
-                  <ul class="calendar-item">
-                    <li class="start-cal">
-                      <!-- 25.02.07 .에서 -로 변경 -->
-                      <input type="text" class="date-input" id="searchStartDate" placeholder="2025-01-01" readonly />
-                      <label class="data-ico" for="startDate"></label>
+                <div class="search-filter-area">
+                  <div class="search-input-wrapper">
+                   <input 
+      type="search" 
+      class="search-text-input" 
+      id="keywordSearch" 
+      placeholder="노래,가수로 검색할 수 있습니다" 
+    />
+                      <label class="search-ico" for="keywordSearch"></label>
                     </li>
-                    <li>
-                      <!-- 25.02.07 .에서 -로 변경 -->
-                      <input type="text" class="date-input" id="searchEndDate" placeholder="2025-01-02" readonly />
-                      <label class="data-ico" for="endDate"></label>
-                    </li>
-                    <!-- <li>
-                                        <button class="calendar-icon"></button>
-                                    </li> -->
-                  </ul>
+                    </div>
+                 </div>
                   <div class="search-btn">
                     <button id="searchButton">검색</button>
-                  </div>
+                  
                 </div>
 
                 <div class="chart-bottom-content">
-                  <p>수집되는 데이터량이 방대하여 ‘기간’을 길게 설정하면 검색 시간이 오래 걸립니다</p>
-                  <!-- 25.03.25 마침표 제거 -->
-                  <p>검색 기간은 <span>현재 기준 최대 2년 이내</span>로 설정할 수 있습니다</p>
+<p>입력하신 키워드와 일치하는 데이터를 검색합니다</p>
                 </div>
               </div>
             </div>
@@ -96,16 +90,55 @@
               </li>
             </ul>
           </div>
+            <div class="top-inner no-pd">
+            <ul class="nav-link">
+              <li>
+                <a href="/"><img src="/resources/front/images/common/home.svg" alt="" /></a>
+              </li>
+              <li><span></span><a href="/chart/top100">차트</a></li>
+              <li><span></span><a class="active" href="/chart/top100">TOP10</a></li>
+            </ul>
+          </div>
         </div>
       </div>
+
       <!--// 컨텐츠 영역 -->
                       <ul class="item-link">
                   <li>
+                    <div class="registration-container">
+                        <form id="songRequestForm">
+                            <div class="input-group">
+          <input type="text" id="postTitle" placeholder="제목" required maxlength="50" />
+          </div>
+
+        <div class="textarea-group">
+          <textarea id="postContent" placeholder="신청 내용을 입력하세요 (최대 300자)" maxlength="300" required></textarea>
+          <span class="char-count">0 / 300</span>
+        </div>
+        <input type="password" id="postPassword" placeholder="비밀번호" required />
+        <br />
                     <button class="footer-btn">
                       <span>노래 등록 신청</span>
                       <span class="ico"></span>
                     </button>
+                    </form>
+                    </div>
+                  </li>
                 </ul>
+                <div class="w-full max-w-4xl mx-auto p-6">
+  <strong class="text-2xl font-black mb-6">노래 신청 목록</strong>
+  
+  <div class="border-4 border-black overflow-hidden rounded-lg">
+    <iframe 
+      src="./admin_request_user.html" 
+      width="100%" 
+      height="500px" 
+      frameborder="0"
+      title="노래 신청 목록"
+    >
+</iframe>
+  </div>
+</div>
 
       <!-- footer 영역 -->
       <footer class="footer">
