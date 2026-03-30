@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>카테고리 관리</title>
+  </head>
+  <body class="bg-gray-100">
+    <div id="app" class="flex h-screen">
+      <main class="flex-1 p-8">
+        <h1 class="text-2xl font-bold mb-4">카테고리 관리</h1>
+
+        <div class="flex gap-2 mb-6">
+          <input type="text" id="categoryInput" placeholder="카테고리 이름" class="border rounded px-4 py-2 flex-1" />
+          <button id="addBtn" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">추가</button>
+        </div>
+
+        <ul id="categoryList" class="space-y-2"></ul>
+      </main>
+    </div>
+    <script type="module" src="/pages/category.js"></script>
+  </body>
+</html>
