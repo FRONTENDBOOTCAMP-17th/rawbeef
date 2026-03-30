@@ -4,27 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>관리자 카테고리</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body class="bg-gray-100 font-sans">
     <div class="flex h-screen w-full border-4 border-black overflow-hidden">
-      <aside class="w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6">
-        <a href="./admin_open.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">관리자메뉴</button>
-        </a>
-
-        <a href="./admin_category.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold bg-blue-600 text-white">카테고리관리</button>
-        </a>
-
-        <a href="./admin_song.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 관리</button>
-        </a>
-
-        <a href="./admin_request.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 신청 관리</button>
-        </a>
-      </aside>
+      <div id="sidebar-container"></div>
 
       <main class="flex-1 bg-white p-8 relative overflow-y-auto">
         <div class="flex justify-between mb-10">
@@ -43,7 +27,7 @@
 
           <div class="space-y-4 text-lg">
             <div>
-              <label class="block font-black mb-1">노래 카테고리</label>
+              <label for="titleInput" class="block font-black mb-1">노래 카테고리</label>
               <input type="text" id="titleInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
             </div>
           </div>
@@ -70,11 +54,13 @@
       addCategoryBtn.addEventListener('click', () => {
         editIndex = null;
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
       });
 
       const closeCategoryBtn = document.getElementById('closeCategoryBtn');
       closeCategoryBtn.addEventListener('click', () => {
         modal.classList.add('hidden');
+        modal.classList.remove('flex');
       });
 
       const renderCategory = () => {
@@ -114,6 +100,7 @@
             document.querySelector('#modal h2').textContent = '카테고리 수정';
             document.getElementById('titleInput').value = item.title;
             modal.classList.remove('hidden');
+            modal.classList.add('flex');
           });
 
           divCreate.draggable = false;
@@ -169,7 +156,9 @@
             category.push({ title: title });
           }
           renderCategory();
+          saveCategory();
           modal.classList.add('hidden');
+          modal.classList.remove('flex');
           titleInput.value = '';
           document.querySelector('#modal h2').textContent = '신규 카테고리 등록';
         } else {
@@ -180,12 +169,13 @@
       const deleteCategory = (index) => {
         if (confirm('이 카테고리를 정말 삭제할까요?')) {
           category.splice(index, 1);
-
+          saveCategory();
           renderCategory();
         }
       };
 
       renderCategory();
     </script>
+    <script src="./sidebar.js"></script>
   </body>
 </html>
