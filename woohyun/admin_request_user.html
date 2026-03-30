@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 카테고리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="flex h-screen w-full border-4 border-black overflow-hidden">
+      <main class="flex-1 bg-white p-8 relative overflow-y-auto">
+        <div class="flex justify-between mb-10">
+          <h1 class="text-3xl py-2 font-black">노래 신청 관리</h1>
+        </div>
+
+        <div class="space-y-4 max-w-4xl">
+          <div id="requestList"></div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      let requests = [
+        { id: 1, title: '노래제목1', date: '2026-01-21', content: '꼭 추가해주시길', pw: '1234' },
+        { id: 2, title: '노래제목2', date: '2026-03-30', content: '제발요 제발 ', pw: '1111' },
+      ];
+
+      let inputRequests;
+
+      const requestList = document.getElementById('requestList');
+
+      requests.forEach((req, index) => {
+        const customerBox = document.createElement('div');
+        customerBox.className = 'p-6 border-black text-center';
+
+        const div = document.createElement('div');
+        div.className = 'border-4 border-black p-4 mb-8';
+
+        const title = document.createElement('h2');
+        title.className = 'text-xl font-bold mb-2 text-center';
+        title.textContent = `${index + 1}. ${req.title}`;
+
+        const date = document.createElement('p');
+        date.className = 'text-sm text-gray-600';
+        date.textContent = `신청 날짜: ${req.date}`;
+
+        const content = document.createElement('p');
+        content.className = 'mb-2';
+        content.textContent = req.content;
+
+        customerBox.append(title, date, content);
+        div.appendChild(customerBox);
+
+        requestList.appendChild(div);
+
+        const adminBox = document.createElement('div');
+        adminBox.className = 'flex justify-between items-center px-4 py-2';
+
+        const adminText = document.createElement('span');
+        adminText.className = 'font-black text-lg ';
+        adminText.textContent = '관리자 답변';
+        const btnBox = document.createElement('div');
+        btnBox.className = 'flex justify-between items-center px-4 py-2';
+        const registerBtn = document.createElement('button');
+        registerBtn.className = 'hover:text-blue-600 font-bold';
+        registerBtn.textContent = '등록';
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'hover:text-red-600 font-bold';
+        deleteBtn.textContent = '삭제';
+        const btnGroup = document.createElement('div');
+        btnGroup.className = 'flex space-x-4';
+        btnGroup.appendChild(registerBtn);
+        btnGroup.appendChild(deleteBtn);
+        adminBox.appendChild(adminText);
+        div.appendChild(adminBox);
+        div.appendChild(btnGroup);
+      });
+    </script>
+  </body>
+</html>
