@@ -39,6 +39,7 @@
                 <th class="p-4 border-r-2 border-black w-20 text-center">순위</th>
                 <th class="p-4 border-r-2 border-black">제목</th>
                 <th class="p-4 border-r-2 border-black">가수</th>
+                <th class="p-4 border-r-2 border-black w-20 text-center">카테고리</th>
                 <th class="p-4 border-r-2 border-black w-32 text-center">점수</th>
                 <th class="p-4 text-center w-48">관리</th>
               </tr>
@@ -63,6 +64,10 @@
             <input type="text" id="artistInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
           </div>
           <div>
+            <label class="block font-black mb-1">카테고리</label>
+            <input type="text" id="categoryInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+          </div>
+          <div>
             <label class="block font-black mb-1">SCORE</label>
             <input type="number" id="scoreInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" value="0" />
           </div>
@@ -77,8 +82,8 @@
 
     <script>
       let songs = JSON.parse(localStorage.getItem('mySongs')) || [
-        { title: 'Hysteria', artist: 'MUSE', score: 95 },
-        { title: 'Plug In Baby', artist: 'MUSE', score: 88 },
+        { title: 'Hysteria', artist: 'MUSE', category: '락/메탈', score: 95 },
+        { title: 'Plug In Baby', artist: 'MUSE', category: '락/메탈', score: 88 },
       ];
       let editIndex = null;
       const modal = document.getElementById('modal');
@@ -95,6 +100,7 @@
         modalTitle.textContent = '신규 노래 등록';
         document.getElementById('titleInput').value = '';
         document.getElementById('artistInput').value = '';
+        document.getElementById('categoryInput').value = '';
         document.getElementById('scoreInput').value = 0;
         modal.classList.remove('hidden');
       });
@@ -117,11 +123,15 @@
           tdRank.textContent = index + 1;
 
           const tdTitle = document.createElement('td');
-          tdTitle.className = 'p-4 border-r-2 border-black font-bold';
+          tdTitle.className = 'w-1/4 p-4 border-r-2 border-black font-bold';
           tdTitle.textContent = song.title;
 
+          const tdCategory = document.createElement('td');
+          tdCategory.className = 'p-4 border-r-2 border-black text-center';
+          tdCategory.textContent = song.category;
+
           const tdArtist = document.createElement('td');
-          tdArtist.className = 'p-4 border-r-2 border-black';
+          tdArtist.className = 'w-1/4 p-4 border-r-2 border-black';
           tdArtist.textContent = song.artist;
 
           const tdScore = document.createElement('td');
@@ -148,12 +158,13 @@
             modalTitle.textContent = '노래 수정';
             document.getElementById('titleInput').value = song.title;
             document.getElementById('artistInput').value = song.artist;
+            document.getElementById('categoryInput').value = song.category;
             document.getElementById('scoreInput').value = song.score;
             modal.classList.remove('hidden');
           });
 
           tdManage.append(deleteBtn, editBtn);
-          trCreate.append(tdRank, tdTitle, tdArtist, tdScore, tdManage);
+          trCreate.append(tdRank, tdTitle, tdArtist, tdCategory, tdScore, tdManage);
 
           songList.appendChild(trCreate);
         });
@@ -163,14 +174,15 @@
       saveSongBtn.addEventListener('click', () => {
         const title = document.getElementById('titleInput').value;
         const artist = document.getElementById('artistInput').value;
+        const category = document.getElementById('categoryInput').value;
         const score = parseInt(document.getElementById('scoreInput').value);
 
-        if (title && artist && score) {
+        if (title && artist && score && category) {
           if (editIndex !== null) {
-            songs[editIndex] = { title, artist, score };
+            songs[editIndex] = { title, artist, category, score };
             editIndex = null;
           } else {
-            songs.push({ title, artist, score });
+            songs.push({ title, artist, category, score });
           }
           saveSongs();
           renderSongs();
