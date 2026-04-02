@@ -3,15 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
 
     <title>:: 노래하는 즐거움 TJ미디어 TOP10 ::</title>
-
+    <script src="script.js" defer></script>
+    <!-- 테일윈드는 추후 변경 예정 -->
+    <script src="https://cdn.tailwindcss.com"></script> 
+    </head>
       <header></header>
       <!-- header -->
        <!-- 여기에 로고랑 다크 모드 전환 아이콘 추가 예정 -->
+        <!-- admin_song에 있는 카테고리와 노래 목록을 아코디언 형태로 가져와야 함 -->
+         <!-- 노래 검색 기능 구현 -->
+          <!-- 노래 신청 기능, 신청 노래 목록 보기 및 삭제 기능 구현 -->
 
       <input type="hidden" id="strType" value="" />
       <!-- 장르 -->
@@ -20,7 +25,7 @@
       <div class="container">
         <div class="video-area update black">
           <div class="mix-music-title">
-            <h3 data-aos="fade-up" data-aos-delay="400">TOP 10</h3>
+            <h3 data-aos="fade-up" data-aos-delay="400" class="">TOP 10</h3>
             <p class="text-pc" data-aos="fade-up" data-aos-delay="600">
               대중 음악의 역사와 최신 트렌드가 공존하는 ‘노래방 인기 차트’ <br />
               대한민국 노래방 문화의 중심인 TJ 노래방에서 많이 불리는 <br />
@@ -103,42 +108,13 @@
       </div>
 
       <!--// 컨텐츠 영역 -->
-                      <ul class="item-link">
-                  <li>
-                    <div class="registration-container">
-                        <form id="songRequestForm">
-                            <div class="input-group">
-          <input type="text" id="postTitle" placeholder="제목" required maxlength="50" />
-          </div>
+<a href="./user_request.html" target="_blank" class="inline-block">
+  <button class="request-btn">
+    <span>노래 등록 신청</span>
+    <span class="ico"></span>
+  </button>
+</a>
 
-        <div class="textarea-group">
-          <textarea id="postContent" placeholder="신청 내용을 입력하세요 (최대 300자)" maxlength="300" required></textarea>
-          <span class="char-count">0 / 300</span>
-        </div>
-        <input type="password" id="postPassword" placeholder="비밀번호" required />
-        <br />
-                    <button class="footer-btn">
-                      <span>노래 등록 신청</span>
-                      <span class="ico"></span>
-                    </button>
-                    </form>
-                    </div>
-                  </li>
-                </ul>
-                <div class="w-full max-w-4xl mx-auto p-6">
-  <strong class="text-2xl font-black mb-6">노래 신청 목록</strong>
-  
-  <div class="border-4 border-black overflow-hidden rounded-lg">
-    <iframe 
-      src="./admin_request_user.html" 
-      width="100%" 
-      height="500px" 
-      frameborder="0"
-      title="노래 신청 목록"
-    >
-</iframe>
-  </div>
-</div>
 
       <!-- footer 영역 -->
       <footer class="footer">

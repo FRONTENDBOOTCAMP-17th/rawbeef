@@ -11,6 +11,7 @@ export default defineConfig({
         dashboard: resolve(__dirname, 'pages/dashboard.html'),
         category: resolve(__dirname, 'pages/category.html'),
         song: resolve(__dirname, 'pages/song.html'),
+        user_song: resolve(__dirname, 'woohyun/user_song.html'),
         admin_open: resolve(__dirname, 'soyu/admin_open.html'),
         admin_category: resolve(__dirname, 'soyu/admin_category.html'),
         admin_song: resolve(__dirname, 'soyu/admin_song.html'),
