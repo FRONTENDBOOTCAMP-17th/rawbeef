@@ -1,17 +1,12 @@
 <!doctype html>
-<html lang="ko-KR" class="light">
+<html lang="ko-KR" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <title>:: 노래하는 즐거움 TJ미디어 TOP10 ::</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-      };
-    </script>
+    <link rel="stylesheet" href="../src/style.css" />
     <style>
       * {
         box-sizing: border-box;
@@ -980,7 +975,7 @@
         }
       }
 
-      applyTheme(localStorage.getItem('theme') === 'dark');
+      applyTheme(localStorage.getItem('theme') !== 'light');
 
       btn.addEventListener('click', () => {
         applyTheme(!html.classList.contains('dark'));
