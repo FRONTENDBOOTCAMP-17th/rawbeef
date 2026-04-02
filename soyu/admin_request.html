@@ -4,27 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>관리자 카테고리</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body class="bg-gray-100 font-sans">
     <div class="flex h-screen w-full border-4 border-black overflow-hidden">
-      <aside class="w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6">
-        <a href="./admin_open.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">관리자메뉴</button>
-        </a>
-
-        <a href="./admin_category.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">카테고리관리</button>
-        </a>
-
-        <a href="./admin_song.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 관리</button>
-        </a>
-
-        <a href="./admin_request.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold bg-blue-600 text-white">노래 신청 관리</button>
-        </a>
-      </aside>
+      <div id="sidebar-container"></div>
+      <script src="./sidebar.js"></script>
       <main class="flex-1 bg-white p-8 relative overflow-y-auto">
         <div class="flex justify-between mb-10">
           <h1 class="text-3xl py-2 font-black">노래 신청 관리</h1>
@@ -42,55 +27,76 @@
         { id: 2, title: '노래제목2', date: '2026-03-30', content: '제발요 제발 ', pw: '1111' },
       ];
 
-      let inputRequests;
-
       const requestList = document.getElementById('requestList');
 
       requests.forEach((req, index) => {
-        const customerBox = document.createElement('div');
-        customerBox.className = 'p-6 border-black text-center';
-
         const div = document.createElement('div');
-        div.className = 'border-4 border-black p-4 mb-8';
+        div.className = 'border-4 border-black p-6 mb-8 bg-white';
 
         const title = document.createElement('h2');
         title.className = 'text-xl font-bold mb-2 text-center';
         title.textContent = `${index + 1}. ${req.title}`;
 
         const date = document.createElement('p');
-        date.className = 'text-sm text-gray-600';
+        date.className = 'text-sm text-gray-600 text-center';
         date.textContent = `신청 날짜: ${req.date}`;
 
         const content = document.createElement('p');
-        content.className = 'mb-2';
+        content.className = 'mb-6 text-center font-medium py-4';
         content.textContent = req.content;
 
-        customerBox.append(title, date, content);
-        div.appendChild(customerBox);
+        const adminBox = document.createElement('div');
+        adminBox.className = 'flex justify-between items-center gap-4';
+
+        const inputArea = document.createElement('div');
+        inputArea.className = 'flex items-center gap-4 flex-1 w-full';
+
+        const adminLabel = document.createElement('span');
+        adminLabel.className = 'font-black text-lg shrink-0';
+        adminLabel.textContent = '관리자 답변';
+
+        const adminInput = document.createElement('input');
+        adminInput.type = 'text';
+        adminInput.placeholder = '답변 내용을 입력하세요';
+        adminInput.className = 'w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold';
+
+        inputArea.append(adminLabel, adminInput);
+
+        const btnGroup = document.createElement('div');
+        btnGroup.className = 'flex space-x-6 shrink-0';
+
+        const registerBtn = document.createElement('button');
+        registerBtn.className = 'hover:text-blue-600 font-black text-lg';
+        registerBtn.textContent = '등록';
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'hover:text-red-600 font-black text-lg';
+        deleteBtn.textContent = '삭제';
+
+        btnGroup.append(registerBtn, deleteBtn);
+
+        adminBox.append(inputArea, btnGroup);
+
+        div.append(title, date, content, adminBox);
 
         requestList.appendChild(div);
 
-        const adminBox = document.createElement('div');
-        adminBox.className = 'flex justify-between items-center px-4 py-2';
+        registerBtn.addEventListener('click', () => {
+          const message = adminInput.value;
 
-        const adminText = document.createElement('span');
-        adminText.className = 'font-black text-lg ';
-        adminText.textContent = '관리자 답변';
-        const btnBox = document.createElement('div');
-        btnBox.className = 'flex justify-between items-center px-4 py-2';
-        const registerBtn = document.createElement('button');
-        registerBtn.className = 'hover:text-blue-600 font-bold';
-        registerBtn.textContent = '등록';
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'hover:text-red-600 font-bold';
-        deleteBtn.textContent = '삭제';
-        const btnGroup = document.createElement('div');
-        btnGroup.className = 'flex space-x-4';
-        btnGroup.appendChild(registerBtn);
-        btnGroup.appendChild(deleteBtn);
-        adminBox.appendChild(adminText);
-        div.appendChild(adminBox);
-        div.appendChild(btnGroup);
+          if (message !== '') {
+            alert(`답변이 등록되었습니다: ${message}`);
+            adminInput.value = '';
+          } else {
+            alert('내용이 입력되지 않았습니다!');
+          }
+        });
+
+        deleteBtn.addEventListener('click', () => {
+          if (confirm('이 요청을 삭제하시겠습니까?')) {
+            div.remove();
+          }
+        });
       });
     </script>
   </body>

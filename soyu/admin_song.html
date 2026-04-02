@@ -4,30 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>노래 관리</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body class="bg-gray-100 font-sans">
     <div class="flex h-screen w-full border-4 border-black overflow-hidden">
-      <aside class="w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6">
-        <a href="./admin_open.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">관리자메뉴</button>
-        </a>
-        <a href="./admin_category.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">카테고리관리</button>
-        </a>
-        <a href="./admin_song.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold bg-blue-600 text-white">노래 관리</button>
-        </a>
-        <a href="./admin_request.html" class="block w-full">
-          <button class="w-full py-4 border-2 border-black font-bold hover:bg-gray-200">노래 신청 관리</button>
-        </a>
-      </aside>
+      <div id="sidebar-container"></div>
 
       <main class="flex-1 bg-white p-8 overflow-y-auto">
         <div class="flex justify-between items-center w-full mb-8">
           <div class="flex items-center gap-6">
             <h1 class="text-3xl font-black">노래 관리</h1>
-            <button id="selectCategoryBtn" class="px-6 py-2 border-2 border-black font-bold text-lg hover:bg-black hover:text-white transition">카테고리 선택</button>
+            <div class="relative inline-block">
+              <button id="selectCategoryBtn" class="px-6 py-2 border-2 border-black font-bold text-lg hover:bg-black hover:text-white transition">카테고리 선택</button>
+              <ul id="categoryDropdown" class="absolute left-0 mt-2 w-48 bg-white border-2 border-black hidden z-10 max-h-60 overflow-y-auto shadow-lg"></ul>
+            </div>
 
             <button id="addSongBtn" class="px-6 py-2 ml-auto border-2 border-black font-bold text-lg hover:bg-black hover:text-white transition">곡 추가 +</button>
           </div>
@@ -56,19 +46,19 @@
 
         <div class="space-y-4 text-lg">
           <div>
-            <label class="block font-black mb-1">제목</label>
+            <label for="titleInput" class="block font-black mb-1">제목</label>
             <input type="text" id="titleInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
           </div>
           <div>
-            <label class="block font-black mb-1">가수</label>
+            <label for="artistInput" class="block font-black mb-1">가수</label>
             <input type="text" id="artistInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
           </div>
           <div>
-            <label class="block font-black mb-1">카테고리</label>
+            <label for="categoryInput" class="block font-black mb-1">카테고리</label>
             <input type="text" id="categoryInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
           </div>
           <div>
-            <label class="block font-black mb-1">SCORE</label>
+            <label for="scoreInput" class="block font-black mb-1">SCORE</label>
             <input type="number" id="scoreInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" value="0" />
           </div>
         </div>
@@ -86,6 +76,25 @@
         { title: 'Plug In Baby', artist: 'MUSE', category: '락/메탈', score: 88 },
       ];
       let editIndex = null;
+
+      let categoryData = JSON.parse(localStorage.getItem('myCategory')) || [
+        { title: '선택' },
+        { title: '가요' },
+        { title: 'POP' },
+        { title: 'JPOP' },
+        { title: '발라드' },
+        { title: '댄스' },
+        { title: '트로트' },
+        { title: '포크' },
+        { title: 'OST' },
+        { title: '락/메탈' },
+        { title: '랩/힙합' },
+        { title: 'R&B/어반' },
+      ];
+      let currentFilter = '선택';
+
+      const categoryDropdown = document.getElementById('categoryDropdown');
+      const selectCategoryBtn = document.getElementById('selectCategoryBtn');
       const modal = document.getElementById('modal');
       const songList = document.getElementById('songList');
       const modalTitle = document.getElementById('newSong');
@@ -103,18 +112,53 @@
         document.getElementById('categoryInput').value = '';
         document.getElementById('scoreInput').value = 0;
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
       });
       const closeSongBtn = document.getElementById('closeSongBtn');
       closeSongBtn.addEventListener('click', () => {
         modal.classList.add('hidden');
+        modal.classList.remove('flex');
       });
+
+      const renderCategoryDropdown = () => {
+        categoryDropdown.innerHTML = '';
+        categoryData.forEach((info) => {
+          const li = document.createElement('li');
+          li.className = 'px-4 py-2 font-bold  border-gray-100 text-sm';
+          li.textContent = info.title;
+          li.addEventListener('click', () => {
+            currentFilter = info.title;
+            if (info.title === '전체') {
+              selectCategoryBtn.textContent = '카테고리 선택';
+            } else {
+              selectCategoryBtn.textContent = info.title;
+            }
+
+            renderSongs();
+            categoryDropdown.classList.add('hidden');
+          });
+
+          categoryDropdown.appendChild(li);
+        });
+      };
+
+      selectCategoryBtn.onclick = (e) => {
+        e.stopPropagation();
+        categoryDropdown.classList.toggle('hidden');
+      };
+
+      document.onclick = () => categoryDropdown.classList.add('hidden');
 
       const renderSongs = () => {
         songList.innerHTML = '';
 
-        songs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+        let filteredSongs = songs;
+        if (currentFilter !== '선택') {
+          filteredSongs = songs.filter((song) => song.category === currentFilter);
+        }
+        filteredSongs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 
-        songs.forEach((song, index) => {
+        filteredSongs.forEach((song, index) => {
           const trCreate = document.createElement('tr');
           trCreate.className = 'border-b-2 border-black hover:bg-gray-50';
 
@@ -161,6 +205,7 @@
             document.getElementById('categoryInput').value = song.category;
             document.getElementById('scoreInput').value = song.score;
             modal.classList.remove('hidden');
+            modal.classList.add('flex');
           });
 
           tdManage.append(deleteBtn, editBtn);
@@ -177,7 +222,7 @@
         const category = document.getElementById('categoryInput').value;
         const score = parseInt(document.getElementById('scoreInput').value);
 
-        if (title && artist && score && category) {
+        if (title && artist && score !== null && !isNaN(score) && category) {
           if (editIndex !== null) {
             songs[editIndex] = { title, artist, category, score };
             editIndex = null;
@@ -187,6 +232,7 @@
           saveSongs();
           renderSongs();
           modal.classList.add('hidden');
+          modal.classList.remove('flex');
         } else {
           alert('내용이 입력되지 않았습니다!');
         }
@@ -199,8 +245,9 @@
           renderSongs();
         }
       };
-
+      renderCategoryDropdown();
       renderSongs();
     </script>
+    <script src="./sidebar.js"></script>
   </body>
 </html>
