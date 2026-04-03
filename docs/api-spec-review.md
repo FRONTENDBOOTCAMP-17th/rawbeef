@@ -22,7 +22,7 @@
 | 노래 상세/등록/수정 | `/api/edu/rawbeef-648844` |
 | 노래 신청 | `/support/paidsong` (Base URL 없음) |
 
-**수정 제안**: `/api/rawbeef/v1`로 전체 통일
+**구현**: `/api/rawbeef/v1`로 전체 통일
 
 ---
 
@@ -35,7 +35,7 @@
 PUT https://api.fullstackfamily.com/...    ← PUT으로 되어 있음
 ```
 
-**수정 제안**: PATCH로 통일 (부분 수정에 적합)
+**구현**: PATCH로 통일 (부분 수정에 적합)
 
 ---
 
@@ -48,7 +48,7 @@ PUT https://api.fullstackfamily.com/...    ← PUT으로 되어 있음
 | 신청 목록 | `{total, page, limit, data: [...]}` (success 없음) |
 | 삭제 | `{success, message}` |
 
-**수정 제안**: 모든 API에서 `{success, message, data}` 형태로 통일
+**구현**: 모든 API에서 `{success, message, data}` 형태로 통일
 
 ---
 
@@ -59,7 +59,7 @@ PUT https://api.fullstackfamily.com/...    ← PUT으로 되어 있음
 - 노래 신청 등록/삭제: 글 비밀번호 기반 (토큰 불필요?)
 - 댓글 삭제: 토큰 필요
 
-어떤 API가 로그인 필수이고, 어떤 API가 비로그인도 허용인지 명확히 해주세요.
+**구현**: 관리자는 비밀번호만으로 인증 (교육용 간소화), 노래 신청/댓글 등록은 비로그인 허용
 
 ---
 
@@ -83,8 +83,8 @@ GET /songs/{카테고리id}
 
 파라미터가 "카테고리 ID"라면 이건 "카테고리별 노래 목록"이지 "노래 상세"가 아닙니다.
 
-**수정 제안**:
-- `GET /songs?categoryId=N` → 카테고리별 노래 목록
+**구현**:
+- `GET /songs?category=발라드` → 카테고리별 노래 목록
 - `GET /songs/{songId}` → 개별 노래 상세
 
 ---
@@ -93,12 +93,11 @@ GET /songs/{카테고리id}
 
 ### 2.1 카테고리 순서 변경 API
 
-`PATCH /categories/updateSeq`에 `{id}` 하나만 보내서는 순서를 변경할 수 없습니다.
+`PATCH /categories/updateSeq`에 `{id}`를 보내면 해당 카테고리를 한 칸 아래로 이동합니다.
 
-**수정 제안**: 전체 순서를 배열로 전달
-```json
-{ "orderedIds": [3, 1, 2] }
-```
+**구현**: 위로/아래로 명확하게 분리
+- `PATCH /categories/{title}/move-up` — 한 칸 위로 (이전 카테고리와 swap)
+- `PATCH /categories/{title}/move-down` — 한 칸 아래로 (다음 카테고리와 swap)
 
 ### 2.2 노래 신청 삭제 - 비밀번호가 URL에 노출
 
@@ -108,29 +107,29 @@ DELETE /support/paidsong?id=1&password=1234
 
 비밀번호가 URL 쿼리파라미터에 포함되면 브라우저 히스토리/서버 로그에 기록됩니다.
 
-**수정 제안**: `POST /support/requests/{id}/delete` — body에 password 포함
+**구현**: `POST /requests/{id}/delete` — body에 password 포함
 
 ### 2.3 score 타입이 string
 
 노래 점수는 숫자가 적합합니다. `"score": "95"` → `"score": 95`
 
-### 2.4 category가 문자열
+### 2.4 카테고리명을 PK로 사용
 
-노래 등록 시 `"category": "카테고리명"` 대신 `"categoryId": 1` (숫자)로 연결하는 것이 DB 설계상 적합합니다.
+카테고리에 auto-increment id 대신 **이름(title)을 PK**로 사용합니다. 노래 테이블에서는 `"category": "발라드"` 형태로 직접 참조합니다. 명세서 원본의 `"category": "카테고리명"` 형태와 자연스럽게 일치합니다.
 
 ---
 
 ## 3. 수정 요약표
 
-| # | 우선순위 | 항목 | 현재 | 수정 제안 |
+| # | 우선순위 | 항목 | 현재 | 구현 반영 |
 |---|---------|------|------|----------|
 | 1 | Critical | Base URL 혼재 | 3가지+ | `/api/rawbeef/v1` 통일 |
 | 2 | Critical | HTTP 메서드 | PATCH/PUT 혼재 | PATCH 통일 |
 | 3 | Critical | 응답 형식 | 불일치 | `{success, message, data}` |
-| 4 | Critical | 인증 체계 | 불명확 | 역할별 명확 정의 |
+| 4 | Critical | 인증 체계 | 불명확 | 비밀번호 관리자 + 비로그인 신청 |
 | 5 | Critical | JSON 문법 | 쉼표 누락, 키 중복 | 수정 |
 | 6 | Critical | 노래 상세 URL | 카테고리ID 사용 | 목록/상세 분리 |
-| 7 | Important | 순서 변경 | id 1개 | orderedIds 배열 |
+| 7 | Important | 순서 변경 | id 1개 | move-up / move-down (swap) |
 | 8 | Important | 삭제 비밀번호 | URL 파라미터 | POST body |
 | 9 | Important | score 타입 | string | Integer |
-| 10 | Important | category 필드 | 문자열 | categoryId (Long) |
+| 10 | Important | category 필드 | 문자열 | 문자열 그대로 (카테고리명=PK) |
