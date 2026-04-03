@@ -148,7 +148,7 @@ Content-Type: application/json
   "artist": "수정된 아티스트 ",
   "category": "수정된 카테고리",
   "score": "수정된 점수 ",
-  "url": "수정된 유튜브 url",
+  "url": "수정된 유튜브 url"
 }
 ```
 
@@ -162,10 +162,14 @@ Authorization: Bearer {token}
 응답
 {success, message}
 
-## 노래 신청 등록
+## 노래 신청
+
+> 인증 불필요 — 비로그인 사용자가 이용하며, 삭제 시 글 비밀번호로 본인 확인합니다.
+
+### 노래 신청 등록
 
 ```
-POST /support/paidsong
+POST /api/rawbeef/v1/requests
 ```
 
 Request Body (application/json)
@@ -177,10 +181,15 @@ Field | Type | Required | Description|
 
 Response 201
 {
+"success": true,
+"message": "노래 신청이 등록되었습니다",
+"data":
+{
 "id" : 1,
 "title" : "제목",
 "content" : "내용",
 "createdAt" : "2025-01-15T10:30:00"
+}
 }
 
 | 코드 | 설명               |
@@ -193,33 +202,32 @@ Response 201
 | 400  | 비밀번호 4자 미만  |
 | 400  | 비밀번호 10자 초과 |
 
-## 노래 신청 삭제
+### 노래 신청 삭제
 
 ```
-DELETE /support/paidsong?id=글번호&password=암호
+POST /api/rawbeef/v1/requests/{id}/delete
 ```
 
-Param (application/json)
-| Param | Type | Required | Description |
-|---------|------|------|------|
+Request Body (application/json)
 | Field | Type | Required | Description |
-| id | number | required | 글 번호 |
+|---------|------|------|------|
 | password | string | required | 4~10자리 |
 
 Response 200
 {
 "success" : true,
-"message" : "삭제되었습니다"
+"message" : "삭제되었습니다",
+"data": null
 }
 
 | 코드 | 설명          |
 | ---- | ------------- |
 | 400  | 비밀번호 오류 |
 
-## 노래 신청 목록 조회
+### 노래 신청 목록 조회
 
 ```
-GET /support/paidsong
+GET /api/rawbeef/v1/requests
 ```
 
 Params
@@ -229,11 +237,14 @@ Params
 | search | string | optional | 제목/내용 검색어 |
 
 Response 200
+{ "success": true,
+"message": "조회 성공",
+"data" :
 {
 "total" : 100,
 "page" : 1,
 "limit" : 30,
-"data" : [
+"items" : [
 {
 "id" : 1,
 "title" : "제목",
@@ -248,6 +259,7 @@ Response 200
 }
 ]
 }
+}
 
 Errors
 | 코드 | 설명 |
@@ -255,10 +267,14 @@ Errors
 | 400 | limit 30 초과 |
 | 400 | page 0 이하 |
 
-## 댓글 등록
+## 댓글
+
+> 댓글 등록은 인증 불필요, 댓글 삭제는 관리자 토큰 필요
+
+### 댓글 등록
 
 ```
-POST /support/paidsong/comments
+POST /api/rawbeef/v1/requests/comments
 ```
 
 Request Body (application/json)
@@ -269,16 +285,20 @@ Request Body (application/json)
 
 Response 201
 {
+"success": true,
+"message": "댓글이 등록되었습니다",
+"data": {
 "postId" : 1,
 "commentId" : 1,
 "content" : "댓글 내용",
 "createdAt" : "2025-01-15T10:30:00"
 }
+}
 
-## 댓글 삭제
+### 댓글 삭제
 
 ```
-DELETE /support/paidsong/comments?id=댓글번호
+DELETE /api/rawbeef/v1/requests/comments?id=댓글번호
 ```
 
 Request Header
@@ -289,7 +309,8 @@ Request Header
 Response 200
 {
 "success" : true,
-"message" : "삭제되었습니다"
+"message" : "삭제되었습니다",
+"data": null
 }
 
 | 코드 | 설명      |
