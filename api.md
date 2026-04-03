@@ -29,12 +29,9 @@ Content-Type: application/json
 
 ```json
 {
-  "success": true,
-  "data": {
-    "token": "eyJhbGciOiJIUzUxMiJ9...",
-    "user": { "id": 1, "username": "admin" }
+{success, data: {token, user}}
   }
-}
+
 ```
 
 ---
@@ -51,14 +48,14 @@ Authorization: Bearer {token}
 ### GET /categories/{id} — 카테고리 상세 (공개)
 
 ```
-GET https://api.fullstackfamily.com/api/edu/rawbeef/v1/categories/{id}
+GET https://api.fullstackfamily.com/api/rawbeef/v1/categories/{id}
 Authorization: Bearer {token}
 ```
 
 ### POST /categories — 카테고리 추가
 
 ```
-POST https://api.fullstackfamily.com/api/edu/rawbeef/v1/categories
+POST https://api.fullstackfamily.com/api/rawbeef/v1/categories
 Authorization: Bearer {token}
 
 | 파라미터 | 타입 | 필수 | 설명 |
@@ -72,7 +69,7 @@ Authorization: Bearer {token}
 ### PATCH /categories/{id} — 카테고리 수정 🔒
 
 ```
-PUT https://api.fullstackfamily.com/api/edu/rawbeef/v1/categories/{id}
+PATCH https://api.fullstackfamily.com/api/rawbeef/v1/categories/{id}
 Authorization: Bearer {token}
 Content-Type: application/json
 
@@ -84,22 +81,27 @@ Content-Type: application/json
 ### PATCH/categories/updateSeq — 카테고리 위치수정 🔒
 
 ```
-PUT https://api.fullstackfamily.com/api/edu/rawbeef/v1/categories/updateSeq
+PATCH https://api.fullstackfamily.com/api/rawbeef/v1/categories/updateSeq
 Authorization: Bearer {token}
 ```
 
 {
 "id": "수정된 카테고리 Id"
 }
+PATCH /categories/{title}/move-up
+PATCH /categories/{title}/move-down -이부분들은 id 값이 아니라 title 값으로 잡는건가요?
 
 드래그 드롭으로 구현했습니다
 
 ### DELETE /categories/{id} — 카테고리 삭제 🔒
 
 ```
-DELETE https://api.fullstackfamily.com/api/edu/rawbeef/v1/categories/{id}
+DELETE https://api.fullstackfamily.com/api/rawbeef/v1/categories/{id}
 Authorization: Bearer {token}
 ```
+
+응답
+{success, message}
 
 ## 2. songs
 
@@ -110,17 +112,17 @@ GET https://api.fullstackfamily.com/api/rawbeef/v1/songs
 Authorization: Bearer {token}
 ```
 
-### GET /songs/{id} — 노래 카테고리에 따른 상세 조회
+### GET /songs/{id} — 카테고리별 노래목록
 
 ```
-GET https://api.fullstackfamily.com/api/edu/rawbeef-648844/songs/{카테고리id}
+GET https://api.fullstackfamily.com/api/rawbeef/songs/{카테고리id}
 Authorization: Bearer {token}
 ```
 
 ### POST /songs — 노래 신규 등록
 
 ```
-POST https://api.fullstackfamily.com/api/edu/rawbeef-648844/songs
+POST https://api.fullstackfamily.com/api/rawbeef/songs
 Authorization: Bearer {token}
 
 | 파라미터 | 타입 | 필수 | 설명 |
@@ -128,7 +130,7 @@ Authorization: Bearer {token}
 | title | string | N | 노래 제목|
 | artist | string | N | 아티스트  |
 | category | string | N | 카테고리 |
-| score | string | N | 노래 점수 |
+| score | number | N | 노래 점수 |
 | url | string | optional | 유튜브url |
 ```
 
@@ -137,26 +139,28 @@ Authorization: Bearer {token}
 ### PATCH /songs/{id} — 카테고리 수정 🔒
 
 ```
-PUT https://api.fullstackfamily.com/api/edu/rawbeef-648844/songs/{id}
+PUT https://api.fullstackfamily.com/api/rawbeef/songs/{id}
 Authorization: Bearer {token}
 Content-Type: application/json
 
 {
-  "title": "수정된 노래제목"
-  "artist": "수정된 아티스트 "
-  "category": "수정된 카테고리"
-  "score": "수정된 점수 "
-  "title": "수정된 카테고리 제목"
-  "url": "수정된 유튜브 url"
+  "title": "수정된 노래제목",
+  "artist": "수정된 아티스트 ",
+  "category": "수정된 카테고리",
+  "score": "수정된 점수 ",
+  "url": "수정된 유튜브 url",
 }
 ```
 
 ### DELETE /songs/{id} — 카테고리 삭제
 
 ```
-DELETE https://api.fullstackfamily.com/api/edu/rawbeef/v1/songs/{id}
+DELETE https://api.fullstackfamily.com/api/rawbeef/v1/songs/{id}
 Authorization: Bearer {token}
 ```
+
+응답
+{success, message}
 
 ## 노래 신청 등록
 
