@@ -46,19 +46,22 @@
 
         <div class="space-y-4 text-lg">
           <div>
-            <label for="titleInput" class="block font-black mb-1">제목</label>
+            <label for="titleInput" class="block font-black mb-1" maxlength="50">제목</label>
             <input type="text" id="titleInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+            <p id="titleCount" class="text-sm text-gray-400 mt-1 text-right">0 / 50</p>
           </div>
           <div>
-            <label for="artistInput" class="block font-black mb-1">가수</label>
+            <label for="artistInput" class="block font-black mb-1" maxlength="50">가수</label>
             <input type="text" id="artistInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+            <p id="artistCount" class="text-sm text-gray-400 mt-1 text-right">0 / 50</p>
           </div>
           <div>
-            <label for="categoryInput" class="block font-black mb-1">카테고리</label>
+            <label for="categoryInput" class="block font-black mb-1" maxlength="10">카테고리</label>
             <input type="text" id="categoryInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+            <p id="categoryCount" class="text-sm text-gray-400 mt-1 text-right">0 / 10</p>
           </div>
           <div>
-            <label for="scoreInput" class="block font-black mb-1">SCORE</label>
+            <label for="scoreInput" class="block font-black mb-1" min="1" max="999">SCORE</label>
             <input type="number" id="scoreInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" value="0" />
           </div>
         </div>
@@ -72,27 +75,67 @@
     </div>
 
     <script>
-      let songs = JSON.parse(localStorage.getItem('mySongs')) || [
-        { title: 'Hysteria', artist: 'MUSE', category: '락/메탈', score: 95 },
-        { title: 'Plug In Baby', artist: 'MUSE', category: '락/메탈', score: 88 },
-      ];
+      let songs = [];
+      async function loadSongs(category = null) {
+        const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/songs');
+        const json = await res.json();
+        const allSongs = json.data;
+
+        songs = category ? allSongs.filter((song) => song.category === category) : allSongs;
+        renderSongs();
+      }
+      // 랩/힙합 처럼 / 들어간 카테고리는 필터링이 되지않는다 encodeURIComponent 을 사용해 보았지만 여전히 안됩니다
+      // 어느쪽에 문제인지 모르겠어서 일단은 filter 함수를 사용했습니다!
       let editIndex = null;
       let tempYoutubeUrls = [];
-      let categoryData = JSON.parse(localStorage.getItem('myCategory')) || [
-        { title: '선택' },
-        { title: '가요' },
-        { title: 'POP' },
-        { title: 'JPOP' },
-        { title: '발라드' },
-        { title: '댄스' },
-        { title: '트로트' },
-        { title: '포크' },
-        { title: 'OST' },
-        { title: '락/메탈' },
-        { title: '랩/힙합' },
-        { title: 'R&B/어반' },
-      ];
+      let categoryData = [];
+
+      const titleInput = document.getElementById('titleInput');
+      const artistInput = document.getElementById('artistInput');
+      const categoryInput = document.getElementById('categoryInput');
+
+      titleInput.addEventListener('input', () => {
+        const count = titleInput.value.length;
+        const el = document.getElementById('titleCount');
+        el.textContent = `${count} / 50`;
+        el.className = count >= 50 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
+      });
+
+      artistInput.addEventListener('input', () => {
+        const count = artistInput.value.length;
+        const el = document.getElementById('artistCount');
+        el.textContent = `${count} / 50`;
+        el.className = count >= 20 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
+      });
+
+      categoryInput.addEventListener('input', () => {
+        const count = categoryInput.value.length;
+        const el = document.getElementById('categoryCount');
+        el.textContent = `${count} / 10`;
+        el.className = count >= 10 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
+      });
+
+      async function loadCategories() {
+        const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories');
+        const json = await res.json();
+        categoryData = [{ title: '전체' }, ...json.data];
+        renderCategoryDropdown();
+      }
       let currentFilter = '선택';
+
+      const editSong = async (id, songData) => {
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/songs/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(songData),
+        });
+        const json = await res.json();
+        return json.data;
+      };
 
       const categoryDropdown = document.getElementById('categoryDropdown');
       const selectCategoryBtn = document.getElementById('selectCategoryBtn');
@@ -114,8 +157,18 @@
         alert(`${tempYoutubeUrls.length}번의 유튜브 URL 등록이 완료되었습니다`);
       });
 
-      const saveSongs = () => {
-        localStorage.setItem('mySongs', JSON.stringify(songs));
+      const saveSongs = async (newSongData) => {
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/songs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newSongData),
+        });
+        const json = await res.json();
+        return json.data;
       };
 
       const addSongBtn = document.getElementById('addSongBtn');
@@ -146,11 +199,12 @@
             currentFilter = info.title;
             if (info.title === '전체') {
               selectCategoryBtn.textContent = '카테고리 선택';
+              loadSongs();
             } else {
               selectCategoryBtn.textContent = info.title;
+              loadSongs(info.title);
             }
 
-            renderSongs();
             categoryDropdown.classList.add('hidden');
           });
 
@@ -168,13 +222,9 @@
       const renderSongs = () => {
         songList.innerHTML = '';
 
-        let filteredSongs = songs;
-        if (currentFilter !== '선택') {
-          filteredSongs = songs.filter((song) => song.category === currentFilter);
-        }
-        filteredSongs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+        songs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 
-        filteredSongs.forEach((song, index) => {
+        songs.forEach((song, index) => {
           const trCreate = document.createElement('tr');
           trCreate.className = 'border-b-2 border-black hover:bg-gray-50';
 
@@ -206,7 +256,7 @@
           deleteBtn.textContent = '✘';
 
           deleteBtn.addEventListener('click', function (click) {
-            deleteSong(index);
+            deleteSong(song.id);
           });
 
           const editBtn = document.createElement('button');
@@ -249,28 +299,27 @@
       };
 
       const saveSongBtn = document.getElementById('saveSongBtn');
-      saveSongBtn.addEventListener('click', () => {
+      saveSongBtn.addEventListener('click', async () => {
         const title = document.getElementById('titleInput').value;
         const artist = document.getElementById('artistInput').value;
         const category = document.getElementById('categoryInput').value;
         const score = parseInt(document.getElementById('scoreInput').value);
 
         if (title && artist && score !== null && !isNaN(score) && category) {
-          const newSongData = {
-            title,
-            artist,
-            category,
-            score,
-            url: [...tempYoutubeUrls],
-          };
           if (editIndex !== null) {
-            songs[editIndex] = newSongData;
+            await editSong(songs[editIndex].id, { title, artist, category, score, url: tempYoutubeUrls[0] || null });
             editIndex = null;
           } else {
-            songs.push(newSongData);
+            await saveSongs({
+              title,
+              artist,
+              category,
+              score,
+              url: tempYoutubeUrls[0] || null,
+            });
+            await loadSongs();
           }
-          saveSongs();
-          renderSongs();
+
           tempYoutubeUrls = [];
           modal.classList.add('hidden');
           modal.classList.remove('flex');
@@ -279,15 +328,19 @@
         }
       });
 
-      window.deleteSong = (index) => {
+      const deleteSong = async (id) => {
         if (confirm('이 노래를 삭제하시겠습니까?')) {
-          songs.splice(index, 1);
-
-          renderSongs();
+          const token = localStorage.getItem('adminToken');
+          await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/songs/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          await loadSongs();
         }
       };
-      renderCategoryDropdown();
-      renderSongs();
+
+      loadCategories();
+      loadSongs();
     </script>
     <script src="./sidebar.js"></script>
   </body>

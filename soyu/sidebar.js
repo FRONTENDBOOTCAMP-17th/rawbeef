@@ -9,7 +9,7 @@ function createSidebar() {
   const currentPage = './' + location.pathname.split('/').pop();
 
   const aside = document.createElement('aside');
-  aside.className = 'w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6';
+  aside.className = 'w-1/5 bg-white border-r-4 border-black flex flex-col p-6 gap-6 h-full';
 
   menuItems.forEach((item) => {
     const link = document.createElement('a');
@@ -22,6 +22,17 @@ function createSidebar() {
     link.textContent = item.label;
     aside.appendChild(link);
   });
+  const token = localStorage.getItem('adminToken');
+  if (token) {
+    const logoutBtn = document.createElement('button');
+    logoutBtn.className = 'block w-full py-4 border-2 border-red-500 font-bold text-center text-red-500 hover:bg-red-500 hover:text-white transition mt-auto';
+    logoutBtn.textContent = '로그아웃';
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('adminToken');
+      location.href = './admin_open.html';
+    });
+    aside.appendChild(logoutBtn);
+  }
 
   return aside;
 }
