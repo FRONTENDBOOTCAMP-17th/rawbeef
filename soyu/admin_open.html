@@ -6,22 +6,37 @@
     <title>관리자 메뉴</title>
     <link rel="stylesheet" href="../src/style.css" />
   </head>
-  <body class="bg-gray-100 font-sans">
-    <div id="sidebar-container"></div>
+  <body id="body" class="bg-gray-950 text-white min-h-screen flex flex-col transition-colors duration-300">
+    <div id="header-container"></div>
+    <script src="./header.js"></script>
     <script src="./sidebar.js"></script>
-    <div id="loginScreen" class="hidden fixed inset-0 items-center justify-center bg-gray-100">
-      <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-sm">
-        <h2 class="text-xl font-bold mb-6 text-gray-800">관리자 로그인</h2>
+    <div class="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
+      <div id="loginScreen" class="fixed inset-0 flex items-center justify-center z-10 bg-white dark:bg-gray-950">
+        <div class="bg-gray-900 border border-white/10 rounded-2xl p-10 w-full max-w-sm">
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-black text-white">관리자 로그인</h2>
 
-        <input id="passwordInput" type="password" placeholder="비밀번호를 입력하세요" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-blue-500 focus:border-transparent" />
+            <p class="text-sm text-gray-400 mt-2">TJ 관리자 전용 페이지 입니다</p>
+          </div>
 
-        <p id="loginError" class="hidden mt-2 text-sm text-red-500">비밀번호가 일치하지 않습니다.</p>
+          <div class="mb-4">
+            <label class="text-xs text-gray-400 mb-2 block tracking-wider">비밀번호</label>
 
-        <button id="loginBtn" class="mt-4 w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer">로그인</button>
+            <input id="passwordInput" type="password" placeholder="비밀번호를 입력하세요" class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 transition-colors" />
+            <p id="loginError" class="hidden mt-2 text-xs text-red-400">비밀번호가 일치하지 않습니다.</p>
+          </div>
+
+          <button id="loginBtn" class="mt-2 w-full py-3 bg-linear-to-r from-cyan-500 to-purple-600 text-white text-sm font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer disabled:opacity-40">로그인</button>
+
+          <div class="border-t border-white/10 mt-8 pt-6 text-center text-xs text-gray-500"><span class="text-cyan-400">TJ</span> 관리자 전용 페이지 입니다</div>
+        </div>
       </div>
     </div>
 
-    <div id="adminContent" class="hidden"></div>
+    <div id="adminContent" class="hidden fixed inset-x-0 bottom-0 top-[57px]">
+      <div id="sidebar-container"></div>
+      <main class="flex-1 bg-gray-950"></main>
+    </div>
 
     <script>
       const api = 'https://api.fullstackfamily.com/api/rawbeef/v1/auth/login';
@@ -42,6 +57,7 @@
         loginScreen.classList.add('hidden');
         loginScreen.classList.remove('flex');
         adminContent.classList.remove('hidden');
+        adminContent.style.display = 'flex';
       }
 
       function showLogin() {
@@ -130,7 +146,7 @@
           successPage.style.transition = 'opacity 0.5s';
           successPage.style.opacity = '0';
           setTimeout(() => successPage.remove(), 500);
-        }, 4000);
+        }, 2000);
       }
 
       async function login() {
