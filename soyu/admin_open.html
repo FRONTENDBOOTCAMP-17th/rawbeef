@@ -85,7 +85,6 @@
             const data = await res.json();
             localStorage.setItem(mytoken, data.data.token);
             showAdmin();
-            showSuccessScreen();
           } else {
             loginError.classList.remove('hidden');
             passwordInput.value = '';
