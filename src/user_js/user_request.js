@@ -3,6 +3,10 @@ const LIMIT = 30;
 let currentPage = 1;
 let totalPages = 1;
 
+/* ══════════════════════════════════
+   렌더 함수 (화면 그리기)
+   ══════════════════════════════════ */
+
 /* ── 날짜 포맷 ── */
 function formatDate(iso) {
   const d = new Date(iso);
@@ -10,6 +14,24 @@ function formatDate(iso) {
   const mm = String(d.getMonth() + 1).padStart(2, '0');
   const dd = String(d.getDate()).padStart(2, '0');
   return `${yyyy}.${mm}.${dd}`;
+}
+
+/* ── 관리자 토큰 ── */
+function getAdminToken() {
+  return localStorage.getItem('adminToken');
+}
+
+function showDeleteMsg(el, text) {
+  el.textContent = text;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 3000);
+}
+
+function showFormMsg(el, text, success = false) {
+  el.textContent = text;
+  el.className = `text-xs m-0 ${success ? 'text-green-500' : 'text-red-500'}`;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 3000);
 }
 
 /* ── 목록 렌더 ── */
@@ -21,6 +43,8 @@ function renderList(data) {
     list.innerHTML = '<p class="text-center py-12 text-gray-400 text-sm">등록된 신청이 없습니다.</p>';
     return;
   }
+
+  const isAdmin = !!getAdminToken();
 
   data.forEach((item) => {
     const el = document.createElement('div');
@@ -34,7 +58,7 @@ function renderList(data) {
         <span class="text-xs text-gray-400 text-center self-center">${item.id}</span>
         <span class="text-sm font-medium text-gray-900 dark:text-gray-100 self-center flex items-center gap-2">
           ${item.title}
-          ${item.comments && item.comments.length ? `<span class="text-xs text-red-500 font-semibold">[${item.comments.length}]</span>` : ''}
+          ${item.comment ? `<span class="text-xs text-red-500 font-semibold">[1]</span>` : ''}
         </span>
         <span class="text-xs text-gray-400 text-center self-center flex items-center justify-center gap-1">
           ${formatDate(item.createdAt)}
@@ -43,33 +67,52 @@ function renderList(data) {
           </svg>
         </span>
       </button>
- 
+
       <!-- 아코디언 바디 -->
       <div class="accordion-body bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 px-5 py-5">
         <!-- 본문 -->
         <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap mb-5">${item.content}</p>
- 
+
         <!-- 댓글(답변) -->
         ${
-          item.comments && item.comments.length
+          item.comment
             ? `
           <div class="mb-5">
             <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">답변</p>
-            ${item.comments
-              .map(
-                (c) => `
-              <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded p-3 mb-2">
-                <p class="text-sm text-gray-700 dark:text-gray-300 m-0 whitespace-pre-wrap">${c.content}</p>
-                <p class="text-xs text-gray-400 mt-1 mb-0">${formatDate(c.createdAt)}</p>
-              </div>
-            `
-              )
-              .join('')}
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded p-3 mb-2">
+              <p class="text-sm text-gray-700 dark:text-gray-300 m-0 whitespace-pre-wrap">${item.comment.content}</p>
+              <p class="text-xs text-gray-400 mt-1 mb-0">${formatDate(item.comment.createdAt)}</p>
+            </div>
+            ${
+              isAdmin
+                ? `<button
+                    class="comment-delete-btn h-7 px-3 bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-gray-800 text-red-500 text-xs font-semibold rounded border border-red-200 dark:border-red-800 cursor-pointer transition-colors duration-150 font-[inherit]"
+                    data-comment-id="${item.comment.commentId}"
+                  >답변 삭제</button>
+                  <span class="comment-msg text-xs text-red-500 hidden ml-2"></span>`
+                : ''
+            }
           </div>
         `
-            : ''
+            : isAdmin
+              ? `
+          <div class="mb-5">
+            <p class="text-xs font-semibold text-blue-500 dark:text-blue-400 mb-2">관리자 답변 등록</p>
+            <textarea
+              class="comment-input w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:border-blue-500 dark:focus:border-blue-400 placeholder:text-gray-400 transition-colors duration-150 resize-none"
+              rows="3"
+              placeholder="답변을 입력하세요 (1~500자)"
+              maxlength="500"
+            ></textarea>
+            <div class="flex items-center gap-2 mt-2">
+              <button class="comment-submit-btn h-8 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded border-none cursor-pointer transition-colors duration-150 font-[inherit]">답변 등록</button>
+              <span class="comment-msg text-xs text-red-500 hidden"></span>
+            </div>
+          </div>
+        `
+              : ''
         }
- 
+
         <!-- 삭제 -->
         <div class="flex items-center gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
           <input
@@ -82,6 +125,12 @@ function renderList(data) {
             class="delete-btn h-9 px-4 bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-gray-800 text-red-600 text-sm font-semibold rounded border border-red-300 dark:border-red-700 cursor-pointer transition-colors duration-150 font-[inherit]"
             data-id="${item.id}"
           >삭제</button>
+          ${isAdmin ? `
+          <button
+            class="admin-delete-btn h-9 px-4 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150 font-[inherit]"
+            data-id="${item.id}"
+          >관리자 삭제</button>
+          ` : ''}
           <span class="delete-msg text-xs text-red-500 hidden"></span>
         </div>
       </div>
@@ -111,14 +160,43 @@ function renderList(data) {
       await deletePost(item.id, pw, msg);
     });
 
+    // 관리자: 신청 삭제
+    if (isAdmin) {
+      const adminDelBtn = el.querySelector('.admin-delete-btn');
+      const adminDelMsg = el.querySelector('.delete-msg');
+      adminDelBtn.addEventListener('click', async () => {
+        await adminDeletePost(item.id, adminDelMsg);
+      });
+    }
+
+    // 관리자: 답변 등록
+    if (isAdmin && !item.comment) {
+      const commentSubmitBtn = el.querySelector('.comment-submit-btn');
+      const commentInput = el.querySelector('.comment-input');
+      const commentMsg = el.querySelector('.comment-msg');
+
+      commentSubmitBtn.addEventListener('click', async () => {
+        const content = commentInput.value.trim();
+        if (!content) {
+          showDeleteMsg(commentMsg, '답변을 입력하세요');
+          return;
+        }
+        await addComment(item.id, content, commentMsg);
+      });
+    }
+
+    // 관리자: 답변 삭제
+    if (isAdmin && item.comment) {
+      const commentDeleteBtn = el.querySelector('.comment-delete-btn');
+      const commentMsg = el.querySelector('.comment-msg');
+
+      commentDeleteBtn.addEventListener('click', async () => {
+        await deleteComment(item.comment.commentId, commentMsg);
+      });
+    }
+
     list.appendChild(el);
   });
-}
-
-function showDeleteMsg(el, text) {
-  el.textContent = text;
-  el.classList.remove('hidden');
-  setTimeout(() => el.classList.add('hidden'), 3000);
 }
 
 /* ── 페이지네이션 렌더 ── */
@@ -163,7 +241,11 @@ function makePagBtn(label, page) {
   return a;
 }
 
-/* ── API: 목록 조회 ── */
+/* ══════════════════════════════════
+   데이터 함수 (API 호출)
+   ══════════════════════════════════ */
+
+/* ── 목록 조회 ── */
 async function loadList(page = 1) {
   currentPage = page;
   try {
@@ -178,7 +260,7 @@ async function loadList(page = 1) {
   }
 }
 
-/* ── API: 등록 ── */
+/* ── 등록 ── */
 async function submitPost() {
   const title = document.getElementById('postTitle').value.trim();
   const content = document.getElementById('postContent').value.trim();
@@ -236,14 +318,73 @@ async function submitPost() {
   }
 }
 
-function showFormMsg(el, text, success = false) {
-  el.textContent = text;
-  el.className = `text-xs m-0 ${success ? 'text-green-500' : 'text-red-500'}`;
-  el.classList.remove('hidden');
-  setTimeout(() => el.classList.add('hidden'), 3000);
+/* ── 신청 삭제 (관리자) ── */
+async function adminDeletePost(id, msgEl) {
+  try {
+    const res = await fetch(`${API_BASE}/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getAdminToken()}` },
+    });
+    if (res.ok) {
+      loadList(currentPage);
+    } else if (res.status === 401) {
+      showDeleteMsg(msgEl, '인증이 만료되었습니다. 다시 로그인해주세요');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showDeleteMsg(msgEl, err.message || '삭제에 실패했습니다');
+    }
+  } catch (e) {
+    showDeleteMsg(msgEl, '서버 오류가 발생했습니다');
+  }
 }
 
-/* ── API: 삭제 ── */
+/* ── 댓글 등록 (관리자) ── */
+async function addComment(id, content, msgEl) {
+  try {
+    const res = await fetch(`${API_BASE}/${id}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAdminToken()}`,
+      },
+      body: JSON.stringify({ content }),
+    });
+    if (res.status === 201) {
+      loadList(currentPage);
+    } else if (res.status === 400) {
+      showDeleteMsg(msgEl, '이미 답변이 등록되어 있습니다');
+    } else if (res.status === 401) {
+      showDeleteMsg(msgEl, '인증이 만료되었습니다. 다시 로그인해주세요');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showDeleteMsg(msgEl, err.message || '답변 등록에 실패했습니다');
+    }
+  } catch (e) {
+    showDeleteMsg(msgEl, '서버 오류가 발생했습니다');
+  }
+}
+
+/* ── 댓글 삭제 (관리자) ── */
+async function deleteComment(commentId, msgEl) {
+  try {
+    const res = await fetch(`${API_BASE}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getAdminToken()}` },
+    });
+    if (res.ok) {
+      loadList(currentPage);
+    } else if (res.status === 401) {
+      showDeleteMsg(msgEl, '인증이 만료되었습니다. 다시 로그인해주세요');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showDeleteMsg(msgEl, err.message || '답변 삭제에 실패했습니다');
+    }
+  } catch (e) {
+    showDeleteMsg(msgEl, '서버 오류가 발생했습니다');
+  }
+}
+
+/* ── 삭제 ── */
 async function deletePost(id, password, msgEl) {
   try {
     const res = await fetch(`${API_BASE}/${id}/delete`, {
@@ -264,12 +405,17 @@ async function deletePost(id, password, msgEl) {
   }
 }
 
-/* ── 이벤트 ── */
+/* ══════════════════════════════════
+   이벤트 핸들러
+   ══════════════════════════════════ */
+
 document.getElementById('submitBtn').addEventListener('click', submitPost);
 
 document.getElementById('postContent').addEventListener('input', function () {
   document.getElementById('charCount').textContent = `${this.value.length} / 300`;
 });
 
-/* ── 초기 로드 ── */
+/* ══════════════════════════════════
+   초기 실행
+   ══════════════════════════════════ */
 loadList(1);

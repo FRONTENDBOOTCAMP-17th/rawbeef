@@ -15,7 +15,7 @@ function renderCategoryTabs(categories) {
     ${categories
       .map(
         (item) => `
-      <li><a class="str_type block px-4 py-2.5 text-sm text-gray-500 dark:text-gray-400 no-underline whitespace-nowrap font-medium transition-colors duration-150 hover:text-red-600 dark:hover:text-red-400" data-category="${item.title}">${item.title}</a></li>
+      <li><a class="str_type block px-4 py-2.5 text-sm text-gray-500 dark:text-gray-400 no-underline whitespace-nowrap font-medium transition-colors duration-150 hover:text-red-600 dark:hover:text-red-400" data-category="${item.title}" data-id="${item.id}">${item.title}</a></li>
     `
       )
       .join('')}
@@ -23,7 +23,7 @@ function renderCategoryTabs(categories) {
 
   // 이벤트 한 번에 연결
   categoryTabs.querySelectorAll('.str_type').forEach((a) => {
-    a.addEventListener('click', () => setStrType(a.dataset.category, a));
+    a.addEventListener('click', () => setStrType(a.dataset.category, a.dataset.id, a));
   });
 }
 
@@ -55,7 +55,7 @@ function renderChart(data) {
       <div class="px-2 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">${s.title}</div>
       <div class="px-2 py-3 text-left text-xs text-gray-500 dark:text-gray-400">${s.artist}</div>
       <div class="px-2 py-3 flex justify-center">
-        <button class="yt-toggle inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-colors duration-150 hover:border-red-600 hover:bg-red-50 dark:hover:border-red-400 dark:hover:bg-gray-700" title="유튜브" style="${s.url ? '' : 'pointer-events:none;opacity:0.3'}">
+        <button class="yt-toggle inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-colors duration-150 hover:border-red-600 hover:bg-red-50 dark:hover:border-red-400 dark:hover:bg-gray-700" title="유튜브" style="${s.urls && s.urls.length ? '' : 'pointer-events:none;opacity:0.3'}">
           <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-600">
             <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
@@ -67,7 +67,7 @@ function renderChart(data) {
     const ytPanel = document.createElement('div');
     ytPanel.className = 'yt-panel hidden bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 px-4 py-5';
 
-    const urls = s.urls || (s.url ? [s.url] : []);
+    const urls = (s.urls || []).map((u) => u.url);
 
     if (urls.length) {
       ytPanel.innerHTML = `
@@ -118,25 +118,22 @@ async function loadCategories() {
     console.error('카테고리 로드 실패:', e);
   }
 
-  await loadSongs('종합');
+  await loadSongs();
 }
 
 /* ── 노래 목록 가져오기 ── */
-async function loadSongs(category) {
+async function loadSongs(categoryId) {
   try {
-    let url;
-    if (category === '종합') {
-      url = 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
-    } else {
-      url = `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${encodeURIComponent(category)}`;
-    }
+    const url = categoryId
+      ? `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${categoryId}`
+      : 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
 
     const res = await fetch(url);
     if (!res.ok) throw new Error('조회 실패');
     const json = await res.json();
 
-    // 종합은 배열 자체가 응답, 카테고리는 json.songs
-    currentSongs = category === '종합' ? json : json.songs || [];
+    // 종합/카테고리 모두 json.data 배열로 응답
+    currentSongs = json.data || [];
     renderChart(currentSongs);
   } catch (e) {
     document.getElementById('chart-rows').innerHTML = '<p class="text-center py-10 text-gray-400 text-sm">데이터를 불러오지 못했습니다</p>';
@@ -148,13 +145,13 @@ async function loadSongs(category) {
    ══════════════════════════════════ */
 
 /* ── 장르 탭 클릭 ── */
-async function setStrType(type, el) {
+async function setStrType(type, id, el) {
   document.getElementById('strType').value = type;
   document.querySelectorAll('.str_type').forEach((a) => a.classList.remove('on'));
   el.classList.add('on');
   currentCategory = type;
   document.getElementById('keywordSearch').value = '';
-  await loadSongs(type);
+  await loadSongs(id);
 }
 
 /* ── 검색 ── */
