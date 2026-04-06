@@ -6,71 +6,93 @@
     <title>관리자 카테고리</title>
     <link rel="stylesheet" href="../src/style.css" />
   </head>
-  <body class="bg-gray-100 font-sans">
+  <body class="bg-gray-100 dark:bg-gray-950 font-sans">
     <div id="header-container"></div>
     <script src="./header.js"></script>
-    <div class="flex h-[calc(100vh-57px)] w-full border-4 border-black overflow-hidden">
+    <div class="flex h-[calc(100vh-57px)] w-full overflow-hidden">
       <div id="sidebar-container"></div>
 
-      <main class="flex-1 bg-white p-8 relative overflow-y-auto">
-        <div class="flex justify-between mb-10">
-          <h1 class="text-3xl py-2 font-black">카테고리 관리</h1>
-          <button id="addCategoryBtn" class="px-6 py-2 border-2 border-black font-bold text-lg hover:bg-black hover:text-white transition">카테고리 추가 +</button>
+      <main class="flex-1 bg-white dark:bg-gray-900 p-8 relative overflow-y-auto">
+        <div class="flex justify-between mb-10 max-w-4xl mx-auto">
+          <h1 class="text-3xl py-2 font-black text-gray-900 dark:text-white">카테고리 관리</h1>
+          <button id="addCategoryBtn" class="px-6 py-2 border-2 rounded-xl border-black dark:border-white font-bold text-lg hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition dark:text-white">카테고리 추가 +</button>
         </div>
 
-        <div class="space-y-4 max-w-4xl">
+        <div class="space-y-4 max-w-4xl mx-auto">
           <div id="categoryList"></div>
         </div>
       </main>
 
-      <div id="modal" class="fixed inset-0 bg-black hidden flex items-center justify-center z-50">
-        <div class="bg-white border-4 border-black p-8 w-[400px]">
-          <h2 class="text-2xl font-black mb-6 uppercase">신규 카테고리 등록</h2>
+      <div id="modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 border-4 border-black dark:border-white p-8 w-[400px]">
+          <h2 class="text-2xl font-black mb-6 uppercase text-gray-900 dark:text-white">신규 카테고리 등록</h2>
 
           <div class="space-y-4 text-lg">
             <div>
-              <label for="titleInput" class="block font-black mb-1">노래 카테고리</label>
-              <input type="text" id="titleInput" class="w-full border-2 border-black p-2 outline-none focus:bg-yellow-50 font-bold" />
+              <label for="titleInput" class="block font-black mb-1 text-gray-900 dark:text-white"></label>
+              <input type="text" id="titleInput" class="w-full border-2 rounded-xl p-2 focus:bg-yellow-50 font-bold" />
             </div>
           </div>
 
           <div class="flex justify-end gap-4 mt-8">
-            <button id="closeCategoryBtn" class="px-4 py-2 border-2 border-black font-bold hover:bg-gray-100">닫기</button>
-            <button id="saveCategoryBtn" class="px-6 py-2 bg-black text-white font-bold hover:bg-gray-800">저장</button>
+            <button id="closeCategoryBtn" class="px-4 py-2 border-2 rounded-xl border-black dark:border-white font-bold hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">닫기</button>
+            <button id="saveCategoryBtn" class="px-6 py-2 bg-black rounded-xl dark:bg-white text-white dark:text-black font-bold hover:bg-gray-800 dark:hover:bg-gray-200">저장</button>
           </div>
         </div>
       </div>
     </div>
 
     <script>
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        location.href = './admin_open.html';
+      }
       let category = [];
       async function loadCategories() {
-        const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories');
-        const json = await res.json();
-        category = json.data;
-        renderCategory();
+        try {
+          const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories');
+          const json = await res.json();
+          if (!res.ok) {
+            alert('카테고리 불러오기에 실패했습니다.');
+            return;
+          }
+          category = json.data;
+          renderCategory();
+        } catch {
+          alert('카테고리 불러오기에 실패했습니다.');
+        }
       }
+
       let editIndex = null;
       const modal = document.getElementById('modal');
       const categoryList = document.getElementById('categoryList');
 
       const saveCategory = async (title) => {
-        const token = localStorage.getItem('adminToken');
-        const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ title }),
-        });
-        const json = await res.json();
-        return json.data;
+        try {
+          const token = localStorage.getItem('adminToken');
+          const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ title }),
+          });
+          if (!res.ok) {
+            alert('카테고리 저장에 실패했습니다.');
+            return;
+          }
+          const json = await res.json();
+          return json.data;
+        } catch {
+          alert('카테고리 저장에 실패했습니다.');
+        }
       };
 
-      const editCategory = async (oldTitle, newTitle) => {
+      const editCategory = async (id, newTitle) => {
         const token = localStorage.getItem('adminToken');
-        const res = await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${oldTitle}`, {
+        const res = await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -94,18 +116,18 @@
         modal.classList.remove('flex');
       });
 
-      const moveCategoryUp = async (title) => {
+      const moveCategoryUp = async (id) => {
         const token = localStorage.getItem('adminToken');
-        await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${title}/move-up`, {
+        await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${id}/move-up`, {
           method: 'PATCH',
           headers: { Authorization: `Bearer ${token}` },
         });
         await loadCategories();
       };
 
-      const moveCategoryDown = async (title) => {
+      const moveCategoryDown = async (id) => {
         const token = localStorage.getItem('adminToken');
-        await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${title}/move-down`, {
+        await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${id}/move-down`, {
           method: 'PATCH',
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -115,14 +137,11 @@
         categoryList.innerHTML = '';
 
         category.forEach((item, index) => {
-          const mainCreate = document.createElement('main');
-          mainCreate.className = ' flex-1 bg-white p-8 relative overflow-y-auto';
-
           const divCreate = document.createElement('div');
-          divCreate.className = 'categoryBox flex mb-4 justify-between items-center p-4 border-2 border-black bg-white group hover:bg-gray-50';
+          divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-300 dark:bg-purple-300 text-black rounded-xl border border-purple-500 dark:border-white hover:border-purple-500 transition-all duration-200';
 
           const spanTitle = document.createElement('span');
-          spanTitle.className = 'text-xl font-bold';
+          spanTitle.className = 'text-lg font-bold text-black ';
           spanTitle.textContent = item.title;
 
           const btnManage = document.createElement('div');
@@ -130,20 +149,20 @@
 
           const upBtn = document.createElement('button');
           upBtn.textContent = '▲';
-          upBtn.className = 'text-xl hover:text-blue-500 hover:scale-125';
+          upBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-600 hover:text-cyan-400  text-xl';
           upBtn.addEventListener('click', async () => {
-            await moveCategoryUp(item.title);
+            await moveCategoryUp(item.id);
           });
 
           const downBtn = document.createElement('button');
           downBtn.textContent = '▼';
-          downBtn.className = 'text-xl hover:text-blue-500 hover:scale-125';
+          downBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-600 hover:text-cyan-400  transition-color text-xl';
           downBtn.addEventListener('click', async () => {
-            await moveCategoryDown(item.title);
+            await moveCategoryDown(item.id);
           });
 
           const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'categoryDeleteBtn text-2xl hover:text-red-500 hover:scale-125';
+          deleteBtn.className = 'categoryDeleteBtn  text-gray-400 hover:text-red-400 dark:text-black transition-color text-2xl hover:text-red-500 hover:scale-125';
           deleteBtn.textContent = '✘';
 
           deleteBtn.addEventListener('click', function () {
@@ -151,7 +170,7 @@
           });
 
           const editBtn = document.createElement('button');
-          editBtn.className = 'categoryEditBtn text-l hover:text-blue-500 hover:scale-125';
+          editBtn.className = 'categoryEditBtn text-l text-bold hover:text-blue-700 text-black hover:scale-125 ';
           editBtn.textContent = 'EDIT';
           editBtn.addEventListener('click', function () {
             editIndex = index;
@@ -176,7 +195,7 @@
         if (title) {
           if (editIndex !== null) {
             const oldTitle = category[editIndex].title;
-            await editCategory(oldTitle, title);
+            await editCategory(category[editIndex].id, title);
             await loadCategories();
             editIndex = null;
           } else {
@@ -184,7 +203,7 @@
             await loadCategories();
           }
           renderCategory();
-          saveCategory();
+
           modal.classList.add('hidden');
           modal.classList.remove('flex');
           titleInput.value = '';
@@ -196,9 +215,9 @@
 
       const deleteCategory = async (index) => {
         if (confirm('이 카테고리를 정말 삭제할까요?')) {
-          const title = category[index].title;
+          const id = category[index].id;
           const token = localStorage.getItem('adminToken');
-          await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${title}`, {
+          await fetch(`https://api.fullstackfamily.com/api/rawbeef/v1/categories/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
