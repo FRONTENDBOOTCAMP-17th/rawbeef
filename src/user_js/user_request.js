@@ -3,6 +3,11 @@ const LIMIT = 30;
 let currentPage = 1;
 let totalPages = 1;
 
+// XSS 공격 대비
+function esc(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
    ══════════════════════════════════ */
@@ -55,9 +60,9 @@ function renderList(data) {
         class="accordion-trigger w-full grid text-left px-3 py-3.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-100 cursor-pointer bg-transparent border-none font-[inherit]"
         style="grid-template-columns: 60px 1fr 80px;"
       >
-        <span class="text-xs text-gray-400 text-center self-center">${item.id}</span>
+        <span class="text-xs text-gray-400 text-center self-center">${esc(item.id)}</span>
         <span class="text-sm font-medium text-gray-900 dark:text-gray-100 self-center flex items-center gap-2">
-          ${item.title}
+          ${esc(item.title)}
           ${item.comment ? `<span class="text-xs text-red-500 font-semibold">[1]</span>` : ''}
         </span>
         <span class="text-xs text-gray-400 text-center self-center flex items-center justify-center gap-1">
@@ -71,7 +76,7 @@ function renderList(data) {
       <!-- 아코디언 바디 -->
       <div class="accordion-body bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 px-5 py-5">
         <!-- 본문 -->
-        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap mb-5">${item.content}</p>
+        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap mb-5">${esc(item.content)}</p>
 
         <!-- 댓글(답변) -->
         ${
@@ -80,14 +85,14 @@ function renderList(data) {
           <div class="mb-5">
             <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">답변</p>
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded p-3 mb-2">
-              <p class="text-sm text-gray-700 dark:text-gray-300 m-0 whitespace-pre-wrap">${item.comment.content}</p>
-              <p class="text-xs text-gray-400 mt-1 mb-0">${formatDate(item.comment.createdAt)}</p>
+              <p class="text-sm text-gray-700 dark:text-gray-300 m-0 whitespace-pre-wrap">${esc(item.comment.content)}</p>
+              <p class="text-xs text-gray-400 mt-1 mb-0">${esc(formatDate(item.comment.createdAt))}</p>
             </div>
             ${
               isAdmin
                 ? `<button
                     class="comment-delete-btn h-7 px-3 bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-gray-800 text-red-500 text-xs font-semibold rounded border border-red-200 dark:border-red-800 cursor-pointer transition-colors duration-150 font-[inherit]"
-                    data-comment-id="${item.comment.commentId}"
+                    data-comment-id="${esc(item.comment.commentId)}"
                   >답변 삭제</button>
                   <span class="comment-msg text-xs text-red-500 hidden ml-2"></span>`
                 : ''
@@ -123,14 +128,18 @@ function renderList(data) {
           />
           <button
             class="delete-btn h-9 px-4 bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-gray-800 text-red-600 text-sm font-semibold rounded border border-red-300 dark:border-red-700 cursor-pointer transition-colors duration-150 font-[inherit]"
-            data-id="${item.id}"
+            data-id="${esc(item.id)}"
           >삭제</button>
-          ${isAdmin ? `
+          ${
+            isAdmin
+              ? `
           <button
             class="admin-delete-btn h-9 px-4 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150 font-[inherit]"
-            data-id="${item.id}"
+            data-id="${esc(item.id)}"
           >관리자 삭제</button>
-          ` : ''}
+          `
+              : ''
+          }
           <span class="delete-msg text-xs text-red-500 hidden"></span>
         </div>
       </div>

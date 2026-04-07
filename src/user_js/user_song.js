@@ -1,6 +1,10 @@
 let currentCategory = '종합';
 let currentSongs = [];
 
+// XSS 공격 대비
+function esc(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
    ══════════════════════════════════ */
@@ -48,14 +52,14 @@ function renderChart(data) {
       <div class="px-2 py-3 text-center">
         <span class="text-lg font-extrabold ${rankColor}">${rank}</span>
       </div>
-      <div class="px-2 py-3 text-center text-xs text-gray-400">${s.id}</div>
+      <div class="px-2 py-3 text-center text-xs text-gray-400">${esc(s.id)}</div>
       <div class="px-2 py-3 flex justify-center">
         <div class="w-10 h-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-base text-gray-400 dark:text-gray-500">♪</div>
       </div>
-      <div class="px-2 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">${s.title}</div>
-      <div class="px-2 py-3 text-left text-xs text-gray-500 dark:text-gray-400">${s.artist}</div>
+      <div class="px-2 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">${esc(s.title)}</div>
+      <div class="px-2 py-3 text-left text-xs text-gray-500 dark:text-gray-400">${esc(s.artist)}</div>
       <div class="px-2 py-3 flex justify-center">
-        <button class="yt-toggle inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-colors duration-150 hover:border-red-600 hover:bg-red-50 dark:hover:border-red-400 dark:hover:bg-gray-700" title="유튜브" style="${s.urls && s.urls.length ? '' : 'pointer-events:none;opacity:0.3'}">
+        <button class="yt-toggle inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-colors duration-150 hover:border-red-600 hover:bg-red-50 dark:hover:border-red-400 dark:hover:bg-gray-700" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
           <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-600">
             <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
@@ -91,6 +95,8 @@ function renderChart(data) {
             .join('')}
         </div>
       `;
+    } else {
+      ytPanel.innerHTML = '<p class="text-center text-sm text-gray-400 m-0">등록된 유튜브 영상이 없습니다</p>';
     }
 
     // 유튜브 버튼 클릭 시 아코디언 토글
@@ -124,16 +130,16 @@ async function loadCategories() {
 /* ── 노래 목록 가져오기 ── */
 async function loadSongs(categoryId) {
   try {
-    const url = categoryId
-      ? `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${categoryId}`
-      : 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
+    const url = categoryId ? `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${categoryId}` : 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
 
     const res = await fetch(url);
     if (!res.ok) throw new Error('조회 실패');
     const json = await res.json();
 
     // 종합: json.data가 배열 / 카테고리: json.data.songs가 배열
-    currentSongs = Array.isArray(json.data) ? json.data : (json.data?.songs || []);
+    currentSongs = Array.isArray(json.data) ? json.data : json.data?.songs || [];
+    currentSongs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+    currentSongs = currentSongs.slice(0, 10);
     renderChart(currentSongs);
   } catch (e) {
     document.getElementById('chart-rows').innerHTML = '<p class="text-center py-10 text-gray-400 text-sm">데이터를 불러오지 못했습니다</p>';
