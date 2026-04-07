@@ -33,16 +33,16 @@ function initTheme() {
       html.classList.add('dark');
       themeIcon.textContent = '☀️';
       themeLabel.textContent = '라이트모드';
-      localStorage.setItem('theme', 'dark');
+      sessionStorage.setItem('theme', 'dark');
     } else {
       html.classList.remove('dark');
       themeIcon.textContent = '🌙';
       themeLabel.textContent = '다크모드';
-      localStorage.setItem('theme', 'light');
+      sessionStorage.setItem('theme', 'light');
     }
   }
 
-  applyTheme(localStorage.getItem('theme') !== 'light');
+  applyTheme(sessionStorage.getItem('theme') !== 'light');
 
   document.getElementById('themeToggle').addEventListener('click', () => {
     applyTheme(!html.classList.contains('dark'));
