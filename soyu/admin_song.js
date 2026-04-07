@@ -153,6 +153,19 @@ const renderModalCategorySelect = () => {
   });
 };
 
+const deleteUrl = async (urlId) => {
+  try {
+    const res = await fetch(`${API_BASE}/songs/urls/${urlId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      alert('URL 삭제에 실패했습니다.');
+    }
+  } catch {
+    alert('서버 연결에 실패했습니다.');
+  }
+};
 const renderCategoryDropdown = () => {
   categoryDropdown.innerHTML = '';
   categoryData.forEach((info) => {
@@ -251,6 +264,19 @@ const renderSongs = () => {
             e.stopPropagation();
             window.open(url.url, '_blank');
           };
+          const urlDeleteBtn = document.createElement('button');
+          urlDeleteBtn.className = 'w-6 h-6 flex items-center justify-center text-xl text-red-400 hover:text-red-700 font-bold bg-yellow-300 rounded-full border-2';
+          urlDeleteBtn.textContent = '✘';
+
+          urlDeleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (confirm('이 URL을 삭제하시겠습니까?')) {
+              await deleteUrl(url.urlId);
+              await loadSongs();
+            }
+          });
+
+          urlSpan.appendChild(urlDeleteBtn);
           tdManage.appendChild(urlSpan);
         }
       });
