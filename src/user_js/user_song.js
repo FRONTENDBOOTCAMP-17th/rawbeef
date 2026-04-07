@@ -132,8 +132,8 @@ async function loadSongs(categoryId) {
     if (!res.ok) throw new Error('조회 실패');
     const json = await res.json();
 
-    // 종합/카테고리 모두 json.data 배열로 응답
-    currentSongs = json.data || [];
+    // 종합: json.data가 배열 / 카테고리: json.data.songs가 배열
+    currentSongs = Array.isArray(json.data) ? json.data : (json.data?.songs || []);
     renderChart(currentSongs);
   } catch (e) {
     document.getElementById('chart-rows').innerHTML = '<p class="text-center py-10 text-gray-400 text-sm">데이터를 불러오지 못했습니다</p>';
