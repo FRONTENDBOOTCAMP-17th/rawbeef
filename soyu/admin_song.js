@@ -249,7 +249,7 @@ const renderSongs = () => {
           urlSpan.textContent = `URL${urlIndex + 1}`;
           urlSpan.onclick = (e) => {
             e.stopPropagation();
-            window.open(url, '_blank');
+            window.open(url.url, '_blank');
           };
           tdManage.appendChild(urlSpan);
         }
