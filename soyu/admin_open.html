@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body id="body" class="bg-gray-950 text-white min-h-screen flex flex-col transition-colors duration-300">
+    <script src="../src/api-config.js"></script>
     <div id="header-container"></div>
     <script src="./header.js"></script>
     <script src="./sidebar.js"></script>
@@ -39,7 +40,7 @@
     </div>
 
     <script>
-      const api = 'https://api.fullstackfamily.com/api/rawbeef/v1/auth/login';
+      const api = `${API_BASE}/auth/login`;
       const mytoken = 'adminToken';
 
       const loginScreen = document.getElementById('loginScreen');
