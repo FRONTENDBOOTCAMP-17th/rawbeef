@@ -1,10 +1,6 @@
 let currentCategory = '종합';
 let currentSongs = [];
 
-// XSS 공격 대비
-function esc(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
    ══════════════════════════════════ */
@@ -55,16 +51,14 @@ function renderChart(data) {
 
     // 차트 행
     const row = document.createElement('div');
-    row.className =
-      'grid grid-cols-10 py-3 gap-y-1 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' +
-      'md:grid-cols-26 md:place-items-center md:py-0 md:gap-y-0';
+    row.className = 'grid grid-cols-10 py-3 gap-y-1 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'md:grid-cols-26 md:place-items-center md:py-0 md:gap-y-0';
     row.innerHTML = `
       <div class="col-start-1 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-2 md:row-span-1 md:block md:py-2 md:text-center">
         <span class="text-2xl font-extrabold ${rankColor}">${rank}</span>
       </div>
-      <div class="col-start-3 col-span-6 row-start-3 pl-3 text-xs text-gray-500 dark:text-gray-400 self-center md:col-start-auto md:col-span-3 md:row-start-auto md:pl-0 md:py-2 md:text-xl md:text-center">${esc(s.id)}</div>
+      <div class="col-start-3 col-span-6 row-start-3 pl-3 text-xs text-gray-500 dark:text-gray-400 self-center md:col-start-auto md:col-span-3 md:row-start-auto md:pl-0 md:py-2 md:text-xl md:text-center">${esc(s.songNo || ' ')}</div>
       <div class="col-start-2 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-3 md:row-span-1 md:py-2">
-        <div class="w-16 h-16 md:w-17.5 md:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>
+${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 md:w-17.5 md:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 md:w-17.5 md:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
       </div>
       <div class="col-start-3 col-span-6 row-start-1 pl-3 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center md:col-start-9 md:col-span-11 md:row-start-auto md:pl-0 md:py-2 md:text-[22px]">${esc(s.title)}</div>
       <div class="col-start-3 col-span-6 row-start-2 pl-3 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center md:col-start-20 md:col-span-5 md:row-start-auto md:pl-6 md:py-2 md:text-[22px]">${esc(s.artist)}</div>
@@ -127,7 +121,7 @@ function renderChart(data) {
 /* ── 카테고리 목록 가져오기 ── */
 async function loadCategories() {
   try {
-    const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories');
+    const res = await fetch(`${API_BASE}/categories`);
     if (!res.ok) throw new Error('카테고리 조회 실패');
     const json = await res.json();
     renderCategoryTabs(json.data);
@@ -141,7 +135,7 @@ async function loadCategories() {
 /* ── 노래 목록 가져오기 ── */
 async function loadSongs(categoryId) {
   try {
-    const url = categoryId ? `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${categoryId}` : 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
+    const url = categoryId ? `${API_BASE}/categories/${categoryId}` : `${API_BASE}/songs`;
 
     const res = await fetch(url);
     if (!res.ok) throw new Error('조회 실패');
@@ -178,7 +172,13 @@ function doSearch() {
     renderChart(currentSongs);
     return;
   }
-  const filtered = currentSongs.filter((s) => s.title.toLowerCase().includes(kw) || s.artist.toLowerCase().includes(kw));
+  const filtered = currentSongs.filter((s) => {
+    const title = s.title.toLowerCase();
+    const artist = s.artist.toLowerCase();
+    const songNo = String(s.songNo).toLowerCase();
+
+    return title.includes(kw) || artist.includes(kw) || songNo.includes(kw);
+  });
   renderChart(filtered);
 }
 
