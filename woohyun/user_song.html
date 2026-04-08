@@ -8,59 +8,9 @@
     <title>:: 노래하는 즐거움 TJ미디어 TOP10 ::</title>
     <link rel="stylesheet" href="../src/style.css" />
     <style>
-      /* 테일윈드로 표현 불가한 최소 CSS만 남김 */
+      /* Tailwind로 표현 불가한 root 레벨 폰트만 유지 */
       body {
         font-family: 'Malgun Gothic', '맑은 고딕', AppleSDGothicNeo, sans-serif;
-      }
-
-      /* 히어로 오버레이 */
-      .video-area::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(30, 30, 30, 0.4) 100%);
-      }
-
-      /* 그리드 컬럼 (커스텀 값) */
-      .chart-grid {
-        grid-template-columns: 60px 90px 70px 1fr 180px 80px;
-      }
-      @media (max-width: 768px) {
-        .chart-grid {
-          grid-template-columns: 44px 70px 50px 1fr 120px 60px;
-        }
-      }
-
-      /* 장르 탭 활성 상태 */
-      .str_type.on {
-        color: #e8371b;
-        border-bottom: 3px solid #e8371b;
-        font-weight: 700;
-      }
-      .dark .str_type.on {
-        color: #f87171;
-        border-bottom-color: #f87171;
-      }
-
-      /* 브레드크럼 구분자 */
-      .nav-link li span::before {
-        content: '>';
-        color: #d1d5db;
-        font-size: 0.75rem;
-      }
-
-      /* 검색 아이콘 */
-      .search-ico {
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-size: contain;
-        cursor: pointer;
       }
     </style>
   </head>
@@ -74,7 +24,7 @@
     <!-- 컨텐츠 영역 -->
     <div>
       <!-- 히어로 배너 -->
-      <div class="video-area relative w-full min-h-64 bg-gray-900 dark:bg-black flex items-center px-10 py-16 overflow-hidden">
+      <div class="relative w-full min-h-64 bg-gray-900 dark:bg-black flex items-center px-10 py-16 overflow-hidden after:content-[''] after:absolute after:inset-0 after:bg-linear-to-br after:from-black/70 after:to-gray-800/40">
         <div class="relative z-10 text-white">
           <h3 class="text-5xl font-extrabold tracking-tight mb-4 text-white">TOP 10</h3>
           <p class="hidden md:block text-sm leading-loose text-white/70 m-0">
@@ -97,7 +47,7 @@
           <div>
             <div class="chart-category">
               <!-- 장르 탭 -->
-              <ul id="categoryTabs" class="flex flex-wrap list-none mt-9 mb-0 p-0 border-b-2 border-gray-200 dark:border-gray-700"></ul>
+              <ul id="categoryTabs" class="grid grid-cols-3 gap-2 mt-6 mb-0 list-none p-0 lg:grid-cols-12 lg:gap-2.5 lg:mt-9"></ul>
 
               <!-- 검색 -->
               <div class="flex items-center mt-5 gap-2.5">
@@ -108,7 +58,11 @@
                     id="keywordSearch"
                     placeholder="노래, 가수로 검색할 수 있습니다"
                   />
-                  <label class="search-ico" for="keywordSearch"></label>
+                  <label class="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer" for="keywordSearch">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4.5 h-4.5 text-gray-400">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                    </svg>
+                  </label>
                 </div>
                 <button id="searchButton" class="h-11 px-6 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150 font-[inherit]">검색</button>
               </div>
@@ -121,14 +75,14 @@
 
           <!-- 차트 목록 헤더 -->
           <ul class="list-none p-0 mt-7">
-            <li id="search-data-li-head">
-              <ul class="chart-grid grid list-none p-0 m-0 bg-gray-50 dark:bg-gray-800 border-t-2 border-gray-900 dark:border-gray-100 border-b border-gray-200 dark:border-gray-700">
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">순위</li>
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">곡 번호</li>
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">앨범아트</li>
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">곡 제목</li>
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">가수</li>
-                <li class="px-2 py-3.5 text-xs font-semibold text-gray-700 dark:text-gray-300 text-center">유튜브</li>
+            <li id="search-data-li-head" class="hidden lg:block">
+              <ul class="grid grid-cols-26 place-items-center list-none p-0 m-0 bg-gray-50 dark:bg-gray-800 border-t-2 border-t-gray-900 dark:border-t-gray-100 border-b border-b-gray-200 dark:border-b-gray-700">
+                <li class="col-span-2 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">순위</li>
+                <li class="col-span-3 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">곡 번호</li>
+                <li class="col-span-3 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">앨범아트</li>
+                <li class="col-start-9 col-span-11 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 justify-self-start">곡 제목</li>
+                <li class="col-start-20 col-span-5 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 justify-self-start pl-6">가수</li>
+                <li class="col-span-2 py-2 text-xl font-semibold text-gray-700 dark:text-gray-300 text-center">유튜브</li>
               </ul>
             </li>
           </ul>
@@ -139,7 +93,7 @@
 
         <!-- 브레드크럼 -->
         <div class="pt-5">
-          <ul class="nav-link flex items-center gap-1.5 list-none p-0 m-0 text-xs text-gray-400">
+          <ul class="flex items-center gap-1.5 list-none p-0 m-0 text-xs text-gray-400">
             <li>
               <a href="/">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-gray-400">
@@ -147,8 +101,8 @@
                 </svg>
               </a>
             </li>
-            <li class="flex items-center gap-1.5"><span></span><a href="/chart/top100" class="text-gray-400 no-underline hover:text-red-600">차트</a></li>
-            <li class="flex items-center gap-1.5"><span></span><a class="active text-red-600 font-semibold no-underline" href="/chart/top100">TOP10</a></li>
+            <li class="flex items-center gap-1.5"><span class="before:content-['>'] before:text-gray-300 before:text-xs"></span><a href="/chart/top100" class="text-gray-400 no-underline hover:text-red-600">차트</a></li>
+            <li class="flex items-center gap-1.5"><span class="before:content-['>'] before:text-gray-300 before:text-xs"></span><a class="active text-red-600 font-semibold no-underline" href="/chart/top100">TOP10</a></li>
           </ul>
         </div>
       </div>

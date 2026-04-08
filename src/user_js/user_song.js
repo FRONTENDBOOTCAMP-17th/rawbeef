@@ -14,12 +14,20 @@ function renderCategoryTabs(categories) {
   const categoryTabs = document.getElementById('categoryTabs');
 
   // 종합 탭 + API 카테고리 탭을 한 번에 생성
+  const tabClass =
+    'str_type flex items-center justify-center text-center px-2 py-2 text-lg leading-7 no-underline border border-gray-400 bg-transparent text-gray-600 font-normal cursor-pointer whitespace-nowrap overflow-hidden transition-all duration-200 ' +
+    'hover:border-red-600 hover:text-red-600 ' +
+    'dark:border-gray-600 dark:text-gray-300 dark:hover:border-red-400 dark:hover:text-red-400 ' +
+    '[&.on]:bg-red-600 [&.on]:border-red-600 [&.on]:text-white [&.on]:font-bold ' +
+    'dark:[&.on]:bg-red-400 dark:[&.on]:border-red-400 dark:[&.on]:text-gray-900 ' +
+    'lg:px-0 lg:py-[17px] lg:text-base lg:leading-[30px] xl:px-2.5';
+
   categoryTabs.innerHTML = `
-    <li><a class="str_type on block px-4 py-2.5 text-sm text-gray-500 dark:text-gray-400 no-underline whitespace-nowrap font-medium transition-colors duration-150 hover:text-red-600 dark:hover:text-red-400" data-category="종합">종합</a></li>
+    <li><a class="${tabClass} on" data-category="종합">종합</a></li>
     ${categories
       .map(
         (item) => `
-      <li><a class="str_type block px-4 py-2.5 text-sm text-gray-500 dark:text-gray-400 no-underline whitespace-nowrap font-medium transition-colors duration-150 hover:text-red-600 dark:hover:text-red-400" data-category="${item.title}" data-id="${item.id}">${item.title}</a></li>
+      <li><a class="${tabClass}" data-category="${esc(item.title)}" data-id="${esc(item.id)}">${esc(item.title)}</a></li>
     `
       )
       .join('')}
@@ -47,21 +55,24 @@ function renderChart(data) {
 
     // 차트 행
     const row = document.createElement('div');
-    row.className = 'chart-grid grid border-b border-gray-100 dark:border-gray-700 items-center transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800';
+    row.className =
+      'grid grid-cols-10 py-3 gap-y-1 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' +
+      'md:grid-cols-26 md:place-items-center md:py-0 md:gap-y-0';
     row.innerHTML = `
-      <div class="px-2 py-3 text-center">
-        <span class="text-lg font-extrabold ${rankColor}">${rank}</span>
+      <div class="col-start-1 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-2 md:row-span-1 md:block md:py-2 md:text-center">
+        <span class="text-2xl font-extrabold ${rankColor}">${rank}</span>
       </div>
-      <div class="px-2 py-3 text-center text-xs text-gray-400">${esc(s.id)}</div>
-      <div class="px-2 py-3 flex justify-center">
-        <div class="w-10 h-10 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-base text-gray-400 dark:text-gray-500">♪</div>
+      <div class="col-start-3 col-span-6 row-start-3 pl-3 text-xs text-gray-500 dark:text-gray-400 self-center md:col-start-auto md:col-span-3 md:row-start-auto md:pl-0 md:py-2 md:text-xl md:text-center">${esc(s.id)}</div>
+      <div class="col-start-2 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-3 md:row-span-1 md:py-2">
+        <div class="w-16 h-16 md:w-17.5 md:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>
       </div>
-      <div class="px-2 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">${esc(s.title)}</div>
-      <div class="px-2 py-3 text-left text-xs text-gray-500 dark:text-gray-400">${esc(s.artist)}</div>
-      <div class="px-2 py-3 flex justify-center">
-        <button class="yt-toggle inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-colors duration-150 hover:border-red-600 hover:bg-red-50 dark:hover:border-red-400 dark:hover:bg-gray-700" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
-          <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-600">
-            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+      <div class="col-start-3 col-span-6 row-start-1 pl-3 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center md:col-start-9 md:col-span-11 md:row-start-auto md:pl-0 md:py-2 md:text-[22px]">${esc(s.title)}</div>
+      <div class="col-start-3 col-span-6 row-start-2 pl-3 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center md:col-start-20 md:col-span-5 md:row-start-auto md:pl-6 md:py-2 md:text-[22px]">${esc(s.artist)}</div>
+      <div class="col-start-9 col-span-2 row-span-3 flex items-center justify-end pr-3 md:col-start-auto md:col-span-2 md:row-span-1 md:justify-center md:pr-0 md:py-2">
+        <button class="yt-toggle cursor-pointer border-none bg-transparent p-0 inline-flex" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 md:w-12 md:h-12">
+            <path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8z"/>
+            <path fill="#fff" d="M9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
         </button>
       </div>
