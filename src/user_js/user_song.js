@@ -1,10 +1,6 @@
 let currentCategory = '종합';
 let currentSongs = [];
 
-// XSS 공격 대비
-function esc(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
    ══════════════════════════════════ */
@@ -116,7 +112,7 @@ function renderChart(data) {
 /* ── 카테고리 목록 가져오기 ── */
 async function loadCategories() {
   try {
-    const res = await fetch('https://api.fullstackfamily.com/api/rawbeef/v1/categories');
+    const res = await fetch(`${API_BASE}/categories`);
     if (!res.ok) throw new Error('카테고리 조회 실패');
     const json = await res.json();
     renderCategoryTabs(json.data);
@@ -130,7 +126,7 @@ async function loadCategories() {
 /* ── 노래 목록 가져오기 ── */
 async function loadSongs(categoryId) {
   try {
-    const url = categoryId ? `https://api.fullstackfamily.com/api/rawbeef/v1/categories/${categoryId}` : 'https://api.fullstackfamily.com/api/rawbeef/v1/songs';
+    const url = categoryId ? `${API_BASE}/categories/${categoryId}` : `${API_BASE}/songs`;
 
     const res = await fetch(url);
     if (!res.ok) throw new Error('조회 실패');

@@ -1,12 +1,7 @@
-const API_BASE = 'https://api.fullstackfamily.com/api/rawbeef/v1/requests';
+const REQUEST_API = `${API_BASE}/requests`;
 const LIMIT = 30;
 let currentPage = 1;
 let totalPages = 1;
-
-// XSS 공격 대비
-function esc(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
 
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
@@ -258,7 +253,7 @@ function makePagBtn(label, page) {
 async function loadList(page = 1) {
   currentPage = page;
   try {
-    const res = await fetch(`${API_BASE}?page=${page}&limit=${LIMIT}`);
+    const res = await fetch(`${REQUEST_API}?page=${page}&limit=${LIMIT}`);
     if (!res.ok) throw new Error('조회 실패');
     const json = await res.json();
     document.getElementById('totalCount').textContent = `총 ${json.meta.total}건`;
@@ -306,7 +301,7 @@ async function submitPost() {
   }
 
   try {
-    const res = await fetch(API_BASE, {
+    const res = await fetch(REQUEST_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content, password }),
@@ -330,7 +325,7 @@ async function submitPost() {
 /* ── 신청 삭제 (관리자) ── */
 async function adminDeletePost(id, msgEl) {
   try {
-    const res = await fetch(`${API_BASE}/${id}`, {
+    const res = await fetch(`${REQUEST_API}/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getAdminToken()}` },
     });
@@ -350,7 +345,7 @@ async function adminDeletePost(id, msgEl) {
 /* ── 댓글 등록 (관리자) ── */
 async function addComment(id, content, msgEl) {
   try {
-    const res = await fetch(`${API_BASE}/${id}/comments`, {
+    const res = await fetch(`${REQUEST_API}/${id}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -376,7 +371,7 @@ async function addComment(id, content, msgEl) {
 /* ── 댓글 삭제 (관리자) ── */
 async function deleteComment(commentId, msgEl) {
   try {
-    const res = await fetch(`${API_BASE}/comments/${commentId}`, {
+    const res = await fetch(`${REQUEST_API}/comments/${commentId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getAdminToken()}` },
     });
@@ -396,7 +391,7 @@ async function deleteComment(commentId, msgEl) {
 /* ── 삭제 ── */
 async function deletePost(id, password, msgEl) {
   try {
-    const res = await fetch(`${API_BASE}/${id}/delete`, {
+    const res = await fetch(`${REQUEST_API}/${id}/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
