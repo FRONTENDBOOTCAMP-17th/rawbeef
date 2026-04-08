@@ -1,5 +1,6 @@
 let currentCategory = '종합';
 let currentSongs = [];
+let bannerRendered = false;
 
 /* ══════════════════════════════════
    렌더 함수 (화면 그리기)
@@ -51,20 +52,20 @@ function renderChart(data) {
 
     // 차트 행
     const row = document.createElement('div');
-    row.className = 'grid grid-cols-10 py-3 gap-y-1 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'md:grid-cols-26 md:place-items-center md:py-0 md:gap-y-0';
+    row.className = 'grid grid-cols-10 grid-rows-3 h-[102px] py-3 px-0 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'lg:grid-cols-26 lg:grid-rows-1 lg:place-items-center lg:h-auto lg:py-0';
     row.innerHTML = `
-      <div class="col-start-1 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-2 md:row-span-1 md:block md:py-2 md:text-center">
+      <div class="col-start-1 col-span-1 row-span-3 flex items-center justify-center lg:col-start-auto lg:col-span-2 lg:row-span-1 lg:block lg:py-2 lg:text-center">
         <span class="text-2xl font-extrabold ${rankColor}">${rank}</span>
       </div>
-      <div class="col-start-3 col-span-6 row-start-3 pl-3 text-xs text-gray-500 dark:text-gray-400 self-center md:col-start-auto md:col-span-3 md:row-start-auto md:pl-0 md:py-2 md:text-xl md:text-center">${esc(s.songNo || ' ')}</div>
-      <div class="col-start-2 col-span-1 row-span-3 flex items-center justify-center md:col-start-auto md:col-span-3 md:row-span-1 md:py-2">
-${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 md:w-17.5 md:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 md:w-17.5 md:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
+      <div class="col-start-4 col-span-4 row-start-3 row-span-1 pl-5 text-xs text-gray-500 dark:text-gray-400 self-center translate-x-1 lg:translate-x-0 lg:col-start-auto lg:col-span-3 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-xl lg:text-center">${esc(s.songNo || ' ')}</div>
+      <div class="col-start-2 col-span-1 row-span-3 w-16 h-16 flex items-center justify-center self-center translate-x-5 mr-2 lg:translate-x-0 lg:mr-0 lg:col-start-auto lg:col-span-3 lg:row-span-1 lg:w-auto lg:h-auto lg:py-2">
+${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
       </div>
-      <div class="col-start-3 col-span-6 row-start-1 pl-3 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center md:col-start-9 md:col-span-11 md:row-start-auto md:pl-0 md:py-2 md:text-[22px]">${esc(s.title)}</div>
-      <div class="col-start-3 col-span-6 row-start-2 pl-3 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center md:col-start-20 md:col-span-5 md:row-start-auto md:pl-6 md:py-2 md:text-[22px]">${esc(s.artist)}</div>
-      <div class="col-start-9 col-span-2 row-span-3 flex items-center justify-end pr-3 md:col-start-auto md:col-span-2 md:row-span-1 md:justify-center md:pr-0 md:py-2">
+      <div class="col-start-4 col-span-6 row-start-1 row-span-1 pl-5 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-9 lg:col-span-11 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-[22px]">${esc(s.title)}</div>
+      <div class="col-start-4 col-span-6 row-start-2 row-span-1 pl-5 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-20 lg:col-span-5 lg:row-start-auto lg:pl-6 lg:py-2 lg:text-[22px]">${esc(s.artist)}</div>
+      <div class="col-start-9 col-span-2 row-span-3 flex items-center justify-end pr-3 lg:col-start-auto lg:col-span-2 lg:row-span-1 lg:justify-center lg:pr-0 lg:py-2">
         <button class="yt-toggle cursor-pointer border-none bg-transparent p-0 inline-flex" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 md:w-12 md:h-12">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 lg:w-12 lg:h-12">
             <path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8z"/>
             <path fill="#fff" d="M9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
@@ -114,6 +115,20 @@ ${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 md:w-17.5 md:h-17.5 ro
   });
 }
 
+/* ── 배너 앨범아트 collage 렌더 ── */
+function renderBannerCollage(songs) {
+  const collage = document.getElementById('banner-collage');
+  if (!collage) return;
+
+  const withImage = songs.filter((s) => s.imageUrl);
+  if (!withImage.length) return;
+
+  // 랜덤 셔플 후 최대 4장
+  const shuffled = withImage.sort(() => Math.random() - 0.5).slice(0, 4);
+
+  collage.innerHTML = shuffled.map((s) => `<img src="${s.imageUrl}" alt="${esc(s.title)}" class="w-14 h-14 lg:w-42 lg:h-42 object-cover rounded-lg opacity-80 shrink-0" />`).join('');
+}
+
 /* ══════════════════════════════════
    데이터 함수 (API 호출)
    ══════════════════════════════════ */
@@ -146,6 +161,10 @@ async function loadSongs(categoryId) {
     currentSongs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
     currentSongs = currentSongs.slice(0, 10);
     renderChart(currentSongs);
+    if (!bannerRendered) {
+      renderBannerCollage(currentSongs);
+      bannerRendered = true;
+    }
   } catch (e) {
     document.getElementById('chart-rows').innerHTML = '<p class="text-center py-10 text-gray-400 text-sm">데이터를 불러오지 못했습니다</p>';
   }
