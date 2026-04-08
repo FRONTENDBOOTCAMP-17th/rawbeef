@@ -3,22 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>관리자 카테고리</title>
+    <title>관리자 노래 신청</title>
     <link rel="stylesheet" href="../src/style.css" />
   </head>
-  <body class="bg-gray-100 font-sans">
+  <body class="bg-gray-100 dark:bg-gray-950 font-sans">
     <script src="../src/api-config.js"></script>
     <div id="header-container"></div>
     <script src="./header.js"></script>
     <div class="flex h-[calc(100vh-57px)] w-full border-4 border-black overflow-hidden">
       <div id="sidebar-container"></div>
       <script src="./sidebar.js"></script>
-      <main class="flex-1 bg-white p-8 relative overflow-y-auto">
+      <main class="flex-1 bg-white dark:bg-gray-900 p-8 relative overflow-y-auto">
         <div class="flex justify-between mb-10">
-          <h1 class="text-3xl py-2 font-black">노래 신청 관리</h1>
+          <h1 class="text-3xl py-2 font-black text-gray-900 dark:text-white mx-auto">노래 신청 관리</h1>
         </div>
 
-        <div class="space-y-4 max-w-4xl">
+        <div class="space-y-4 max-w-4xl mx-auto">
           <div id="requestList"></div>
         </div>
       </main>

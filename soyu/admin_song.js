@@ -4,20 +4,19 @@ if (!token) {
   location.href = './admin_open.html';
 }
 let songs = [];
-console.log(songs.songNo);
+
 async function loadSongs(id = null) {
   const apis = id ? `${API_BASE}/categories/${id}` : `${API_BASE}/songs`;
 
   const res = await fetch(apis);
   const json = await res.json();
-  console.log(json);
+
   if (!res.ok) {
     alert(json.message ?? '불러오기에 실패했습니다.');
     return;
   }
 
   songs = id ? json.data.songs : json.data;
-  console.log('songs:', songs);
 
   renderSongs();
 }
@@ -135,7 +134,6 @@ youtubeLinkBtn.addEventListener('click', () => {
 });
 
 const saveSongs = async (newSongData) => {
-  console.log('저장 데이터:', newSongData);
   try {
     const res = await fetch(`${API_BASE}/songs`, {
       method: 'POST',
