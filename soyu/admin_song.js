@@ -25,16 +25,48 @@ async function loadSongs(id = null) {
 let editIndex = null;
 let tempYoutubeUrls = [];
 let categoryData = [];
+let tempImageUrl = null;
 
 const titleInput = document.getElementById('titleInput');
 const artistInput = document.getElementById('artistInput');
 const categoryInput = document.getElementById('categoryInput');
+const artImageInput = document.getElementById('artImageInput');
+const artImageBtn = document.getElementById('artImageBtn');
 
 titleInput.addEventListener('input', () => {
   const count = titleInput.value.length;
   const el = document.getElementById('titleCount');
   el.textContent = `${count} / 50`;
   el.className = count >= 50 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
+});
+
+document.getElementById('artImageBtn').addEventListener('click', () => {
+  artImageInput.click();
+});
+
+artImageInput.addEventListener('change', async () => {
+  const file = artImageInput.files[0];
+  if (!file) return;
+
+  const artImageUrl = new FormData();
+  artImageUrl.append('image', file);
+
+  try {
+    const res = await fetch(`${API_BASE}/images`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: artImageUrl,
+    });
+    if (!res.ok) {
+      alert('이미지 업로드에 실패했습니다.');
+      return;
+    }
+    const json = await res.json();
+    tempImageUrl = json.data.imageUrl;
+    alert('이미지가 등록되었습니다!');
+  } catch {
+    alert('서버 연결에 실패했습니다.');
+  }
 });
 
 artistInput.addEventListener('input', () => {
@@ -218,8 +250,17 @@ const renderSongs = () => {
 
     const tdArtImage = document.createElement('td');
     tdArtImage.className = ' p-4 border-r-2 border-black font-bold';
-    tdArtImage.textContent = song.imageUrl ? '등록됨' : '없음';
+
     tdArtImage.style.width = '15%';
+
+    if (song.imageUrl) {
+      const albumImg = document.createElement('img');
+      albumImg.src = song.imageUrl;
+      albumImg.className = 'w-12 h-12 object-cover rounded mx-auto';
+      tdArtImage.appendChild(albumImg);
+    } else {
+      tdArtImage.textContent = '미등록';
+    }
 
     const tdTitle = document.createElement('td');
     tdTitle.className = ' p-4 border-r-2 border-black font-bold';
@@ -318,7 +359,7 @@ saveSongBtn.addEventListener('click', async () => {
 
   if (title && artist && score !== null && !isNaN(score) && categoryId) {
     if (editIndex !== null) {
-      await editSong(songs[editIndex].id, { songNo, title, artist, categoryId, score });
+      await editSong(songs[editIndex].id, { songNo, title, artist, categoryId, score, imageUrl: tempImageUrl });
       if (tempYoutubeUrls.length > 0) {
         for (const url of tempYoutubeUrls) {
           await addSongUrl(songs[editIndex].id, url);
@@ -327,7 +368,7 @@ saveSongBtn.addEventListener('click', async () => {
       editIndex = null;
       await loadSongs();
     } else {
-      const newSong = await saveSongs({ songNo, title, artist, categoryId, score });
+      const newSong = await saveSongs({ songNo, title, artist, categoryId, score, imageUrl: tempImageUrl });
       if (newSong && tempYoutubeUrls.length > 0) {
         for (const url of tempYoutubeUrls) {
           await addSongUrl(newSong.id, url);
