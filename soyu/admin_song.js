@@ -4,7 +4,7 @@ if (!token) {
   location.href = './admin_open.html';
 }
 let songs = [];
-
+console.log(songs.songNo);
 async function loadSongs(id = null) {
   const apis = id ? `${API_BASE}/categories/${id}` : `${API_BASE}/songs`;
 
@@ -17,7 +17,7 @@ async function loadSongs(id = null) {
   }
 
   songs = id ? json.data.songs : json.data;
-  console.log('songs:', songs); // 👈 추가
+  console.log('songs:', songs);
 
   renderSongs();
 }
@@ -130,6 +130,7 @@ addSongBtn.addEventListener('click', () => {
   editIndex = null;
   tempYoutubeUrls = [];
   modalTitle.textContent = '신규 노래 등록';
+  document.getElementById('songNoInput').value = '';
   document.getElementById('titleInput').value = '';
   document.getElementById('artistInput').value = '';
   document.getElementById('categoryInput').value = '';
@@ -208,25 +209,43 @@ const renderSongs = () => {
     const tdRank = document.createElement('td');
     tdRank.className = 'p-4 border-r-2 border-black text-center font-bold';
     tdRank.textContent = index + 1;
+    tdRank.style.width = '5%';
+
+    const tdSongNo = document.createElement('td');
+    tdSongNo.className = ' p-4 border-r-2 border-black font-bold';
+    tdSongNo.textContent = song.songNo;
+    tdSongNo.style.width = '10%';
+
+    const tdArtImage = document.createElement('td');
+    tdArtImage.className = ' p-4 border-r-2 border-black font-bold';
+    tdArtImage.textContent = song.imageUrl ? '등록됨' : '없음';
+    tdArtImage.style.width = '15%';
 
     const tdTitle = document.createElement('td');
-    tdTitle.className = 'w-1/4 p-4 border-r-2 border-black font-bold';
+    tdTitle.className = ' p-4 border-r-2 border-black font-bold';
     tdTitle.textContent = song.title;
+    tdTitle.style.width = '20%';
 
     const tdCategory = document.createElement('td');
     tdCategory.className = 'p-4 border-r-2 border-black text-center';
     tdCategory.textContent = song.category;
+    tdCategory.style.width = '10%';
 
     const tdArtist = document.createElement('td');
-    tdArtist.className = 'w-1/4 p-4 border-r-2 border-black';
+    tdArtist.className = ' p-4 border-r-2 border-black';
     tdArtist.textContent = song.artist;
+    tdArtist.style.width = '10%';
 
     const tdScore = document.createElement('td');
     tdScore.className = 'p-4 border-r-2 border-black text-center font-black text-blue-600';
     tdScore.textContent = song.score;
+    tdScore.style.width = '10%';
+    const manageInner = document.createElement('div');
+    manageInner.className = 'flex justify-center items-center gap-4 gap-2 flex-wrap';
 
     const tdManage = document.createElement('td');
-    tdManage.className = 'p-4 flex justify-center items-center gap-4 text-xl font-bold';
+    tdManage.className = 'p-4 justify-center items-center gap-4 text-xl font-bold';
+    tdManage.style.width = '20%';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'hover:text-red-500 hover:scale-125 transition';
@@ -243,6 +262,7 @@ const renderSongs = () => {
     editBtn.addEventListener('click', function () {
       editIndex = index;
       modalTitle.textContent = '노래 수정';
+      document.getElementById('songNoInput').value = song.songNo;
       document.getElementById('titleInput').value = song.title;
       document.getElementById('artistInput').value = song.artist;
       document.getElementById('categoryInput').value = song.categoryId;
@@ -251,8 +271,8 @@ const renderSongs = () => {
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     });
-
-    tdManage.append(deleteBtn, editBtn);
+    tdManage.appendChild(manageInner);
+    manageInner.append(deleteBtn, editBtn);
 
     if (song.urls && Array.isArray(song.urls)) {
       song.urls.forEach((url, urlIndex) => {
@@ -277,12 +297,12 @@ const renderSongs = () => {
           });
 
           urlSpan.appendChild(urlDeleteBtn);
-          tdManage.appendChild(urlSpan);
+          manageInner.appendChild(urlSpan);
         }
       });
     }
 
-    trCreate.append(tdRank, tdTitle, tdArtist, tdCategory, tdScore, tdManage);
+    trCreate.append(tdRank, tdSongNo, tdArtImage, tdTitle, tdArtist, tdCategory, tdScore, tdManage);
 
     songList.appendChild(trCreate);
   });
@@ -290,6 +310,7 @@ const renderSongs = () => {
 
 const saveSongBtn = document.getElementById('saveSongBtn');
 saveSongBtn.addEventListener('click', async () => {
+  const songNo = document.getElementById('songNoInput').value;
   const title = document.getElementById('titleInput').value;
   const artist = document.getElementById('artistInput').value;
   const categoryId = parseInt(document.getElementById('categoryInput').value);
@@ -297,7 +318,7 @@ saveSongBtn.addEventListener('click', async () => {
 
   if (title && artist && score !== null && !isNaN(score) && categoryId) {
     if (editIndex !== null) {
-      await editSong(songs[editIndex].id, { title, artist, categoryId, score });
+      await editSong(songs[editIndex].id, { songNo, title, artist, categoryId, score });
       if (tempYoutubeUrls.length > 0) {
         for (const url of tempYoutubeUrls) {
           await addSongUrl(songs[editIndex].id, url);
@@ -306,7 +327,7 @@ saveSongBtn.addEventListener('click', async () => {
       editIndex = null;
       await loadSongs();
     } else {
-      const newSong = await saveSongs({ title, artist, categoryId, score });
+      const newSong = await saveSongs({ songNo, title, artist, categoryId, score });
       if (newSong && tempYoutubeUrls.length > 0) {
         for (const url of tempYoutubeUrls) {
           await addSongUrl(newSong.id, url);
