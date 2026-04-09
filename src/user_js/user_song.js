@@ -61,8 +61,8 @@ function renderChart(data) {
       <div class="col-start-2 col-span-1 row-span-3 w-16 h-16 flex items-center justify-center self-center translate-x-5 mr-2 lg:translate-x-0 lg:mr-0 lg:col-start-auto lg:col-span-3 lg:row-span-1 lg:w-auto lg:h-auto lg:py-2">
 ${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
       </div>
-      <div class="col-start-4 col-span-6 row-start-1 row-span-1 pl-5 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-9 lg:col-span-11 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-[22px]">${esc(s.title)}</div>
-      <div class="col-start-4 col-span-6 row-start-2 row-span-1 pl-5 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-20 lg:col-span-5 lg:row-start-auto lg:pl-6 lg:py-2 lg:text-[22px]">${esc(s.artist)}</div>
+      <div class="col-start-4 col-span-5 row-start-1 row-span-1 pl-5 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-9 lg:col-span-11 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-[22px]">${esc(s.title)}</div>
+      <div class="col-start-4 col-span-5 row-start-2 row-span-1 pl-5 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-20 lg:col-span-5 lg:row-start-auto lg:pl-6 lg:py-2 lg:text-[22px]">${esc(s.artist)}</div>
       <div class="col-start-9 col-span-2 row-span-3 flex items-center justify-end pr-3 lg:col-start-auto lg:col-span-2 lg:row-span-1 lg:justify-center lg:pr-0 lg:py-2">
         <button class="yt-toggle cursor-pointer border-none bg-transparent p-0 inline-flex" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 lg:w-12 lg:h-12">
