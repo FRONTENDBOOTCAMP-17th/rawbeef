@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>관리자 메뉴</title>
+    <title>관리자 페이지</title>
     <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body id="body" class="bg-gray-950 text-white min-h-screen flex flex-col transition-colors duration-300">
@@ -55,10 +55,7 @@
       }
 
       function showAdmin() {
-        loginScreen.classList.add('hidden');
-        loginScreen.classList.remove('flex');
-        adminContent.classList.remove('hidden');
-        adminContent.style.display = 'flex';
+        window.location.href = 'admin_song.html';
       }
 
       function showLogin() {

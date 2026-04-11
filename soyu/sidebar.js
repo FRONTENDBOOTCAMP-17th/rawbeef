@@ -1,9 +1,4 @@
-const menuItems = [
-  { href: './admin_open.html', label: '관리자메뉴' },
-  { href: './admin_category.html', label: '카테고리관리' },
-  { href: './admin_song.html', label: '노래 관리' },
-  { href: './admin_request.html', label: '노래 신청 관리' },
-];
+const menuItems = [{ label: '관리자 페이지' }, { href: './admin_category.html', label: '카테고리관리' }, { href: './admin_song.html', label: '노래 관리' }, { href: './admin_request.html', label: '노래 신청 관리' }];
 
 function createSidebar() {
   const currentPage = './' + location.pathname.split('/').pop();
@@ -12,6 +7,13 @@ function createSidebar() {
   aside.className = 'w-1/5 bg-white dark:bg-gray-900 border-r border-black/10 dark:border-white/10 flex flex-col p-6 gap-6 h-[calc(100vh-57px)]';
 
   menuItems.forEach((item) => {
+    if (!item.href) {
+      const span = document.createElement('span');
+      span.textContent = item.label;
+      span.className = 'block w-full py-4 border border-black/10 dark:border-white/10 font-bold text-center rounded-lg text-gray-900 dark:text-white';
+      aside.appendChild(span);
+      return;
+    }
     const link = document.createElement('a');
     link.href = item.href;
     link.className = 'block w-full';
