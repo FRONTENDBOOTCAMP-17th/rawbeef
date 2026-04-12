@@ -137,7 +137,7 @@ const renderSongs = () => {
             window.open(url.url, '_blank');
           };
           const urlDeleteBtn = document.createElement('button');
-          urlDeleteBtn.className = ' w-6 h-6 inline-flex items-center justify-center text-lg text-white hover:text-red-700 dark:hover:text-red-700 font-bold ml-1 transition';
+          urlDeleteBtn.className = ' w-6 h-6 inline-flex items-center text-red-500 dark:text-gray-300 justify-center text-lg  hover:text-red-700 dark:hover:text-red-700 font-bold ml-1 transition';
           urlDeleteBtn.textContent = '✕';
 
           urlDeleteBtn.addEventListener('click', async (e) => {
