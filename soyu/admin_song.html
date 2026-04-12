@@ -8,9 +8,10 @@
   </head>
   <body class="bg-gray-100 font-sans dark:bg-gray-500">
     <script src="../src/api-config.js"></script>
-
-    <div id="header-container"></div>
-    <script src="./header.js"></script>
+    <script src="./auth.js"></script>
+    <div id="user-header"></div>
+    <script src="../src/user_js/user_header.js"></script>
+    <script src="../src/user_js/theme.js"></script>
     <div class="flex h-[calc(100vh-57px)] w-full border-t border-gray-200 overflow-hidden dark:border-gray-500">
       <div id="sidebar-container"></div>
       <script src="./sidebar.js"></script>
@@ -31,14 +32,14 @@
           <table class="w-full text-left border-collapse" style="table-layout: fixed">
             <thead>
               <tr class="text-gray-600 font-bold dark:text-gray-300">
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 5%">순위</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 10%">노래방 번호</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 15%">앨범 아트</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 20%">제목</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 10%">가수</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 10%">카테고리</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3" style="width: 10%">점수</th>
-                <th class="p-4 text-center text-gray-70 dark:text-white text-xl text-bold border-b-3" style="width: 20%">관리</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[5%]">순위</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">노래방 번호</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[15%]">앨범 아트</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[20%]">제목</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">가수</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">카테고리</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">점수</th>
+                <th class="p-4 text-center text-gray-70 dark:text-white text-xl text-bold border-b-3 w-[20%]">관리</th>
               </tr>
             </thead>
             <tbody id="songList"></tbody>

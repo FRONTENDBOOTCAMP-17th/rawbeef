@@ -152,7 +152,6 @@ const renderCategory = () => {
     divCreate.append(spanTitle, btnManage);
 
     categoryList.appendChild(divCreate);
-    const categoryDeleteBtn = document.querySelectorAll('.categoryDeleteBtn');
   });
 };
 const saveCategoryBtn = document.getElementById('saveCategoryBtn');
@@ -162,7 +161,6 @@ saveCategoryBtn.addEventListener('click', async () => {
 
   if (title) {
     if (editIndex !== null) {
-      const oldTitle = category[editIndex].title;
       await editCategory(category[editIndex].id, title);
       await loadCategories();
       editIndex = null;

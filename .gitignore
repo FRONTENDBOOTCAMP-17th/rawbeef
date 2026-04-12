@@ -25,3 +25,5 @@ dist-ssr
 *.sw?
 .claude
 woohyun/Temporary
+__MACOSX
+.DS_Store
