@@ -87,7 +87,7 @@ function renderList(data) {
               isAdmin
                 ? `<button
                     class="comment-delete-btn h-7 px-3 bg-white dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-gray-800 text-red-500 text-xs font-semibold rounded border border-red-200 dark:border-red-800 cursor-pointer transition-colors duration-150 font-[inherit]"
-                    data-comment-id="${esc(item.comment.commentId)}"
+                    data-comment-id="${esc(item.comment.id)}"
                   >답변 삭제</button>
                   <span class="comment-msg text-xs text-red-500 hidden ml-2"></span>`
                 : ''
@@ -195,7 +195,7 @@ function renderList(data) {
       const commentMsg = el.querySelector('.comment-msg');
 
       commentDeleteBtn.addEventListener('click', async () => {
-        await deleteComment(item.comment.commentId, commentMsg);
+        await deleteComment(item.comment.id, commentMsg);
       });
     }
 

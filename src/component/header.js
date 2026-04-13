@@ -14,7 +14,7 @@ function createHeader() {
 
   const logo = document.createElement('a');
   const path = location.pathname;
-  logo.href = path.includes('/admin/') ? '/src/admin/admin_song.html' : '/src/user/user_song.html';
+  logo.href = path.includes('/admin/') ? '/src/admin/admin_song.html' : '/src/SWcantabile/SWcantabile_song.html';
   logo.className = 'no-underline';
 
   const logoText = document.createElement('span');
