@@ -1,8 +1,4 @@
-const token = localStorage.getItem('adminToken');
-if (!token) {
-  alert('로그인이 필요합니다.');
-  location.href = './admin_open.html';
-}
+const token = requireAuth();
 let requests = [];
 
 const requestList = document.getElementById('requestList');
@@ -64,18 +60,18 @@ const renderRequests = () => {
   requestList.innerHTML = '';
   requests.forEach((req, index) => {
     const div = document.createElement('div');
-    div.className = 'relative bg-white dark:bg-purple-300 rounded-xl mx-auto border border-purple-500 dark:border-white p-6 mb-4 ';
+    div.className = 'relative bg-white dark:bg-gray-900  mx-auto border-t border-b border-gray-900 dark:border-white p-6 mb-4 ';
 
     const title = document.createElement('h2');
-    title.className = 'text-xl font-bold mb-2 text-center text-gray-900 dark:text-black';
+    title.className = 'text-xl font-bold mb-2 text-center text-gray-900 dark:text-white';
     title.textContent = `${index + 1}. ${req.title}`;
 
     const date = document.createElement('p');
-    date.className = 'text-m font-bold mb-2 text-center text-gray-900 dark:text-gray-900';
+    date.className = 'text-m font-bold mb-2 text-center text-gray-900 dark:text-white';
     date.textContent = `신청 날짜: ${req.createdAt.split('T')[0]} 신청 시간: ${req.createdAt.split('T')[1].split('.')[0]}`;
 
     const content = document.createElement('p');
-    content.className = 'mb-6 text-center font-medium py-4 text-gray-800 dark:text-gray-800 text-xl';
+    content.className = 'mb-6 text-center font-medium py-4 text-gray-800 dark:text-white text-xl';
     content.textContent = req.content;
 
     const adminBox = document.createElement('div');
@@ -85,7 +81,7 @@ const renderRequests = () => {
     inputArea.className = 'flex items-center gap-4 flex-1 w-full';
 
     const adminLabel = document.createElement('span');
-    adminLabel.className = 'font-black text-lg shrink-0 text-gray-900 dark:text-black';
+    adminLabel.className = 'font-black text-lg shrink-0 text-gray-900 dark:text-white';
     adminLabel.textContent = '관리자 답변';
 
     const adminInput = document.createElement('input');
@@ -105,7 +101,7 @@ const renderRequests = () => {
 
     if (!req.comment) {
       const registerBtn = document.createElement('button');
-      registerBtn.className = 'hover:text-blue-600 dark:hover:text-blue-400 font-black text-lg hover:scale-125 dark:text-black';
+      registerBtn.className = 'hover:text-blue-600 dark:hover:text-blue-400 font-black text-lg hover:scale-125 dark:text-white';
       registerBtn.textContent = '등록';
       registerBtn.addEventListener('click', async () => {
         const message = adminInput.value;
@@ -121,7 +117,7 @@ const renderRequests = () => {
     }
     if (req.comment) {
       const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'hover:text-red-600 dark:hover:text-red-400 font-black text-lg hover:scale-125 dark:text-black';
+      deleteBtn.className = 'hover:text-red-600 dark:hover:text-red-400 font-black text-lg hover:scale-125 dark:text-white';
       deleteBtn.textContent = '삭제';
       deleteBtn.addEventListener('click', async () => {
         if (confirm('이 댓글을 정말 삭제할까요?')) {
@@ -134,8 +130,8 @@ const renderRequests = () => {
     }
 
     const requestDeleteBtn = document.createElement('button');
-    requestDeleteBtn.className = 'hover:text-red-600 dark:hover:text-red-400 font-black text-xl absolute top-4 right-4 hover:scale-125 dark:text-black';
-    requestDeleteBtn.textContent = '✘';
+    requestDeleteBtn.className = 'hover:text-red-600 dark:hover:text-red-400 font-black text-xl absolute top-4 right-4 hover:scale-125 dark:text-white';
+    requestDeleteBtn.textContent = 'x';
 
     adminBox.append(inputArea, btnGroup);
 

@@ -1,8 +1,4 @@
-const token = localStorage.getItem('adminToken');
-if (!token) {
-  alert('로그인이 필요합니다.');
-  location.href = './admin_open.html';
-}
+const token = requireAuth();
 let songs = [];
 
 async function loadSongs(id = null) {
@@ -130,7 +126,9 @@ youtubeLinkBtn.addEventListener('click', () => {
     return;
   }
   tempYoutubeUrls.push(url);
-  alert(`${tempYoutubeUrls.length}번의 유튜브 URL 등록이 완료되었습니다`);
+  const existingCount = editIndex !== null && songs[editIndex]?.urls ? songs[editIndex].urls.length : 0;
+  const totalCount = existingCount + tempYoutubeUrls.length;
+  alert(`${totalCount}번의 유튜브 URL 등록이 완료되었습니다`);
 });
 
 const saveSongs = async (newSongData) => {

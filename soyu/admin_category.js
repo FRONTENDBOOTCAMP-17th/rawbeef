@@ -106,10 +106,10 @@ const renderCategory = () => {
 
   category.forEach((item, index) => {
     const divCreate = document.createElement('div');
-    divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-300 dark:bg-purple-300 text-black rounded-xl border border-purple-500 dark:border-white hover:border-purple-500 transition-all duration-200';
+    divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-300 dark:bg-gray-900 border-b border-t text-black border-gray-500 dark:border-white hover:border-gray-500 transition-all duration-200';
 
     const spanTitle = document.createElement('span');
-    spanTitle.className = 'text-lg font-bold text-black ';
+    spanTitle.className = 'text-lg font-bold text-black dark:text-white';
     spanTitle.textContent = item.title;
 
     const btnManage = document.createElement('div');
@@ -117,28 +117,28 @@ const renderCategory = () => {
 
     const upBtn = document.createElement('button');
     upBtn.textContent = '▲';
-    upBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-600 hover:text-cyan-400  text-xl';
+    upBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white  text-xl';
     upBtn.addEventListener('click', async () => {
       await moveCategoryUp(item.id);
     });
 
     const downBtn = document.createElement('button');
     downBtn.textContent = '▼';
-    downBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-600 hover:text-cyan-400  transition-color text-xl';
+    downBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white  transition-color text-xl';
     downBtn.addEventListener('click', async () => {
       await moveCategoryDown(item.id);
     });
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'categoryDeleteBtn  text-gray-400 hover:text-red-400 dark:text-black transition-color text-2xl hover:text-red-500 hover:scale-125';
-    deleteBtn.textContent = '✘';
+    deleteBtn.className = 'categoryDeleteBtn  text-red-400 hover:text-red-400 dark:text-red-400 transition-color text-3xl text-bold hover:text-red-500 hover:scale-125';
+    deleteBtn.textContent = 'x';
 
     deleteBtn.addEventListener('click', function () {
       deleteCategory(index);
     });
 
     const editBtn = document.createElement('button');
-    editBtn.className = 'categoryEditBtn text-l text-bold hover:text-blue-700 text-black hover:scale-125 ';
+    editBtn.className = 'categoryEditBtn text-l text-bold hover:text-blue-700 dark:text-white dark:hover:text-blue-400 hover:scale-125 ';
     editBtn.textContent = 'EDIT';
     editBtn.addEventListener('click', function () {
       editIndex = index;
@@ -152,7 +152,6 @@ const renderCategory = () => {
     divCreate.append(spanTitle, btnManage);
 
     categoryList.appendChild(divCreate);
-    const categoryDeleteBtn = document.querySelectorAll('.categoryDeleteBtn');
   });
 };
 const saveCategoryBtn = document.getElementById('saveCategoryBtn');
@@ -162,7 +161,6 @@ saveCategoryBtn.addEventListener('click', async () => {
 
   if (title) {
     if (editIndex !== null) {
-      const oldTitle = category[editIndex].title;
       await editCategory(category[editIndex].id, title);
       await loadCategories();
       editIndex = null;
