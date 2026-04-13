@@ -48,14 +48,12 @@ function renderChart(data) {
 
   data.forEach((s, index) => {
     const rank = index + 1;
-    const rankColor = rank === 1 ? 'text-red-600' : rank === 2 ? 'text-orange-500' : rank === 3 ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400';
-
     // 차트 행
     const row = document.createElement('div');
     row.className = 'grid grid-cols-[2rem_4rem_1fr_auto] gap-x-2 grid-rows-[1fr_auto_auto] min-h-[102px] py-3 px-2 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'xl:flex xl:items-center xl:min-h-0 xl:py-0 xl:px-0 xl:gap-0';
     row.innerHTML = `
       <div class="col-start-1 row-span-3 flex items-center justify-center xl:flex-none xl:w-[114px] xl:block xl:py-2 xl:text-center">
-        <span class="text-2xl font-extrabold ${rankColor}">${rank}</span>
+        <span class="text-2xl font-extrabold text-gray-600 dark:text-gray-400">${rank}</span>
       </div>
       <div class="col-start-3 row-start-3 md:pl-2 -translate-y-1 xl:translate-y-0 mt-1 text-xs text-gray-500 dark:text-gray-400 self-center xl:mt-0 xl:flex-none xl:w-[171px] xl:pl-0 xl:py-2 xl:text-xl xl:text-center">${esc(s.songNo || ' ')}</div>
       <div class="col-start-2 row-span-3 w-16 h-16 flex items-center justify-center self-center xl:flex-none xl:w-[90px] xl:h-auto xl:justify-center xl:py-2">
