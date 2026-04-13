@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <title>:: 노래하는 즐거움 SW칸타빌레 TOP10 ::</title>
-    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../style.css" />
     <style>
-      /* Tailwind로 표현 불가한 root 레벨 폰트만 유지 */
       body {
+        font-family: 'Jalnan2', sans-serif;
+      }
+      header, footer {
+        font-family: 'Malgun Gothic', '맑은 고딕', AppleSDGothicNeo, sans-serif;
+      }
+      .font-default {
         font-family: 'Malgun Gothic', '맑은 고딕', AppleSDGothicNeo, sans-serif;
       }
     </style>
@@ -19,7 +24,7 @@
 
     <!-- 헤더 -->
     <div id="user-header"></div>
-    <script src="../src/user_js/user_header.js"></script>
+    <script src="../component/header.js"></script>
 
     <!-- 컨텐츠 영역 -->
     <div>
@@ -29,12 +34,12 @@
       >
         <div class="relative z-10 text-white">
           <h3 class="text-5xl font-extrabold tracking-tight mb-4 text-white">TOP 10</h3>
-          <p class="hidden md:block text-sm leading-loose text-white/70 m-0">
+          <p class="hidden md:block text-sm leading-loose text-white/70 m-0 font-default">
             대중 음악의 역사와 최신 트렌드가 공존하는 '노래방 인기 차트' <br />
             대한민국 노래방 문화의 중심인 SW 칸타빌레에서 많이 불리는 <br />
             인기곡 TOP 10을 만나보세요
           </p>
-          <p class="block md:hidden text-sm leading-loose text-white/70 m-0">
+          <p class="block md:hidden text-sm leading-loose text-white/70 m-0 font-default">
             대중 음악의 역사와 최신 트렌드가 공존하는<br />
             '노래방 인기 차트' <br />
             대한민국 노래방 문화의 중심인 SW 칸타빌레에서 많이 불리는 <br />
@@ -114,7 +119,7 @@
 
     <!-- 노래 등록 신청 버튼 -->
     <div class="max-w-6xl mx-auto px-5 pb-10">
-      <a href="./user_request.html" target="_blank" class="inline-flex items-center gap-2 mt-6 px-7 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150">
+      <a href="./SWcantabile_request.html" target="_blank" class="inline-flex items-center gap-2 mt-6 px-7 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
@@ -124,10 +129,10 @@
 
     <!-- 푸터 -->
     <div id="user-footer"></div>
-    <script src="../src/user_js/user_footer.js"></script>
-    <script src="../src/api-config.js"></script>
-    <script src="../src/user_js/utils.js"></script>
-    <script src="../src/user_js/theme.js"></script>
-    <script src="../src/user_js/user_song.js"></script>
+    <script src="./SWcantabile_footer.js"></script>
+    <script src="../component/api-config.js"></script>
+    <script src="./utils.js"></script>
+    <script src="../component/theme.js"></script>
+    <script src="./SWcantabile_song.js"></script>
   </body>
 </html>
