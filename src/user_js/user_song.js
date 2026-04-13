@@ -17,7 +17,7 @@ function renderCategoryTabs(categories) {
     'dark:border-gray-600 dark:text-gray-300 dark:hover:border-red-400 dark:hover:text-red-400 ' +
     '[&.on]:bg-red-600 [&.on]:border-red-600 [&.on]:text-white [&.on]:font-bold ' +
     'dark:[&.on]:bg-red-400 dark:[&.on]:border-red-400 dark:[&.on]:text-gray-900 ' +
-    'lg:px-0 lg:py-[17px] lg:text-base lg:leading-[30px] xl:px-2.5';
+    'xl:px-0 xl:py-[17px] xl:text-base xl:leading-[30px] xl:px-2.5';
 
   categoryTabs.innerHTML = `
     <li><a class="${tabClass} on" data-category="종합">종합</a></li>
@@ -52,20 +52,20 @@ function renderChart(data) {
 
     // 차트 행
     const row = document.createElement('div');
-    row.className = 'grid grid-cols-10 grid-rows-3 h-[102px] py-3 px-0 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'lg:grid-cols-26 lg:grid-rows-1 lg:place-items-center lg:h-auto lg:py-0';
+    row.className = 'grid grid-cols-[2rem_4rem_1fr_auto] gap-x-2 grid-rows-[1fr_auto_auto] min-h-[102px] py-3 px-2 border-b border-gray-100 dark:border-gray-700 transition-colors duration-100 hover:bg-red-50 dark:hover:bg-gray-800 ' + 'xl:flex xl:items-center xl:min-h-0 xl:py-0 xl:px-0 xl:gap-0';
     row.innerHTML = `
-      <div class="col-start-1 col-span-1 row-span-3 flex items-center justify-center lg:col-start-auto lg:col-span-2 lg:row-span-1 lg:block lg:py-2 lg:text-center">
+      <div class="col-start-1 row-span-3 flex items-center justify-center xl:flex-none xl:w-[114px] xl:block xl:py-2 xl:text-center">
         <span class="text-2xl font-extrabold ${rankColor}">${rank}</span>
       </div>
-      <div class="col-start-4 col-span-4 row-start-3 row-span-1 pl-5 text-xs text-gray-500 dark:text-gray-400 self-center translate-x-1 lg:translate-x-0 lg:col-start-auto lg:col-span-3 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-xl lg:text-center">${esc(s.songNo || ' ')}</div>
-      <div class="col-start-2 col-span-1 row-span-3 w-16 h-16 flex items-center justify-center self-center translate-x-5 mr-2 lg:translate-x-0 lg:mr-0 lg:col-start-auto lg:col-span-3 lg:row-span-1 lg:w-auto lg:h-auto lg:py-2">
-${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 lg:w-17.5 lg:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
+      <div class="col-start-3 row-start-3 md:pl-2 -translate-y-1 xl:translate-y-0 mt-1 text-xs text-gray-500 dark:text-gray-400 self-center xl:mt-0 xl:flex-none xl:w-[171px] xl:pl-0 xl:py-2 xl:text-xl xl:text-center">${esc(s.songNo || ' ')}</div>
+      <div class="col-start-2 row-span-3 w-16 h-16 flex items-center justify-center self-center xl:flex-none xl:w-[90px] xl:h-auto xl:justify-center xl:py-2">
+${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 xl:w-17.5 xl:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 xl:w-17.5 xl:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
       </div>
-      <div class="col-start-4 col-span-5 row-start-1 row-span-1 pl-5 text-base font-semibold text-gray-900 dark:text-gray-100 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-9 lg:col-span-11 lg:row-start-auto lg:pl-0 lg:py-2 lg:text-[22px]">${esc(s.title)}</div>
-      <div class="col-start-4 col-span-5 row-start-2 row-span-1 pl-5 text-sm text-gray-500 dark:text-gray-400 justify-self-start self-center translate-x-1 lg:translate-x-0 lg:col-start-20 lg:col-span-5 lg:row-start-auto lg:pl-6 lg:py-2 lg:text-[22px]">${esc(s.artist)}</div>
-      <div class="col-start-9 col-span-2 row-span-3 flex items-center justify-end pr-3 lg:col-start-auto lg:col-span-2 lg:row-span-1 lg:justify-center lg:pr-0 lg:py-2">
+      <div class="col-start-3 row-start-1 md:pl-2 -translate-y-1 xl:translate-y-0 text-base font-semibold text-gray-900 dark:text-gray-100 self-center overflow-hidden xl:flex-1 xl:min-w-0 xl:pl-4 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.title)}</div>
+      <div class="col-start-3 row-start-2 md:pl-2 -translate-y-1 xl:translate-y-0 text-sm text-gray-500 dark:text-gray-400 self-center overflow-hidden xl:flex-none xl:w-[262px] xl:pl-6 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.artist)}</div>
+      <div class="col-start-4 row-span-3 flex items-center justify-end xl:flex-none xl:w-[114px] xl:justify-center xl:py-2">
         <button class="yt-toggle cursor-pointer border-none bg-transparent p-0 inline-flex" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 lg:w-12 lg:h-12">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 xl:w-12 xl:h-12">
             <path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8z"/>
             <path fill="#fff" d="M9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
@@ -126,7 +126,7 @@ function renderBannerCollage(songs) {
   // 랜덤 셔플 후 최대 4장
   const shuffled = withImage.sort(() => Math.random() - 0.5).slice(0, 4);
 
-  collage.innerHTML = shuffled.map((s) => `<img src="${s.imageUrl}" alt="${esc(s.title)}" class="w-14 h-14 lg:w-42 lg:h-42 object-cover rounded-lg opacity-80 shrink-0" />`).join('');
+  collage.innerHTML = shuffled.map((s) => `<img src="${s.imageUrl}" alt="${esc(s.title)}" class="w-14 h-14 xl:w-42 xl:h-42 object-cover rounded-lg opacity-80 shrink-0" />`).join('');
 }
 
 /* ══════════════════════════════════
