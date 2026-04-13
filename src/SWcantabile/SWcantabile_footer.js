@@ -4,7 +4,7 @@ document.getElementById('user-footer').innerHTML = `
       <div class="grid grid-cols-1 xl:grid-cols-[auto_1fr] gap-8 xl:gap-10">
         <!-- 1. 로고 + 약관 + 계열사 -->
         <div class="flex flex-col gap-4 items-center xl:items-start">
-          <a href="./user_song.html" class="no-underline"><span class="text-xl bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent" style="font-family: 'Jalnan2', sans-serif;">SW</span><span class="text-lg text-orange-600" style="font-family: 'Jalnan2', sans-serif;">칸타빌레</span></a>
+          <a href="./SWcantabile_song.html" class="no-underline"><span class="text-xl bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent" style="font-family: 'Jalnan2', sans-serif;">SW</span><span class="text-lg text-orange-600" style="font-family: 'Jalnan2', sans-serif;">칸타빌레</span></a>
           <ul class="flex flex-wrap gap-x-4 gap-y-1 list-none p-0 m-0 justify-center xl:justify-start">
             <li><a href="/terms?cate_cd=T01" class="text-gray-800 dark:text-gray-300 font-semibold no-underline hover:text-black dark:hover:text-white text-xs">개인정보취급방침</a></li>
             <li><a href="/terms?cate_cd=T02" class="text-gray-500 no-underline hover:text-black dark:hover:text-white text-xs">내부정보관리규정</a></li>

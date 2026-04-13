@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <title>:: 노래하는 즐거움 SW칸타빌레 노래 등록 신청 ::</title>
-    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../style.css" />
     <style>
       body {
         font-family: 'Malgun Gothic', '맑은 고딕', AppleSDGothicNeo, sans-serif;
@@ -68,7 +68,7 @@
   <body class="bg-white dark:bg-slate-900 m-0 transition-colors duration-200 min-w-80">
     <!-- 헤더 -->
     <div id="user-header"></div>
-    <script src="../src/user_js/user_header.js"></script>
+    <script src="../component/header.js"></script>
 
     <!-- 히어로 배너 -->
     <div class="video-area relative w-full min-h-48 bg-gray-900 dark:bg-black flex items-center px-10 py-12 overflow-hidden">
@@ -142,23 +142,23 @@
     <div class="max-w-4xl mx-auto px-5 pb-8">
       <ul class="nav-link flex items-center gap-1.5 list-none p-0 m-0 text-xs text-gray-400">
         <li>
-          <a href="./user_song.html">
+          <a href="./SWcantabile_song.html">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-gray-400">
               <path d="M10.707 2.293a1 1 0 0 0-1.414 0l-7 7A1 1 0 0 0 3 11h1v6a1 1 0 0 0 1 1h4v-4h2v4h4a1 1 0 0 0 1-1v-6h1a1 1 0 0 0 .707-1.707l-7-7z" />
             </svg>
           </a>
         </li>
-        <li class="flex items-center gap-1.5"><span></span><a href="./user_song.html" class="text-gray-400 no-underline hover:text-red-600">차트</a></li>
+        <li class="flex items-center gap-1.5"><span></span><a href="./SWcantabile_song.html" class="text-gray-400 no-underline hover:text-red-600">차트</a></li>
         <li class="flex items-center gap-1.5"><span></span><a class="text-red-600 font-semibold no-underline" href="#">노래 등록 신청</a></li>
       </ul>
     </div>
 
     <!-- 푸터 -->
     <div id="user-footer"></div>
-    <script src="../src/user_js/user_footer.js"></script>
-    <script src="../src/api-config.js"></script>
-    <script src="../src/user_js/utils.js"></script>
-    <script src="../src/user_js/theme.js"></script>
-    <script src="../src/user_js/user_request.js"></script>
+    <script src="./SWcantabile_footer.js"></script>
+    <script src="../component/api-config.js"></script>
+    <script src="./utils.js"></script>
+    <script src="../component/theme.js"></script>
+    <script src="./SWcantabile_request.js"></script>
   </body>
 </html>
