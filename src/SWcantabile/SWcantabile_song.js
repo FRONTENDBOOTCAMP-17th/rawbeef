@@ -55,12 +55,12 @@ function renderChart(data) {
       <div class="col-start-1 row-span-3 flex items-center justify-center xl:flex-none xl:w-[114px] xl:block xl:py-2 xl:text-center">
         <span class="text-2xl font-extrabold text-gray-600 dark:text-gray-400">${rank}</span>
       </div>
-      <div class="col-start-3 row-start-3 md:pl-2 -translate-y-1 xl:translate-y-0 mt-1 text-xs text-gray-500 dark:text-gray-400 self-center xl:mt-0 xl:flex-none xl:w-[171px] xl:pl-0 xl:py-2 xl:text-xl xl:text-center">${esc(s.songNo || ' ')}</div>
+      <div class="col-start-3 row-start-3 pl-2 -translate-y-1 xl:translate-y-0 mt-1 text-xs font-semibold text-gray-900 dark:text-gray-100 self-center xl:mt-0 xl:flex-none xl:w-[171px] xl:pl-0 xl:py-2 xl:text-xl xl:text-center">${esc(s.songNo || ' ')}</div>
       <div class="col-start-2 row-span-3 w-16 h-16 flex items-center justify-center self-center xl:flex-none xl:w-[90px] xl:h-auto xl:justify-center xl:py-2">
 ${s.imageUrl ? `<img src="${s.imageUrl}" class="w-16 h-16 xl:w-17.5 xl:h-17.5 rounded object-cover" alt="${esc(s.title)}" />` : '<div class="w-16 h-16 xl:w-17.5 xl:h-17.5 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-2xl text-gray-400 dark:text-gray-500">♪</div>'}
       </div>
-      <div class="col-start-3 row-start-1 md:pl-2 -translate-y-1 xl:translate-y-0 text-base font-semibold text-gray-900 dark:text-gray-100 self-center overflow-hidden xl:flex-1 xl:min-w-0 xl:pl-4 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.title)}</div>
-      <div class="col-start-3 row-start-2 md:pl-2 -translate-y-1 xl:translate-y-0 text-sm text-gray-500 dark:text-gray-400 self-center overflow-hidden xl:flex-none xl:w-[262px] xl:pl-6 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.artist)}</div>
+      <div class="col-start-3 row-start-1 pl-2 -translate-y-1 xl:translate-y-0 text-base font-semibold text-gray-900 dark:text-gray-100 self-center overflow-hidden xl:flex-1 xl:min-w-0 xl:pl-4 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.title)}</div>
+      <div class="col-start-3 row-start-2 pl-2 -translate-y-1 xl:translate-y-0 text-sm font-semibold text-gray-900 dark:text-gray-100 self-center overflow-hidden xl:flex-none xl:w-[262px] xl:pl-6 xl:py-2 xl:text-[22px] xl:break-words">${esc(s.artist)}</div>
       <div class="col-start-4 row-span-3 flex items-center justify-end xl:flex-none xl:w-[114px] xl:justify-center xl:py-2">
         <button class="yt-toggle cursor-pointer border-none bg-transparent p-0 inline-flex" title="유튜브" style="${s.urls && s.urls.length ? '' : 'opacity:0.3'}">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 xl:w-12 xl:h-12">
@@ -138,6 +138,20 @@ async function loadCategories() {
     if (!res.ok) throw new Error('카테고리 조회 실패');
     const json = await res.json();
     renderCategoryTabs(json.data);
+
+    // URL 파라미터로 카테고리 탭 활성화
+    const params = new URLSearchParams(location.search);
+    const categoryName = params.get('category');
+    if (categoryName) {
+      const tab = document.querySelector(`.str_type[data-category="${categoryName}"]`);
+      if (tab) {
+        document.querySelectorAll('.str_type').forEach((a) => a.classList.remove('on'));
+        tab.classList.add('on');
+        currentCategory = categoryName;
+        await loadSongs(tab.dataset.id);
+        return;
+      }
+    }
   } catch (e) {
     console.error('카테고리 로드 실패:', e);
   }
@@ -179,6 +193,13 @@ async function setStrType(type, id, el) {
   el.classList.add('on');
   currentCategory = type;
   document.getElementById('keywordSearch').value = '';
+
+  if (type === '종합') {
+    history.pushState(null, '', location.pathname);
+  } else {
+    history.pushState(null, '', `?category=${encodeURIComponent(type)}`);
+  }
+
   await loadSongs(id);
 }
 
