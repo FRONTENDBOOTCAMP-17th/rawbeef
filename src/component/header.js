@@ -13,7 +13,8 @@ function createHeader() {
   header.className = 'sticky top-0 z-50 w-full h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 shadow-sm transition-colors duration-200';
 
   const logo = document.createElement('a');
-  logo.href = './SWcantabile_song.html';
+  const path = location.pathname;
+  logo.href = path.includes('/admin/') ? '/src/admin/admin_song.html' : '/src/user/user_song.html';
   logo.className = 'no-underline';
 
   const logoText = document.createElement('span');

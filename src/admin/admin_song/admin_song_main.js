@@ -12,6 +12,7 @@ const modalTitle = document.getElementById('newSong');
 const artImageInput = document.getElementById('artImageInput');
 const titleInput = document.getElementById('titleInput');
 const artistInput = document.getElementById('artistInput');
+let currentCategoryId = null;
 
 const loadSongs = async (id = null) => {
   const data = await fetchSongs(id);
@@ -26,13 +27,34 @@ const loadCategories = async () => {
   categoryData = [{ title: '전체' }, ...data];
   renderCategoryDropdown();
   renderModalCategorySelect();
+  const params = new URLSearchParams(location.search);
+  const categoryName = params.get('category');
+
+  if (categoryName) {
+    const found = categoryData.find((categoryArray) => categoryArray.title === categoryName);
+    if (found) {
+      selectCategoryBtn.textContent = found.title;
+      currentCategoryId = found.id;
+      loadSongs(found.id);
+    } else {
+      loadSongs();
+    }
+  } else {
+    loadSongs();
+  }
 };
 
 artImageInput.addEventListener('change', async () => {
   const file = artImageInput.files[0];
   if (!file) return;
-  tempImageUrl = await uploadImage(file);
-  alert('이미지가 등록되었습니다!');
+
+  try {
+    tempImageUrl = await uploadImage(file);
+    alert('이미지가 등록되었습니다!');
+  } catch (error) {
+    alert('이미지 업로드에 실패했습니다.');
+    console.error(error);
+  }
 });
 
 const renderSongs = () => {
@@ -93,7 +115,7 @@ const renderSongs = () => {
     deleteBtn.addEventListener('click', async () => {
       if (confirm('이 노래를 삭제하시겠습니까?')) {
         await deleteSong(song.id);
-        await loadSongs();
+        await loadSongs(currentCategoryId);
       }
     });
 
@@ -110,6 +132,7 @@ const renderSongs = () => {
       document.getElementById('categoryInput').value = song.categoryId;
       document.getElementById('scoreInput').value = song.score;
       tempYoutubeUrls = song.url && Array.isArray(song.url) ? [...song.url] : [];
+      tempImageUrl = song.imageUrl || null;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     });
@@ -131,7 +154,7 @@ const renderSongs = () => {
             e.stopPropagation();
             if (confirm('이 URL을 삭제하시겠습니까?')) {
               await deleteUrl(url.urlId);
-              await loadSongs();
+              await loadSongs(currentCategoryId);
             }
           });
 
@@ -165,7 +188,8 @@ saveSongBtn.addEventListener('click', async () => {
         }
       }
       editIndex = null;
-      await loadSongs();
+      await loadSongs(currentCategoryId);
+      alert('수정이 완료되었습니다!');
     } else {
       const newSong = await saveSongs({ songNo, title, artist, categoryId, score, imageUrl: tempImageUrl });
       if (newSong && tempYoutubeUrls.length > 0) {
@@ -173,7 +197,8 @@ saveSongBtn.addEventListener('click', async () => {
           await addSongUrl(newSong.id, url);
         }
       }
-      await loadSongs();
+      await loadSongs(currentCategoryId);
+      alert('저장이 완료되었습니다!');
     }
 
     tempYoutubeUrls = [];
@@ -245,9 +270,13 @@ const renderCategoryDropdown = () => {
       currentFilter = info.title;
       if (info.title === '전체') {
         selectCategoryBtn.textContent = '카테고리 선택';
+        currentCategoryId = null;
+        history.pushState(null, '', location.pathname);
         loadSongs();
       } else {
         selectCategoryBtn.textContent = info.title;
+        history.pushState(null, '', `?category=${encodeURIComponent(info.title)}`);
+        currentCategoryId = info.id;
         loadSongs(info.id);
       }
 
@@ -277,4 +306,3 @@ const renderModalCategorySelect = () => {
 };
 
 loadCategories();
-loadSongs();
