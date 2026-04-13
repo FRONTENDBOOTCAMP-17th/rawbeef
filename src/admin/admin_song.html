@@ -6,7 +6,7 @@
     <title>노래 관리</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
-  <body class="bg-gray-100 font-sans dark:bg-gray-500">
+  <body class="bg-gray-100 font-sans dark:bg-gray-950">
     <script src="../component/api-config.js"></script>
     <script src="./auth.js"></script>
     <div id="user-header"></div>
@@ -29,17 +29,17 @@
           </div>
         </div>
         <div>
-          <table class="w-full text-left border-collapse" style="table-layout: fixed">
+          <table class="w-full text-left border-collapse table-fixed">
             <thead>
               <tr class="text-gray-600 font-bold dark:text-gray-300">
                 <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[5%]">순위</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">노래방 번호</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[15%]">앨범 아트</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[20%]">제목</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">가수</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">카테고리</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[10%]">점수</th>
-                <th class="p-4 text-center text-gray-70 dark:text-white text-xl text-bold border-b-3 w-[20%]">관리</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">노래방 번호</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[15%]">앨범 아트</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[20%]">제목</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">가수</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">카테고리</th>
+                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">점수</th>
+                <th class="p-4 text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[20%]">관리</th>
               </tr>
             </thead>
             <tbody id="songList"></tbody>
@@ -49,47 +49,48 @@
     </div>
 
     <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-      <div class="bg-white border border-gray-200 shadow-xl p-8 w-[400px]">
-        <h2 id="newSong" class="text-2xl font-black mb-6 uppercase">신규 노래 등록</h2>
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl p-8 w-[400px]">
+        <h2 id="newSong" class="text-2xl font-black mb-6 uppercase dark:text-white">신규 노래 등록</h2>
 
         <div class="space-y-4 text-lg">
           <div>
-            <label for="songNoInput" class="block font-bold text-gray-700mb-1">노래방 번호</label>
-            <input type="text" id="songNoInput" maxlength="50" class="w-full border p-2 border-gray-400 focus:border-red-500 focus:bg-red-50 font-bold" />
+            <label for="songNoInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">노래방 번호</label>
+            <input type="text" id="songNoInput" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold" />
           </div>
           <div>
-            <label for="titleInput" class="block font-bold text-gray-700 mb-1">제목</label>
-            <input type="text" id="titleInput" maxlength="50" class="w-full border p-2 border-gray-400 focus:border-red-500 focus:bg-red-50 font-bold" />
+            <label for="titleInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">제목</label>
+            <input type="text" id="titleInput" maxlength="50" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold" />
             <p id="titleCount" class="text-sm text-gray-400 mt-1 text-right">0 / 50</p>
           </div>
           <div>
-            <label for="artistInput" class="block font-bold text-gray-700 mb-1">가수</label>
-            <input type="text" id="artistInput" maxlength="50" class="w-full border p-2 border-gray-400 focus:border-red-500 focus:bg-red-50 font-bold" />
+            <label for="artistInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">가수</label>
+            <input type="text" id="artistInput" maxlength="50" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold" />
             <p id="artistCount" class="text-sm text-gray-400 mt-1 text-right">0 / 50</p>
           </div>
           <div>
-            <label for="categoryInput" class="block font-bold text-gray-700 mb-1">카테고리</label>
-            <select id="categoryInput" class="w-full border p-2 border-gray-400 focus:border-red-500 focus:bg-red-50 font-bold">
+            <label for="categoryInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">카테고리</label>
+            <select id="categoryInput" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold">
               <option value="">카테고리 선택</option>
             </select>
           </div>
           <div>
-            <label for="scoreInput" class="block font-bold text-gray-700 mb-1">SCORE</label>
-            <input type="number" id="scoreInput" min="1" max="999" class="w-full border p-2 border-gray-400 focus:border-red-500 focus:bg-red-50 font-bold" value="0" />
+            <label for="scoreInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">SCORE</label>
+            <input type="number" id="scoreInput" min="1" max="999" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold" value="0" />
           </div>
         </div>
 
         <div class="mt-8">
           <div class="flex gap-4 mb-4">
-            <button id="artImageBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600">아트 이미지 추가</button>
+            <button id="artImageBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-purple-600 hover:text-purple-600 dark:text-white dark:border-gray-600">아트 이미지 추가</button>
             <input type="file" id="artImageInput" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden" />
-            <button id="youtubeLinkBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600">유튜브 링크 추가</button>
+            <button id="youtubeLinkBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-cyan-600 hover:text-cyan-600 dark:text-white dark:border-gray-600">유튜브 링크 추가</button>
           </div>
           <div class="flex justify-end gap-4">
-            <button id="closeSongBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600">닫기</button>
+            <button id="closeSongBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600 dark:text-white dark:border-gray-600">닫기</button>
             <button id="saveSongBtn" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold">저장</button>
           </div>
         </div>
+        z
       </div>
     </div>
     <script src="./admin_song/admin_song_api.js"></script>
