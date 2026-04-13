@@ -42,22 +42,18 @@ const renderSongs = () => {
 
   songs.forEach((song, index) => {
     const trCreate = document.createElement('tr');
-    trCreate.className = ' border-b-2 border-gray-600';
+    trCreate.className = ' border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800';
 
     const tdRank = document.createElement('td');
     tdRank.className = ' font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
     tdRank.textContent = index + 1;
-    tdRank.style.width = '5%';
 
     const tdSongNo = document.createElement('td');
     tdSongNo.className = '  font-bold text-center font-bold text-gray-900 dark:text-gray-100';
     tdSongNo.textContent = song.songNo;
-    tdSongNo.style.width = '10%';
 
     const tdArtImage = document.createElement('td');
     tdArtImage.className = '  font-bold text-center font-bold text-gray-900 dark:text-gray-100';
-
-    tdArtImage.style.width = '15%';
 
     if (song.imageUrl) {
       const albumImg = document.createElement('img');
@@ -71,28 +67,24 @@ const renderSongs = () => {
     const tdTitle = document.createElement('td');
     tdTitle.className = '  font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
     tdTitle.textContent = song.title;
-    tdTitle.style.width = '20%';
 
     const tdCategory = document.createElement('td');
     tdCategory.className = 'font-bold text-center font-bold text-gray-900 dark:text-gray-100';
     tdCategory.textContent = song.category;
-    tdCategory.style.width = '10%';
 
     const tdArtist = document.createElement('td');
     tdArtist.className = '  font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
     tdArtist.textContent = song.artist;
-    tdArtist.style.width = '10%';
 
     const tdScore = document.createElement('td');
     tdScore.className = 'p-4  text-center font-black text-red-600 dark:text-red-400';
     tdScore.textContent = song.score;
-    tdScore.style.width = '10%';
+
     const manageInner = document.createElement('div');
     manageInner.className = 'flex justify-center items-center gap-4 gap-2 flex-wrap';
 
     const tdManage = document.createElement('td');
     tdManage.className = 'p-4 justify-center items-center gap-4 text-xl font-bold';
-    tdManage.style.width = '20%';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'hover:text-red-500 hover:scale-125 transition dark:text-gray-200';
@@ -106,8 +98,7 @@ const renderSongs = () => {
     });
 
     const editBtn = document.createElement('button');
-    editBtn.className =
-      'border-2 border-black hover:bg-black hover:text-white → border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600 text-lg border border-gray-400 dark:border-gray-600 px-2 py-1 text-gray-600 dark:text-gray-300 hover:border-red-600 hover:text-red-600 dark:hover:border-red-400 dark:hover:text-red-400 ';
+    editBtn.className = 'text-lg border border-gray-400 dark:border-gray-600 px-2 py-1 text-gray-600 dark:text-gray-300 hover:border-red-600 hover:text-red-600 dark:hover:border-red-400 dark:hover:text-red-400';
     editBtn.textContent = 'EDIT';
 
     editBtn.addEventListener('click', function () {
@@ -248,7 +239,7 @@ const renderCategoryDropdown = () => {
   categoryDropdown.innerHTML = '';
   categoryData.forEach((info) => {
     const li = document.createElement('li');
-    li.className = 'px-4 py-2 font-bold  border-gray-100 dark:text-white text-sm';
+    li.className = 'px-4 py-2 font-bold border-gray-100 dark:text-white text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700';
     li.textContent = info.title;
     li.addEventListener('click', () => {
       currentFilter = info.title;
