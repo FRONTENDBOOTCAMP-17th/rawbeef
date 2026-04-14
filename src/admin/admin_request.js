@@ -1,5 +1,10 @@
 const token = requireAuth();
 let requests = [];
+function formatDateTime(iso) {
+  const d = new Date(iso);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} ` + `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 const requestList = document.getElementById('requestList');
 
@@ -67,8 +72,8 @@ const renderRequests = () => {
     title.textContent = `${index + 1}. ${req.title}`;
 
     const date = document.createElement('p');
-    date.className = 'text-m font-bold mb-2 text-center text-gray-900 dark:text-white';
-    date.textContent = `신청 날짜: ${req.createdAt.split('T')[0]} 신청 시간: ${req.createdAt.split('T')[1].split('.')[0]}`;
+    date.className = 'text-sm font-bold mb-2 text-center text-gray-900 dark:text-white';
+    date.textContent = `신청 일시: ${formatDateTime(req.createdAt)}`;
 
     const content = document.createElement('p');
     content.className = 'mb-6 text-center font-medium py-4 text-gray-800 dark:text-white text-xl';

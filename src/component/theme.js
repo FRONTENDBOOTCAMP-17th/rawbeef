@@ -22,4 +22,6 @@ const saved = localStorage.getItem('theme');
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 applyTheme(saved ? saved === 'dark' : prefersDark);
 
-btn.addEventListener('click', () => applyTheme(!html.classList.contains('dark'), true));
+if (btn) {
+  btn.addEventListener('click', () => applyTheme(!html.classList.contains('dark'), true));
+}

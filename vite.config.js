@@ -14,6 +14,7 @@ export default defineConfig({
         admin_request: resolve(__dirname, 'src/admin/admin_request.html'),
         SWcantabile_song: resolve(__dirname, 'src/SWcantabile/SWcantabile_song.html'),
         SWcantabile_request: resolve(__dirname, 'src/SWcantabile/SWcantabile_request.html'),
+        SWcantabile_introduce: resolve(__dirname, 'src/SWcantabile/SWcantabile_introduce.html'),
       },
     },
   },

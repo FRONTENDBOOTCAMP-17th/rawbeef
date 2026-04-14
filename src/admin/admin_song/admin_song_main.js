@@ -63,19 +63,20 @@ const renderSongs = () => {
   songs.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 
   songs.forEach((song, index) => {
+    const tdBaseClass = 'font-bold text-center text-gray-900 dark:text-gray-100';
     const trCreate = document.createElement('tr');
     trCreate.className = ' border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800';
 
     const tdRank = document.createElement('td');
-    tdRank.className = ' font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
+    tdRank.className = tdBaseClass;
     tdRank.textContent = index + 1;
 
     const tdSongNo = document.createElement('td');
-    tdSongNo.className = '  font-bold text-center font-bold text-gray-900 dark:text-gray-100';
+    tdSongNo.className = tdBaseClass;
     tdSongNo.textContent = song.songNo;
 
     const tdArtImage = document.createElement('td');
-    tdArtImage.className = '  font-bold text-center font-bold text-gray-900 dark:text-gray-100';
+    tdArtImage.className = tdBaseClass;
 
     if (song.imageUrl) {
       const albumImg = document.createElement('img');
@@ -87,19 +88,19 @@ const renderSongs = () => {
     }
 
     const tdTitle = document.createElement('td');
-    tdTitle.className = '  font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
+    tdTitle.className = tdBaseClass;
     tdTitle.textContent = song.title;
 
     const tdCategory = document.createElement('td');
-    tdCategory.className = 'font-bold text-center font-bold text-gray-900 dark:text-gray-100';
+    tdCategory.className = tdBaseClass;
     tdCategory.textContent = song.category;
 
     const tdArtist = document.createElement('td');
-    tdArtist.className = '  font-bold  text-center font-bold text-gray-900 dark:text-gray-100';
+    tdArtist.className = tdBaseClass;
     tdArtist.textContent = song.artist;
 
     const tdScore = document.createElement('td');
-    tdScore.className = 'p-4  text-center font-black text-red-600 dark:text-red-400';
+    tdScore.className = 'p-4 text-center font-black text-red-600 dark:text-red-400';
     tdScore.textContent = song.score;
 
     const manageInner = document.createElement('div');
@@ -131,7 +132,7 @@ const renderSongs = () => {
       document.getElementById('artistInput').value = song.artist;
       document.getElementById('categoryInput').value = song.categoryId;
       document.getElementById('scoreInput').value = song.score;
-      tempYoutubeUrls = song.url && Array.isArray(song.url) ? [...song.url] : [];
+      tempYoutubeUrls = Array.isArray(song.urls) ? song.urls.map((u) => u.url) : [];
       tempImageUrl = song.imageUrl || null;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
@@ -255,7 +256,7 @@ artistInput.addEventListener('input', () => {
   const count = artistInput.value.length;
   const el = document.getElementById('artistCount');
   el.textContent = `${count} / 50`;
-  el.className = count >= 20 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
+  el.className = count >= 50 ? 'text-sm text-red-500 mt-1 text-right' : 'text-sm text-gray-400 mt-1 text-right';
 });
 document.getElementById('artImageBtn').addEventListener('click', () => {
   artImageInput.click();
@@ -267,7 +268,6 @@ const renderCategoryDropdown = () => {
     li.className = 'px-4 py-2 font-bold border-gray-100 dark:text-white text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700';
     li.textContent = info.title;
     li.addEventListener('click', () => {
-      currentFilter = info.title;
       if (info.title === '전체') {
         selectCategoryBtn.textContent = '카테고리 선택';
         currentCategoryId = null;
@@ -287,12 +287,14 @@ const renderCategoryDropdown = () => {
   });
 };
 
-selectCategoryBtn.onclick = (e) => {
+selectCategoryBtn.addEventListener('click', (e) => {
   e.stopPropagation();
   categoryDropdown.classList.toggle('hidden');
-};
+});
 
-document.onclick = () => categoryDropdown.classList.add('hidden');
+document.addEventListener('click', () => {
+  categoryDropdown.classList.add('hidden');
+});
 
 const renderModalCategorySelect = () => {
   const select = document.getElementById('categoryInput');

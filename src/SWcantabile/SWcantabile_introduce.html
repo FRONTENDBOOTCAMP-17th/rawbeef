@@ -1,230 +1,328 @@
 <!doctype html>
-<html lang="ko-KR">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>:: 노래하는 즐거움 TJ미디어 ::</title>
+    <title>SW캔타빌레 — 노래방 인기 차트</title>
     <link rel="stylesheet" href="../style.css" />
+
     <style>
-      .swFirstSec .swContentInner {
-        width: 100%;
-        max-width: 100%;
-        padding: 0 2rem;
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.35;
       }
-      .swFirstSec .rounded-xl {
+
+      .heroTitle em::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #7c3aed;
+        opacity: 0.35;
+        border-radius: 2px;
+      }
+
+      .glowOrb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        pointer-events: none;
+      }
+
+      .barFill {
+        transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .scrollAnim {
         opacity: 0;
         transform: translateY(20px);
-        animation: fadeUp 0.5s ease forwards;
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
       }
-      .swFirstSec .rounded-xl:nth-child(1) {
-        animation-delay: 0.1s;
-      }
-      .swFirstSec .rounded-xl:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-      .swFirstSec .rounded-xl:nth-child(3) {
-        animation-delay: 0.3s;
-      }
-      .swFirstSec .rounded-xl:nth-child(4) {
-        animation-delay: 0.4s;
-      }
-      .swFirstSec .rounded-xl:nth-child(5) {
-        animation-delay: 0.5s;
-      }
-      .swFirstSec .rounded-xl:nth-child(6) {
-        animation-delay: 0.6s;
-      }
-      @keyframes fadeUp {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .swTeamList {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .swTeamCard.swSlideLeft {
-        transform: translateX(-40px);
-      }
-      .swTeamCard.swSlideRight {
-        transform: translateX(40px);
-      }
-      .swTeamCard.swPlay {
-        animation: swSlideIn 1.5s ease forwards;
-      }
-      .swTeamCard.swSlideRight.swPlay {
-        animation: swSlideInRight 1.7s ease 0.5s forwards;
-      }
-
-      @keyframes swSlideIn {
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      @keyframes swSlideInRight {
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
+      .scrollAnim.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
-  <body>
+
+  <body class="bg-zinc-950 text-white font-sans font-light overflow-x-hidden">
     <div id="user-header"></div>
     <script src="../component/header.js"></script>
     <script src="../component/theme.js"></script>
+    <script src="../component/api-config.js"></script>
 
-    <div class="content">
-      <div class="swIntro">
-        <div class="swIntoTitle">
-          <h1>
-            <span>노래하는 즐거움,</span>
-            <span><em>SW</em>가 만들어갑니다</span>
-          </h1>
-        </div>
-        <div class="rotateDiv">
-          <div class="loopSlide">
-            <ul class="ul1">
-              <li><span></span></li>
-              <li><span></span></li>
-              <li><span></span></li>
-              <li><span></span></li>
-            </ul>
-            <ul class="ul2">
-              <li><span></span></li>
-              <li><span></span></li>
-              <li><span></span></li>
-              <li><span></span></li>
-            </ul>
-          </div>
-        </div>
+    <div class="glowOrb w-140 h-140 bg-violet-500/6 -top-35 left-1/2 -translate-x-1/2 z-0"></div>
+    <div class="glowOrb w-75 h-75 bg-indigo-500/5 top-100 -right-20 z-0"></div>
+
+    <section class="relative text-center px-12 pt-28 pb-20 overflow-hidden">
+      <div class="scrollAnim delay1 inline-flex items-center gap-2 font-mono text-sm text-violet-400 tracking-[0.08em] uppercase mb-8">
+        <span class="w-5 h-px bg-violet-400/50"></span>
+        노래방 문화의 새로운 기준
+        <span class="w-5 h-px bg-violet-400/50"></span>
       </div>
-      <div class="swIntroContent">
-        <section class="swFirstSec">
-          <div class="swContentInner">
-            <div class="py-8">
-              <div class="text-center px-6 py-12 border-b border-gray-200 dark:border-gray-700">
-                <span class="inline-block text-shadow-mauve-100 font-medium px-4 py-1 rounded-full bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400 mb-4 tracking-wide">SW칸타빌레</span>
-                <h2 class="text-3xl font-medium text-gray-900 mb-3">노래방 인기 차트, <span class="text-red-600 dark:text-red-400">지금 바로</span> 확인하세요</h2>
-                <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mx-auto max-w-lg">
-                  대한민국 노래방 문화의 중심, <br />
-                  SW칸타빌레에서 인기곡 TOP 10을 장르별로 만나보세요.
-                </p>
-              </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-6">
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-red-50 dark:bg-red-900/30 flex items-center justify-center mb-3">
-                    <!-- 상승곡선 이미지 입니다. -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
-                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                      <polyline points="17 6 23 6 23 12" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">실시간 인기 차트</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">점수 기반으로 정렬된 TOP 10 차트를 한눈에 확인할 수 있어요.</p>
-                </div>
+      <h1 class="heroTitle scrollAnim delay2 font-bold leading-[1.05] tracking-[-0.04em] text-white mb-6" style="font-size: clamp(42px, 6vw, 68px)">
+        노래방 인기 차트,<br />
+        <em class="not-italic text-violet-400 relative">지금 바로</em> 확인하세요
+      </h1>
 
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-3">
-                    <!-- 음표 이미지 입니다. -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
-                      <path d="M9 18V5l12-2v13" />
-                      <circle cx="6" cy="18" r="3" />
-                      <circle cx="18" cy="16" r="3" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">장르별 필터</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">종합부터 트로트, 팝 등 원하는 장르만 골라볼 수 있어요.</p>
-                </div>
+      <p class="scrollAnim delay3 text-base text-zinc-400 leading-[1.75] max-w-105 mx-auto mb-11">
+        대한민국 노래방 문화의 중심.<br />
+        SW캔타빌레에서 인기곡 TOP 10을 장르별로 만나보세요.
+      </p>
 
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-green-50 dark:bg-green-900/30 flex items-center justify-center mb-3">
-                    <!-- 돋보기 이미지 입니다 -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">통합 검색</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">곡 제목, 가수 이름, 곡 번호로 원하는 노래를 빠르게 찾을 수 있어요.</p>
-                </div>
+      <div class="scrollAnim delay4 flex gap-3 justify-center">
+        <a href="/src/SWcantabile/SWcantabile_song.html" class="inline-flex items-center gap-2 text-sm font-medium text-zinc-950 bg-violet-400 px-7 py-3 rounded-xl hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(167,139,250,0.25)] transition-all">
+          차트 바로가기
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+    </section>
 
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center mb-3">
-                    <!-- 유튜브 이미지 입니다 -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
-                      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8z" />
-                      <path fill="#fff" d="M9.7 15.5V8.5l6.3 3.5-6.3 3.5z" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">유튜브 미리듣기</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">차트 안에서 바로 유튜브 영상을 펼쳐 노래를 미리 들을 수 있어요.</p>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center mb-3">
-                    <!-- 플러스 이미지 입니다 -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2">
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">노래 등록 신청</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">원하는 노래가 없다면 직접 등록 신청할 수 있어요.</p>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 min-h-40">
-                  <div class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-3">
-                    <!-- # 노래번호 이미지 -->
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
-                      <line x1="4" y1="9" x2="20" y2="9" />
-                      <line x1="4" y1="15" x2="20" y2="15" />
-                      <line x1="10" y1="3" x2="8" y2="21" />
-                      <line x1="16" y1="3" x2="14" y2="21" />
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white mb-1">곡 번호 제공</p>
-                  <p class="text-shadow-mauve-100 text-gray-500 dark:text-gray-400 leading-relaxed">노래방 기기에 바로 입력할 수 있는 곡 번호를 차트에서 확인할 수 있어요.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="swSecondSec py-12 px-8">
-          <div class="swContentInner max-x-4xl mx-auto">
-            <div class="py-8">
-              <div class="swTeamList flex flex-col gap-4" id="teamSection">
-                <div class="swTeamCard swSlideLeft flex items-center gap-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 opacity-0">
-                  <div class="w-14 h-14 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base font-medium shrink-0">우현</div>
-                  <div class="flex-1">
-                    <p class="text-base font-medium text-gray-900 dark:text-white mb-1">이우현</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">프론트엔드 개발 · 사용자 페이지 담당</p>
-                  </div>
-                  <span class="text-xs px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">User</span>
-                </div>
-
-                <div class="swTeamCard swSlideRight flex items-center gap-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 opacity-0">
-                  <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-base font-medium shrink-0">소유</div>
-                  <div class="flex-1">
-                    <p class="text-base font-medium text-gray-900 dark:text-white mb-1">박소유</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">프론트엔드 개발 · 관리자 페이지 및 소개 페이지 담당</p>
-                  </div>
-                  <span class="text-xs px-3 py-1 rounded-full bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400">Admin</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    <!-- ── STATS ── -->
+    <div class="grid grid-cols-3 border-t border-b border-zinc-800 relative z-10">
+      <div class="px-12 py-10 border-r border-zinc-800 text-center hover:bg-violet-400/4 transition-colors">
+        <p class="font-mono text-[40px] font-medium leading-none tracking-[-0.04em] text-white mb-2">100<span class="text-violet-400"></span>+</p>
+        <p class="text-[13px] text-zinc-400">등록된 곡 수</p>
+      </div>
+      <div class="px-12 py-10 border-r border-zinc-800 text-center hover:bg-violet-400/4 transition-colors">
+        <p class="font-mono text-[40px] font-medium leading-none tracking-[-0.04em] text-white mb-2"><span class="text-violet-400">#</span>1</p>
+        <p class="text-[13px] text-zinc-400">노래방 차트 플랫폼</p>
+      </div>
+      <div class="px-12 py-10 text-center hover:bg-violet-400/4 transition-colors">
+        <p class="font-mono text-[40px] font-medium leading-none tracking-[-0.04em] text-white mb-2">10<span class="text-violet-400">개</span></p>
+        <p class="text-[13px] text-zinc-400">지원 장르</p>
       </div>
     </div>
+
+    <section id="features" class="px-12 py-40 relative z-10 border-b border-zinc-800">
+      <h2 class="text-[36px] font-bold tracking-[-0.04em] text-white leading-[1.15] mb-3">필요한 모든 것,<br />한 곳에서</h2>
+      <p class="text-[15px] text-zinc-400 leading-[1.7] max-w-sm">
+        차트부터 유튜브 미리듣기, 곡 번호까지 <br />
+        SW캔타빌레 하나로 해결하세요.
+      </p>
+
+      <div class="grid grid-cols-3 rounded-2xl mt-12 border border-zinc-800 overflow-hidden">
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+              <polyline points="16 7 22 7 22 13" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">실시간 인기 차트</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">점수 기반 TOP 10 차트를 한눈에 확인할 수 있어요.</p>
+        </div>
+
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">장르별 필터</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">종합, 트로트, 팝 등 원하는 장르만 골라볼 수 있어요.</p>
+        </div>
+
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">통합 검색</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">곡 제목, 가수 이름, 번호로 빠르게 찾을 수 있어요.</p>
+        </div>
+
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect x="1" y="5" width="15" height="14" rx="2" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">유튜브 미리듣기</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">차트에서 바로 유튜브를 펼쳐 미리 들을 수 있어요.</p>
+        </div>
+
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">노래 등록 신청</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">원하는 곡이 없다면 직접 등록 신청할 수 있어요.</p>
+        </div>
+
+        <div class="bg-zinc-950 p-8 hover:bg-zinc-900 transition-colors border border-zinc-800 cursor-default group">
+          <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-white/[0.07] group-hover:border-violet-400/25 flex items-center justify-center mb-5 transition-colors">
+            <svg class="w-4 h-4 stroke-violet-400" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="4" height="4" />
+              <rect x="10" y="3" width="4" height="4" />
+              <rect x="17" y="3" width="4" height="4" />
+              <rect x="3" y="10" width="4" height="4" />
+              <rect x="10" y="10" width="4" height="4" />
+              <rect x="17" y="10" width="4" height="4" />
+              <rect x="3" y="17" width="4" height="4" />
+              <rect x="10" y="17" width="4" height="4" />
+              <rect x="17" y="17" width="4" height="4" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-white mb-2">곡 번호 제공</p>
+          <p class="text-[13px] text-zinc-400 leading-relaxed">노래방 기기에 바로 입력할 수 있는 번호를 확인해요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="chart" class="grid grid-cols-2 relative z-10">
+      <div class="px-12 py-20 border-r border-zinc-800 flex flex-col justify-center items-center text-center">
+        <h2 class="text-[32px] font-bold tracking-[-0.04em] text-white leading-[1.15] mb-4">실시간 점수로<br />정확하게</h2>
+        <p class="text-[14px] text-zinc-400 leading-[1.75] max-w-xs">
+          실제 노래방 이용 데이터 기반으로 순위를 집계합니다.<br />
+          트렌드를 놓치지 마세요.
+        </p>
+        <a href="./src/SWcantabile/song.html" class="mt-8 inline-flex items-center gap-2 text-sm text-violet-400 border border-violet-400/30 px-5 py-2.5 rounded-lg hover:bg-violet-400/10 transition-colors">
+          전체 차트 보기
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="flex items-center justify-center px-12 py-20">
+        <div id="topSongCard" class="relative z-10 w-full max-w-125 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+          <div id="topSongLoading" class="px-8 py-10 text-center">
+            <p class="font-mono text-[11px] text-zinc-600 tracking-widest uppercase animate-pulse">차트 불러오는 중...</p>
+          </div>
+
+          <div id="topSongContent" class="hidden px-8 py-8">
+            <div class="flex items-center gap-2 mb-6">
+              <span class="font-mono text-sm text-violet-400 tracking-widest uppercase">🏆 현재 1위</span>
+              <span class="flex items-center gap-1 font-mono text-[10px] text-emerald-400">
+                <span class="w-1.5 h-1.5 text-sm rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+                LIVE
+              </span>
+            </div>
+            <p id="topSongTitle" class="text-[28px] font-bold text-white tracking-normal leading-tight mb-3"></p>
+            <p id="topSongArtist" class="text-[14px] text-zinc-400 mb-6"></p>
+            <div class="flex items-center gap-3">
+              <div class="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+                <div class="barFill h-full rounded-full bg-violet-400" style="width: 100%"></div>
+              </div>
+              <span id="topSongScore" class="font-mono text-[13px] text-violet-400 shrink-0"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 에러 상태 -->
+        <div id="topSongError" class="hidden px-8 py-10 text-center">
+          <p class="text-[13px] text-zinc-600">데이터를 불러올 수 없어요</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="team" class="px-12 py-20 border-t border-zinc-800 relative z-10">
+      <h2 class="text-[32px] font-bold tracking-[-0.04em] text-white leading-[1.15] mb-10">만든 사람들</h2>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex items-center gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-5 hover:border-violet-400/20 transition-colors">
+          <div class="w-11 h-11 rounded-full bg-zinc-800 border border-zinc-800 flex items-center justify-center font-mono text-[13px] text-violet-400 font-medium shrink-0">우현</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-white mb-0.5">이우현</p>
+            <p class="text-[12px] text-zinc-400">프론트엔드 개발 · 사용자 페이지 담당</p>
+          </div>
+          <span class="shrink-0 font-mono text-[11px] text-violet-400 bg-violet-400/15 border border-violet-400/20 px-3 py-1 rounded-full"> User </span>
+        </div>
+
+        <div class="flex items-center gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-5 hover:border-violet-400/20 transition-colors">
+          <div class="w-11 h-11 rounded-full bg-zinc-800 border border-zinc-800 flex items-center justify-center font-mono text-[13px] text-violet-400 font-medium shrink-0">소유</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-white mb-0.5">박소유</p>
+            <p class="text-[12px] text-zinc-400">프론트엔드 개발 · 관리자 페이지 담당 · 사용자 소개 페이지 담당</p>
+          </div>
+          <span class="shrink-0 font-mono text-[11px] text-purple-300 bg-purple-900/30 border border-purple-700/30 px-3 py-1 rounded-full"> Admin </span>
+        </div>
+      </div>
+    </section>
+
+    <div id="user-footer"></div>
+    <script src="./SWcantabile_footer.js"></script>
     <script>
-      document.querySelectorAll('.swTeamCard').forEach((el) => el.classList.add('swPlay'));
+      async function loadTopSong() {
+        const loading = document.getElementById('topSongLoading');
+        const content = document.getElementById('topSongContent');
+        const error = document.getElementById('topSongError');
+
+        try {
+          const res = await fetch(`${API_BASE}/songs`);
+          if (!res.ok) throw new Error('fetch failed');
+
+          const data = await res.json();
+
+          const songs = Array.isArray(data) ? data : (data.songs ?? data.data ?? []);
+          if (!songs.length) throw new Error('empty');
+
+          const top = songs.sort((a, b) => b.score - a.score)[0];
+
+          document.getElementById('topSongTitle').textContent = top.title ?? '–';
+          document.getElementById('topSongArtist').textContent = top.artist ?? '–';
+          document.getElementById('topSongScore').textContent = `${Number(top.score).toLocaleString()}점`;
+
+          loading.classList.add('hidden');
+          content.classList.remove('hidden');
+        } catch (e) {
+          loading.classList.add('hidden');
+          error.classList.remove('hidden');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        loadTopSong();
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0 }
+        );
+
+        document.querySelectorAll('body > *, section > *, footer > *').forEach((el, i) => {
+          if (!el.classList.contains('scrollAnim')) {
+            el.classList.add('scrollAnim');
+            el.style.transitionDelay = `${(i % 5) * 0.1}s`;
+          }
+          observer.observe(el);
+
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('visible');
+          }
+        });
+      });
     </script>
   </body>
 </html>
