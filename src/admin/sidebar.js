@@ -40,9 +40,7 @@ function createSidebar() {
   return aside;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('sidebar-container');
-  if (container) {
-    container.replaceWith(createSidebar());
-  }
-});
+const container = document.getElementById('sidebar-container');
+if (container) {
+  container.replaceWith(createSidebar());
+}
