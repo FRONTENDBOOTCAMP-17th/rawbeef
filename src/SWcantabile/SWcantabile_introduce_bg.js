@@ -1,25 +1,27 @@
 (function () {
   const cv = document.getElementById('bg-canvas');
-  const DPR = Math.min(devicePixelRatio || 1, 2);
-
-  function resize() {
-    cv.width = window.innerWidth * DPR;
-    cv.height = window.innerHeight * DPR;
-    cv.style.width = window.innerWidth + 'px';
-    cv.style.height = window.innerHeight + 'px';
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  if (!cv) return;
 
   const ctx = cv.getContext('2d');
-  ctx.scale(DPR, DPR);
-  let W = window.innerWidth,
-    H = window.innerHeight;
-  window.addEventListener('resize', () => {
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  let W = 0;
+  let H = 0;
+
+  function resize() {
     W = window.innerWidth;
     H = window.innerHeight;
-  });
 
+    cv.width = W * DPR;
+    cv.height = H * DPR;
+    cv.style.width = `${W}px`;
+    cv.style.height = `${H}px`;
+
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
   // 5각 별
   function drawStar5(x, y, r, alpha, hue) {
     ctx.save();
