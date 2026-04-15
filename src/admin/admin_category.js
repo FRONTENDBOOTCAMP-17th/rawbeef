@@ -1,13 +1,24 @@
 const token = requireAuth();
 let category = [];
+
+const openModal = () => {
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+};
+
+const closeModal = () => {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+};
 async function loadCategories() {
   try {
     const res = await fetch(`${API_BASE}/categories`);
-    const json = await res.json();
+
     if (!res.ok) {
       alert('카테고리 불러오기에 실패했습니다.');
       return;
     }
+    const json = await res.json();
     category = json.data;
     renderCategory();
   } catch {
@@ -37,6 +48,7 @@ const saveCategory = async (title) => {
     return json.data;
   } catch {
     alert('카테고리 저장에 실패했습니다.');
+    return null;
   }
 };
 
@@ -59,19 +71,18 @@ const editCategory = async (id, newTitle) => {
     return json.data;
   } catch {
     alert('카테고리 수정에 실패했습니다.');
+    return null;
   }
 };
 const addCategoryBtn = document.getElementById('addCategoryBtn');
 addCategoryBtn.addEventListener('click', () => {
   editIndex = null;
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
+  openModal();
 });
 
 const closeCategoryBtn = document.getElementById('closeCategoryBtn');
 closeCategoryBtn.addEventListener('click', () => {
-  modal.classList.add('hidden');
-  modal.classList.remove('flex');
+  closeModal();
 });
 
 const moveCategoryUp = async (id) => {
@@ -102,7 +113,7 @@ const renderCategory = () => {
 
   category.forEach((item, index) => {
     const divCreate = document.createElement('div');
-    divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-300 dark:bg-gray-900 border-b border-t text-black border-gray-500 dark:border-white hover:border-gray-500 transition-all duration-200';
+    divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-100 dark:bg-gray-900 border-b border-t text-black border-gray-500 dark:border-white hover:border-gray-500 transition-all duration-200';
 
     const spanTitle = document.createElement('span');
     spanTitle.className = 'text-lg font-bold text-black dark:text-white';
@@ -113,14 +124,14 @@ const renderCategory = () => {
 
     const upBtn = document.createElement('button');
     upBtn.textContent = '▲';
-    upBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white  text-xl';
+    upBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 dark:hover:text-white hover:text-gray-600  text-xl';
     upBtn.addEventListener('click', async () => {
       await moveCategoryUp(item.id);
     });
 
     const downBtn = document.createElement('button');
     downBtn.textContent = '▼';
-    downBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white  transition-color text-xl';
+    downBtn.className = 'w-8 h-8 flex items-center justify-center text-gray-400 dark:hover:text-white hover:text-gray-600  transition-color text-xl';
     downBtn.addEventListener('click', async () => {
       await moveCategoryDown(item.id);
     });
@@ -140,8 +151,7 @@ const renderCategory = () => {
       editIndex = index;
       document.querySelector('#modal h2').textContent = '카테고리 수정';
       document.getElementById('titleInput').value = item.title;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+      openModal();
     });
 
     btnManage.append(upBtn, downBtn, deleteBtn, editBtn);
@@ -160,14 +170,15 @@ saveCategoryBtn.addEventListener('click', async () => {
       await editCategory(category[editIndex].id, title);
       await loadCategories();
       editIndex = null;
+      alert('카테고리가 수정이 완료 되었습니다!');
     } else {
       await saveCategory(title);
       await loadCategories();
+      alert('카테고리가 등록이 완료 되었습니다!');
     }
     renderCategory();
 
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    closeModal();
     titleInput.value = '';
     document.querySelector('#modal h2').textContent = '신규 카테고리 등록';
   } else {
@@ -176,7 +187,7 @@ saveCategoryBtn.addEventListener('click', async () => {
 });
 
 const deleteCategory = async (index) => {
-  if (confirm('이 카테고리를 정말 삭제할까요?')) {
+  if (confirm(' 🚨 주의! 카테고리를 삭제 하면 연결된 노래 데이터가 모두 삭제 됩니다. \n 정말 삭제할까요?')) {
     try {
       const id = category[index].id;
 
@@ -184,6 +195,7 @@ const deleteCategory = async (index) => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
+      alert('카테고리 삭제가 완료되었습니다!');
     } catch (error) {
       console.error('카테고리 삭제 중 오류 발생:', error);
     }

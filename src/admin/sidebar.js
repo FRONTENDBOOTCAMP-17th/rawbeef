@@ -16,7 +16,6 @@ function createSidebar() {
     }
     const link = document.createElement('a');
     link.href = item.href;
-    link.className = 'block w-full';
 
     const isActive = currentPage === item.href;
     link.className = `block w-full py-4 border border-black/10 dark:border-white/10 font-bold text-center text-gray-900 dark:text-white rounded-lg

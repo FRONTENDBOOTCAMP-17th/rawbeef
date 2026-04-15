@@ -11,11 +11,12 @@ const requestList = document.getElementById('requestList');
 async function loadRequests() {
   try {
     const res = await fetch(`${API_BASE}/requests`);
-    const json = await res.json();
+
     if (!res.ok) {
       alert('신청 목록 불러오기에 실패했습니다.');
       return;
     }
+    const json = await res.json();
     requests = json.data;
     renderRequests();
   } catch {
@@ -33,12 +34,12 @@ const saveComment = async (id, content) => {
       },
       body: JSON.stringify({ content }),
     });
-    const json = await res.json();
 
     if (!res.ok) {
       alert('댓글 등록에 실패했습니다.');
       return;
     }
+    const json = await res.json();
     return;
   } catch {
     alert('서버 연결에 실패했습니다.');
