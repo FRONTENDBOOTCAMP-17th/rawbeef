@@ -24,6 +24,5 @@ dist-ssr
 *.sln
 *.sw?
 .claude
-woohyun/Temporary
 __MACOSX
 .DS_Store
