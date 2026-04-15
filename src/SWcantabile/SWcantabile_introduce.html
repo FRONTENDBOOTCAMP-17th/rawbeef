@@ -54,24 +54,15 @@
         opacity: 1;
         transform: translateY(0);
       }
-
-      #bg-canvas {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-      }
     </style>
     <script src="../component/theme.js"></script>
   </head>
 
   <body class="bg-zinc-950 text-white font-sans font-light overflow-x-hidden">
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
 
     <div class="pointer-events-none absolute left-1/2 -top-35 h-140 w-140 -translate-x-1/2 rounded-full bg-violet-500/6 blur-[90px]"></div>
-    <div class="pointer-events-none absolute w-75 h-75 bg-indigo-500/5 top-100 -right-20 z-0"></div>
+    <div class="pointer-events-none absolute w-75 h-75 bg-indigo-500/5 top-100 -right-20 rounded-full blur-[90px] z-0"></div>
 
     <section class="relative overflow-hidden px-4 pt-20 pb-16 text-center sm:px-6 lg:px-12 lg:pt-28 lg:pb-20">
       <div class="scrollAnim delay1 inline-flex items-center gap-2 font-mono text-sm text-violet-400 tracking-[0.08em] uppercase mb-8">
@@ -253,7 +244,7 @@
           <div class="w-11 h-11 rounded-full bg-zinc-800 border border-zinc-800 flex items-center justify-center font-mono text-[13px] text-violet-400 font-medium shrink-0">우현</div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-white mb-0.5">이우현</p>
-            <p class="text-[12px] text-zinc-400">프론트엔드 개발 · 사용자 페이지 담당</p>
+            <p class="text-[12px] text-zinc-400">사용자 페이지 담당 · 헤더,푸터 담당 · 로고디자인 담당</p>
           </div>
           <span class="shrink-0 font-mono text-[11px] text-violet-400 bg-violet-400/15 border border-violet-400/20 px-3 py-1 rounded-full"> User </span>
         </div>
@@ -262,7 +253,7 @@
           <div class="w-11 h-11 rounded-full bg-zinc-800 border border-zinc-800 flex items-center justify-center font-mono text-[13px] text-violet-400 font-medium shrink-0">소유</div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-white mb-0.5">박소유</p>
-            <p class="text-[12px] text-zinc-400">프론트엔드 개발 · 관리자 페이지 담당 · 사용자 소개 페이지 담당</p>
+            <p class="text-[12px] text-zinc-400">관리자 페이지 담당 · 사용자 소개 페이지 담당</p>
           </div>
           <span class="shrink-0 font-mono text-[11px] text-purple-300 bg-purple-900/30 border border-purple-700/30 px-3 py-1 rounded-full"> Admin </span>
         </div>
