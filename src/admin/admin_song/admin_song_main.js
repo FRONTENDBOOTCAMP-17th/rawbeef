@@ -132,7 +132,7 @@ const renderSongs = () => {
       document.getElementById('artistInput').value = song.artist;
       document.getElementById('categoryInput').value = song.categoryId;
       document.getElementById('scoreInput').value = song.score;
-      tempYoutubeUrls = Array.isArray(song.urls) ? song.urls.map((u) => u.url) : [];
+      tempYoutubeUrls = [];
       tempImageUrl = song.imageUrl || null;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
