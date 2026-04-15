@@ -13,6 +13,7 @@ const fetchSongs = async (id = null) => {
     return id ? json.data.songs : json.data;
   } catch {
     alert('서버 연결에 실패했습니다.');
+    return null;
   }
 };
 
@@ -36,6 +37,7 @@ const saveSongs = async (newSongData) => {
     return json.data;
   } catch (error) {
     alert('노래 저장 서버 연결 실패했습니다');
+    return null;
   }
 };
 
@@ -58,6 +60,7 @@ const editSong = async (id, songData) => {
     return json.data;
   } catch (error) {
     alert('노래 수정 서버 연결 실패했습니다');
+    return null;
   }
 };
 
@@ -91,6 +94,7 @@ const fetchCategories = async () => {
     return json.data;
   } catch {
     alert('카테고리를 불러오는 서버 연결에 실패했습니다');
+    return null;
   }
 };
 // 앨범 아트 이미지 url, 유튜브 url
@@ -111,6 +115,7 @@ const uploadImage = async (file) => {
     return json.data.imageUrl;
   } catch {
     alert('서버 연결에 실패했습니다.');
+    return null;
   }
 };
 

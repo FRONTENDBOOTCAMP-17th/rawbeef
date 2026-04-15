@@ -104,7 +104,7 @@ const renderSongs = () => {
     tdScore.textContent = song.score;
 
     const manageInner = document.createElement('div');
-    manageInner.className = 'flex justify-center items-center gap-4 gap-2 flex-wrap';
+    manageInner.className = 'flex justify-center items-center gap-4 flex-wrap';
 
     const tdManage = document.createElement('td');
     tdManage.className = 'p-4 justify-center items-center gap-4 text-xl font-bold';
@@ -230,7 +230,7 @@ closeSongBtn.addEventListener('click', () => {
 });
 
 const youtubeLinkBtn = document.getElementById('youtubeLinkBtn');
-const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=[\w-]{11}|youtu\.be\/[\w-]{11})/;
 youtubeLinkBtn.addEventListener('click', () => {
   const url = prompt('유튜브 주소를 입력해주세요.');
   if (url === null) return;
