@@ -40,7 +40,7 @@ function createSidebar() {
   return aside;
 }
 
-const container = document.getElementById('sidebar-container');
-if (container) {
-  container.replaceWith(createSidebar());
+const sideContainer = document.getElementById('sidebar-container');
+if (sideContainer) {
+  sideContainer.replaceWith(createSidebar());
 }
