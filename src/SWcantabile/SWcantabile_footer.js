@@ -16,10 +16,10 @@ document.getElementById('user-footer').innerHTML = `
             <span>mogoa97@naver.com</span>
             <span>연락처 : 010-7774-0699</span>
           </p>
-          <div class="flex flex-col xl:flex-row xl:flex-wrap gap-y-1 xl:gap-x-6 xl:gap-y-2 mb-2 text-xs leading-relaxed text-gray-600 dark:text-gray-500 items-center xl:items-start">
+          <p class="text-xs leading-relaxed text-gray-600 dark:text-gray-500 mb-1">
             <span>도움을 주신분 : 김성박 강사님</span>
-            <p class="text-gray-500 dark:text-gray-600 text-[11px] xl:text-xs m-0 mt-4">Copyrightⓒ 2026 SW cantabile All Rights Reserved.</p>
-          </div>
+          </p>
+          <p class="text-gray-500 dark:text-gray-600 text-[11px] xl:text-xs mt-2.75">Copyrightⓒ 2026 SW cantabile All Rights Reserved.</p>
         </div>
 
       
