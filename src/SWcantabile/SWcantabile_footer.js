@@ -4,7 +4,7 @@ document.getElementById('user-footer').innerHTML = `
  <div class="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-8 xl:gap-16 text-center xl:text-left">
         <!-- 1. 로고 + 약관 + 계열사 -->
         <div class="flex flex-col gap-4 items-center xl:items-start">
-          <a href="./SWcantabile_song.html" class="no-underline"><span class="text-xl bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent" style="font-family: 'Jalnan2', sans-serif;">SW</span><span class="text-lg text-orange-600" style="font-family: 'Jalnan2', sans-serif;">칸타빌레</span></a>
+          <a href="/song" class="no-underline"><span class="text-xl bg-linear-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent" style="font-family: 'Jalnan2', sans-serif;">SW</span><span class="text-lg text-orange-600" style="font-family: 'Jalnan2', sans-serif;">칸타빌레</span></a>
        
         </div>
 
