@@ -183,11 +183,6 @@ saveSongBtn.addEventListener('click', async () => {
   if (title && artist && score !== null && !isNaN(score) && categoryId) {
     if (editIndex !== null) {
       await editSong(songs[editIndex].id, { songNo, title, artist, categoryId, score, imageUrl: tempImageUrl });
-
-      if (!result) {
-        alert('수정에 실패했습니다.');
-        return;
-      }
       if (tempYoutubeUrls.length > 0) {
         for (const url of tempYoutubeUrls) {
           await addSongUrl(songs[editIndex].id, url);
