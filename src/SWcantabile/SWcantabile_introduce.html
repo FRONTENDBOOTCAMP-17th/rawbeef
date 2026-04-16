@@ -56,10 +56,10 @@
         transform: translateY(0);
       }
     </style>
-    <script src="../component/theme.js"></script>
   </head>
 
   <body class="bg-zinc-950 text-white font-sans font-light overflow-x-hidden">
+    <div id="user-header"></div>
     <canvas id="bg-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
 
     <div class="pointer-events-none absolute left-1/2 -top-35 h-140 w-140 -translate-x-1/2 rounded-full bg-violet-500/6 blur-[90px]"></div>
@@ -263,9 +263,11 @@
 
     <div id="user-footer"></div>
 
+    <script src="../component/header.js"></script>
+    <script src="../component/theme.js"></script>
+    <script src="../component/api-config.js"></script>
     <script src="./SWcantabile_introduce.js"></script>
     <script src="./SWcantabile_footer.js"></script>
-    <script src="../component/api-config.js"></script>
     <script src="./SWcantabile_introduce_bg.js"></script>
   </body>
 </html>

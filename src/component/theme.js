@@ -5,15 +5,11 @@ const icon = document.getElementById('themeIcon');
 const label = document.getElementById('themeLabel');
 
 function applyTheme(dark, save = false) {
-  if (dark) {
-    html.classList.add('dark');
-    icon.textContent = '☀️';
-    label.textContent = '라이트 모드';
-  } else {
-    html.classList.remove('dark');
-    icon.textContent = '🌙';
-    label.textContent = '다크 모드';
-  }
+  html.classList.toggle('dark', dark);
+
+  if (icon) icon.textContent = dark ? '☀️' : '🌙';
+  if (label) label.textContent = dark ? '라이트 모드' : '다크 모드';
+
   if (save) localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
 
