@@ -10,7 +10,7 @@ function createSidebar() {
     if (!item.href) {
       const span = document.createElement('span');
       span.textContent = item.label;
-      span.className = 'block w-full py-4 border border-black/10 dark:border-white/10 font-bold text-center rounded-lg text-gray-900 dark:text-white';
+      span.className = 'block w-full py-4  font-bold text-center rounded-lg text-gray-900 dark:text-white';
       aside.appendChild(span);
       return;
     }
