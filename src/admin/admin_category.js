@@ -168,13 +168,16 @@ saveCategoryBtn.addEventListener('click', async () => {
   if (title) {
     if (editIndex !== null) {
       await editCategory(category[editIndex].id, title);
+
       await loadCategories();
       editIndex = null;
       alert('카테고리가 수정이 완료 되었습니다!');
     } else {
-      await saveCategory(title);
+      const created = await saveCategory(title);
+      if (!created) return;
+
       await loadCategories();
-      alert('카테고리가 등록이 완료 되었습니다!');
+      alert('카테고리 등록이 완료되었습니다!');
     }
     renderCategory();
 
@@ -195,6 +198,11 @@ const deleteCategory = async (index) => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (!res.ok) {
+        alert('카테고리 삭제에 실패했습니다.');
+        return;
+      }
       alert('카테고리 삭제가 완료되었습니다!');
     } catch (error) {
       console.error('카테고리 삭제 중 오류 발생:', error);
