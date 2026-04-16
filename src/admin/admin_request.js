@@ -1,4 +1,4 @@
-const token = requireAuth();
+window.token = requireAuth();
 let requests = [];
 function formatDateTime(iso) {
   const d = new Date(iso);

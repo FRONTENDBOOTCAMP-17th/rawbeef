@@ -1,5 +1,5 @@
 //노래 조회 API
-const fetchSongs = async (id = null) => {
+window.fetchSongs = async (id = null) => {
   try {
     const apis = id ? `${API_BASE}/categories/${id}` : `${API_BASE}/songs`;
 
@@ -18,7 +18,7 @@ const fetchSongs = async (id = null) => {
 };
 
 // 노래 저장 Api
-const saveSongs = async (newSongData) => {
+window.saveSongs = async (newSongData) => {
   try {
     const res = await fetch(`${API_BASE}/songs`, {
       method: 'POST',
@@ -42,7 +42,7 @@ const saveSongs = async (newSongData) => {
 };
 
 //노래 수정 API
-const editSong = async (id, songData) => {
+window.editSong = async (id, songData) => {
   try {
     const res = await fetch(`${API_BASE}/songs/${id}`, {
       method: 'PATCH',
@@ -66,7 +66,7 @@ const editSong = async (id, songData) => {
 
 //노래 삭제 api
 
-const deleteSong = async (id) => {
+window.deleteSong = async (id) => {
   try {
     const res = await fetch(`${API_BASE}/songs/${id}`, {
       method: 'DELETE',
@@ -77,13 +77,12 @@ const deleteSong = async (id) => {
       return;
     }
   } catch {
-    // ← try 닫고 나서 catch
     alert('노래 삭제 서버 연결 실패했습니다');
   }
 };
 
 // 카테고리 불러오기
-const fetchCategories = async () => {
+window.fetchCategories = async () => {
   try {
     const res = await fetch(`${API_BASE}/categories`);
     const json = await res.json();
@@ -98,7 +97,7 @@ const fetchCategories = async () => {
   }
 };
 // 앨범 아트 이미지 url, 유튜브 url
-const uploadImage = async (file) => {
+window.uploadImage = async (file) => {
   try {
     const artImageUrl = new FormData();
     artImageUrl.append('image', file);
@@ -121,7 +120,7 @@ const uploadImage = async (file) => {
 
 // 유튜브 url 등록
 
-const addSongUrl = async (songId, url) => {
+window.addSongUrl = async (songId, url) => {
   try {
     const res = await fetch(`${API_BASE}/songs/${songId}/urls`, {
       method: 'POST',
@@ -141,7 +140,7 @@ const addSongUrl = async (songId, url) => {
 
 // 유튜브 url 삭제
 
-const deleteUrl = async (urlId) => {
+window.deleteUrl = async (urlId) => {
   try {
     const res = await fetch(`${API_BASE}/songs/urls/${urlId}`, {
       method: 'DELETE',

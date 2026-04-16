@@ -1,4 +1,4 @@
-const token = requireAuth();
+window.token = requireAuth();
 let songs = [];
 let categoryData = [];
 let editIndex = null;
