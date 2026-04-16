@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>:: 노래하는 즐거움 SW칸타빌레 노래 등록 신청 ::</title>
+    <link rel="icon" type="image/png" href="../component/SWfavicon.png" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      body {
+        font-family: 'Malgun Gothic', '맑은 고딕', AppleSDGothicNeo, sans-serif;
+      }
+
+      /* 헤더 로고 오버레이 */
+      .video-area::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(30, 30, 30, 0.4) 100%);
+      }
+
+      /* 장르 탭 활성 상태 */
+      .str_type.on {
+        color: #e8371b;
+        border-bottom: 3px solid #e8371b;
+        font-weight: 700;
+      }
+      .dark .str_type.on {
+        color: #f87171;
+        border-bottom-color: #f87171;
+      }
+
+      /* 브레드크럼 구분자 */
+      .nav-link li span::before {
+        content: '>';
+        color: #d1d5db;
+        font-size: 0.75rem;
+      }
+
+      /* 아코디언 */
+      .accordion-body {
+        display: none;
+      }
+      .accordion-item.open .accordion-body {
+        display: block;
+      }
+      .accordion-item.open .accordion-arrow {
+        transform: rotate(180deg);
+      }
+      .accordion-arrow {
+        transition: transform 0.2s ease;
+      }
+
+      /* 페이지네이션 */
+      .pagination a.active {
+        background-color: #dc2626;
+        color: #fff;
+        border-color: #dc2626;
+        font-weight: 700;
+      }
+      .dark .pagination a.active {
+        background-color: #ef4444;
+        border-color: #ef4444;
+      }
+    </style>
+  </head>
+  <body class="bg-white dark:bg-slate-900 m-0 transition-colors duration-200 min-w-80">
+    <!-- 헤더 -->
+    <div id="user-header"></div>
+    <script src="../component/header.js"></script>
+
+    <!-- 히어로 배너 -->
+    <div class="video-area relative w-full min-h-48 bg-gray-900 dark:bg-black flex items-center px-10 py-12 overflow-hidden">
+      <div class="relative z-10 text-white">
+        <h3 class="text-4xl font-extrabold tracking-tight mb-3 text-white">노래 등록 신청</h3>
+        <p class="text-sm leading-loose text-white/70 m-0">
+          원하는 노래를 SW칸타빌레에 신청해보세요.<br />
+          검토 후 순차적으로 반영됩니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- 본문 -->
+    <div class="max-w-4xl mx-auto px-5 pb-16 pt-10">
+      <!-- 등록 폼 -->
+      <div class="mb-10 border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-800">
+        <h2 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-5">신청 등록</h2>
+        <div class="flex flex-col gap-3">
+          <input
+            type="text"
+            id="postTitle"
+            placeholder="곡명 - 가수명으로 등록해주세요 (예: 좋은날 - 아이유)"
+            maxlength="50"
+            class="w-full h-10 px-3 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:border-red-600 dark:focus:border-red-400 placeholder:text-gray-400 transition-colors duration-150"
+          />
+          <div class="relative">
+            <textarea
+              id="postContent"
+              placeholder="신청 내용을 입력하세요 (최대 300자)"
+              maxlength="300"
+              rows="4"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:border-red-600 dark:focus:border-red-400 placeholder:text-gray-400 transition-colors duration-150 resize-none"
+            ></textarea>
+            <span id="charCount" class="absolute bottom-2 right-3 text-xs text-gray-400">0 / 300</span>
+          </div>
+          <div class="flex gap-3 items-center">
+            <input
+              type="password"
+              id="postPassword"
+              placeholder="비밀번호 (4~10자리)"
+              maxlength="10"
+              class="flex-1 max-w-xs h-10 px-3 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:border-red-600 dark:focus:border-red-400 placeholder:text-gray-400 transition-colors duration-150"
+            />
+            <button id="submitBtn" class="h-10 px-6 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded border-none cursor-pointer transition-colors duration-150 font-[inherit] whitespace-nowrap">등록</button>
+          </div>
+          <p id="formMsg" class="text-xs text-red-500 m-0 hidden"></p>
+        </div>
+      </div>
+
+      <!-- 목록 헤더 -->
+      <div class="flex items-center justify-between mb-3">
+        <strong class="text-base font-bold text-gray-900 dark:text-gray-100">신청 목록</strong>
+        <span id="totalCount" class="text-xs text-gray-400"></span>
+      </div>
+
+      <!-- 목록 테이블 헤더 -->
+      <div class="grid text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-t-2 border-gray-900 dark:border-gray-100 border-b border-gray-200 dark:border-gray-700 px-3 py-3" style="grid-template-columns: 60px 1fr 80px">
+        <span class="text-center">번호</span>
+        <span class="text-center">제목</span>
+        <span class="text-center">날짜</span>
+      </div>
+
+      <!-- 아코디언 목록 -->
+      <div id="requestList" class="divide-y divide-gray-100 dark:divide-gray-700"></div>
+
+      <!-- 페이지네이션 -->
+      <div id="pagination" class="pagination flex justify-center items-center gap-1 mt-8 flex-wrap"></div>
+    </div>
+
+    <!-- 브레드크럼 -->
+    <div class="max-w-4xl mx-auto px-5 pb-8">
+      <ul class="nav-link flex items-center gap-1.5 list-none p-0 m-0 text-xs text-gray-400">
+        <li>
+          <a href="./SWcantabile_song.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5 text-gray-400">
+              <path d="M10.707 2.293a1 1 0 0 0-1.414 0l-7 7A1 1 0 0 0 3 11h1v6a1 1 0 0 0 1 1h4v-4h2v4h4a1 1 0 0 0 1-1v-6h1a1 1 0 0 0 .707-1.707l-7-7z" />
+            </svg>
+          </a>
+        </li>
+        <li class="flex items-center gap-1.5"><span></span><a href="./SWcantabile_song.html" class="text-gray-400 no-underline hover:text-red-600">차트</a></li>
+        <li class="flex items-center gap-1.5"><span></span><a class="text-red-600 font-semibold no-underline" href="#">노래 등록 신청</a></li>
+      </ul>
+    </div>
+
+    <!-- 푸터 -->
+    <div id="user-footer"></div>
+    <script src="./SWcantabile_footer.js"></script>
+    <script src="../component/api-config.js"></script>
+    <script src="../component/utils.js"></script>
+    <script src="../component/theme.js"></script>
+    <script src="./SWcantabile_request.js"></script>
+  </body>
+</html>

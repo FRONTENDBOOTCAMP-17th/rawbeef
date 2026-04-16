@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+@font-face {
+  font-family: 'Jalnan2';
+  src:
+    url('/font/Jalnan2/Jalnan2TTF.ttf') format('truetype'),
+    url('/font/Jalnan2/Jalnan2.otf') format('opentype');
+}

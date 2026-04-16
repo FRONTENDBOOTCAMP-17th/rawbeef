@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 페이지</title>
+    <link rel="icon" type="image/png" href="../component/SWfavicon.png" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body id="body" class="bg-gray-950 text-white min-h-screen flex flex-col transition-colors duration-300">
+    <script src="../component/api-config.js"></script>
+    <script src="../component/utils.js"></script>
+    <script src="./auth.js"></script>
+    <div id="user-header"></div>
+    <script src="../component/header.js"></script>
+    <script src="../component/theme.js"></script>
+    <script src="./sidebar.js"></script>
+    <div class="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
+      <div id="loginScreen" class="fixed inset-0 flex items-center justify-center z-10 bg-white dark:bg-gray-950">
+        <div class="bg-gray-900 border border-white/10 rounded-2xl p-10 w-full max-w-sm">
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-black text-white">관리자 로그인</h2>
+
+            <p class="text-sm text-gray-400 mt-2">TJ 관리자 전용 페이지 입니다</p>
+          </div>
+
+          <div class="mb-4">
+            <label class="text-xs text-gray-400 mb-2 block tracking-wider">비밀번호</label>
+
+            <input id="passwordInput" type="password" placeholder="비밀번호를 입력하세요" class="w-full px-4 py-3 bg-gray-800 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400 transition-colors" />
+            <p id="loginError" class="hidden mt-2 text-xs text-red-400">비밀번호가 일치하지 않습니다.</p>
+          </div>
+
+          <button id="loginBtn" class="mt-2 w-full py-3 bg-linear-to-r from-cyan-500 to-purple-600 text-white text-sm font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer disabled:opacity-40">로그인</button>
+
+          <div class="border-t border-white/10 mt-8 pt-6 text-center text-xs text-gray-500"><span class="text-cyan-400">TJ</span> 관리자 전용 페이지 입니다</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="adminContent" class="hidden fixed inset-x-0 bottom-0 top-[57px]">
+      <div id="sidebar-container"></div>
+      <main class="flex-1 bg-gray-950"></main>
+    </div>
+
+    <script>
+      const api = `${API_BASE}/auth/login`;
+      const mytoken = 'adminToken';
+
+      const loginScreen = document.getElementById('loginScreen');
+      const adminContent = document.getElementById('adminContent');
+      const passwordInput = document.getElementById('passwordInput');
+      const loginBtn = document.getElementById('loginBtn');
+      const loginError = document.getElementById('loginError');
+
+      function initCheck() {
+        const token = localStorage.getItem(mytoken);
+        token ? showAdmin() : showLogin();
+      }
+
+      function showAdmin() {
+        window.location.href = 'admin_song.html';
+      }
+
+      function showLogin() {
+        adminContent.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
+        loginScreen.classList.add('flex');
+      }
+
+      async function login() {
+        const password = passwordInput.value.trim();
+        if (!password) return;
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = '로그인 중...';
+        loginError.classList.add('hidden');
+
+        try {
+          const res = await fetch(api, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password }),
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem(mytoken, data.data.token);
+            showAdmin();
+          } else {
+            loginError.classList.remove('hidden');
+            passwordInput.value = '';
+            passwordInput.focus();
+          }
+        } catch {
+          loginError.textContent = '서버 연결에 실패했습니다.';
+          loginError.classList.remove('hidden');
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.textContent = '로그인';
+        }
+      }
+
+      loginBtn.addEventListener('click', login);
+      passwordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') login();
+      });
+
+      initCheck();
+    </script>
+  </body>
+</html>

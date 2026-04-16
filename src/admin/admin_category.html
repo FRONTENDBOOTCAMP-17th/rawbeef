@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 카테고리</title>
+    <link rel="icon" type="image/png" href="../component/SWfavicon.png" />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-950 font-sans">
+    <script src="../component/api-config.js"></script>
+    <script src="../component/utils.js"></script>
+    <script src="./auth.js"></script>
+    <div id="user-header"></div>
+    <script src="../component/header.js"></script>
+    <script src="../component/theme.js"></script>
+    <div class="flex h-[calc(100vh-57px)] w-full overflow-hidden">
+      <div id="sidebar-container"></div>
+
+      <main class="flex-1 bg-white dark:bg-gray-900 p-8 relative overflow-y-auto">
+        <div class="flex justify-between mb-10 max-w-4xl mx-auto">
+          <h1 class="text-3xl py-2 font-black text-gray-900 dark:text-white">카테고리 관리</h1>
+          <button id="addCategoryBtn" class="px-6 py-2 border-2 rounded-xl border-black dark:border-white font-bold text-lg hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition dark:text-white">카테고리 추가 +</button>
+        </div>
+
+        <div class="space-y-4 max-w-4xl mx-auto">
+          <div id="categoryList"></div>
+        </div>
+      </main>
+
+      <div id="modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 border-4 border-black dark:border-white p-8 w-[400px]">
+          <h2 class="text-2xl font-black mb-6 uppercase text-gray-900 dark:text-white">신규 카테고리 등록</h2>
+
+          <div class="space-y-4 text-lg">
+            <div>
+              <label for="titleInput" class="block font-black mb-1 text-gray-900 dark:text-white">카테고리명</label>
+              <input type="text" id="titleInput" class="w-full border-2 rounded-xl p-2 focus:bg-yellow-50 font-bold" />
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-4 mt-8">
+            <button id="closeCategoryBtn" class="px-4 py-2 border-2 rounded-xl border-black dark:border-white font-bold hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">닫기</button>
+            <button id="saveCategoryBtn" class="px-6 py-2 bg-black rounded-xl dark:bg-white text-white dark:text-black font-bold hover:bg-gray-800 dark:hover:bg-gray-200">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./sidebar.js"></script>
+    <script src="./admin_category.js"></script>
+  </body>
+</html>
