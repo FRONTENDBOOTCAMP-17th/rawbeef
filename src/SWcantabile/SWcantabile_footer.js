@@ -10,7 +10,7 @@ document.getElementById('user-footer').innerHTML = `
 
         <!-- 2. 회사 정보 (lg에서 2행 span) -->
         <div class="xl:row-span-2 text-center xl:text-left ">
-          <h6 class="text-gray-800 dark:text-gray-300 text-sm font-bold mb-3 mt-0">SW칸타빌레</h6>
+      
           <p class="flex flex-col xl:flex-row xl:flex-wrap gap-y-1 xl:gap-x-6 xl:gap-y-2 mb-1 text-xs leading-relaxed text-gray-600 dark:text-gray-500 items-center xl:items-start">
             <span> 제작자 : 박소유, 이우현 </span>
             <span>mogoa97@naver.com</span>
