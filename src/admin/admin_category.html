@@ -14,13 +14,13 @@
     <div id="user-header"></div>
     <script type="module" src="../component/header.js"></script>
     <script type="module" src="../component/theme.js"></script>
-    <div class="flex h-[calc(100vh-57px)] w-full overflow-hidden">
+    <div class="flex flex-col md:flex-row h-auto md:h-[calc(100vh-57px)] w-full overflow-y-auto md:overflow-hidden">
       <div id="sidebar-container"></div>
 
-      <main class="flex-1 bg-white dark:bg-gray-900 p-8 relative overflow-y-auto">
-        <div class="flex justify-between mb-10 max-w-4xl mx-auto">
-          <h1 class="text-3xl py-2 font-black text-gray-900 dark:text-white">카테고리 관리</h1>
-          <button id="addCategoryBtn" class="px-6 py-2 border-2 rounded-xl border-black dark:border-white font-bold text-lg hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition dark:text-white">카테고리 추가 +</button>
+      <main class="flex-1 bg-white dark:bg-gray-900 p-4 md:p-8 relative overflow-y-auto">
+        <div class="flex flex-col sm:flex-row sm:justify-between gap-4 mb-10 max-w-4xl mx-auto">
+          <h1 class="text-2xl md:text-3xl py-2 font-black text-gray-900 dark:text-white">카테고리 관리</h1>
+          <button id="addCategoryBtn" class="px-6 py-2 border-2 rounded-xl border-black dark:border-white font-bold text-lg hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition dark:text-white self-start sm:self-auto">카테고리 추가 +</button>
         </div>
 
         <div class="space-y-4 max-w-4xl mx-auto">
@@ -28,8 +28,8 @@
         </div>
       </main>
 
-      <div id="modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 border-4 border-black dark:border-white p-8 w-[400px]">
+      <div id="modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-4">
+        <div class="bg-white dark:bg-gray-800 border-4 border-black dark:border-white p-6 md:p-8 w-full max-w-100">
           <h2 class="text-2xl font-black mb-6 uppercase text-gray-900 dark:text-white">신규 카테고리 등록</h2>
 
           <div class="space-y-4 text-lg">

@@ -113,7 +113,8 @@ const renderCategory = () => {
 
   category.forEach((item, index) => {
     const divCreate = document.createElement('div');
-    divCreate.className = 'flex justify-between items-center px-6 py-4 mb-3  bg-gray-100 dark:bg-gray-900 border-b border-t text-black border-gray-500 dark:border-white hover:border-gray-500 transition-all duration-200';
+    divCreate.className =
+      'flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 px-4 sm:px-6 py-4 mb-3 bg-gray-100 dark:bg-gray-900 border-b border-t text-black border-gray-500 dark:border-white hover:border-gray-500 transition-all duration-200';
 
     const spanTitle = document.createElement('span');
     spanTitle.className = 'text-lg font-bold text-black dark:text-white';
