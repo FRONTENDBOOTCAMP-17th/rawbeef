@@ -100,14 +100,14 @@ const renderSongs = () => {
     tdArtist.textContent = song.artist;
 
     const tdScore = document.createElement('td');
-    tdScore.className = 'p-4 text-center font-black text-red-600 dark:text-red-400';
+    tdScore.className = 'p-4 text-center text-sm md:text-base font-black text-red-600 dark:text-red-400';
     tdScore.textContent = song.score;
 
     const manageInner = document.createElement('div');
     manageInner.className = 'flex justify-center items-center gap-4 flex-wrap';
 
     const tdManage = document.createElement('td');
-    tdManage.className = 'p-4 justify-center items-center gap-4 text-xl font-bold';
+    tdManage.className = 'p-4 justify-center items-center gap-4 text-sm md:text-xl font-bold';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'hover:text-red-500 hover:scale-125 transition dark:text-gray-200';
@@ -121,7 +121,7 @@ const renderSongs = () => {
     });
 
     const editBtn = document.createElement('button');
-    editBtn.className = 'text-lg border border-gray-400 dark:border-gray-600 px-2 py-1 text-gray-600 dark:text-gray-300 hover:border-red-600 hover:text-red-600 dark:hover:border-red-400 dark:hover:text-red-400';
+    editBtn.className = 'text-sm md:text-lg border border-gray-400 dark:border-gray-600 px-2 py-1 text-gray-600 dark:text-gray-300 hover:border-red-600 hover:text-red-600 dark:hover:border-red-400 dark:hover:text-red-400';
     editBtn.textContent = 'EDIT';
 
     editBtn.addEventListener('click', function () {
@@ -141,14 +141,14 @@ const renderSongs = () => {
       song.urls.forEach((url, urlIndex) => {
         if (url) {
           const urlSpan = document.createElement('span');
-          urlSpan.className = 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-lg px-2 py-1 rounded font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition';
+          urlSpan.className = 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm md:text-lg px-2 py-1 rounded font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition';
           urlSpan.textContent = `URL ${urlIndex + 1}`;
           urlSpan.onclick = (e) => {
             e.stopPropagation();
             window.open(url.url, '_blank');
           };
           const urlDeleteBtn = document.createElement('button');
-          urlDeleteBtn.className = ' w-6 h-6 inline-flex items-center text-red-500 dark:text-gray-300 justify-center text-lg  hover:text-red-700 dark:hover:text-red-700 font-bold ml-1 transition';
+          urlDeleteBtn.className = ' w-6 h-6 inline-flex items-center text-red-500 dark:text-gray-300 justify-center text-sm md:text-lg  hover:text-red-700 dark:hover:text-red-700 font-bold ml-1 transition';
           urlDeleteBtn.textContent = '✕';
 
           urlDeleteBtn.addEventListener('click', async (e) => {
