@@ -1,7 +1,7 @@
-const menuItems = [{ label: '관리자 페이지' }, { href: './admin_category.html', label: '카테고리관리' }, { href: './admin_song.html', label: '노래 관리' }, { href: './admin_request.html', label: '노래 신청 관리' }];
+const menuItems = [{ label: '관리자 페이지' }, { href: '/admin/category', label: '카테고리관리' }, { href: '/admin/song', label: '노래 관리' }, { href: '/admin/request', label: '노래 신청 관리' }];
 
 function createSidebar() {
-  const currentPage = './' + location.pathname.split('/').pop();
+  const currentPage = location.pathname;
 
   const aside = document.createElement('aside');
   aside.className =
@@ -33,7 +33,7 @@ function createSidebar() {
     logoutBtn.textContent = '로그아웃';
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('adminToken');
-      location.href = './admin_open.html';
+      location.href = '/admin';
     });
     aside.appendChild(logoutBtn);
   }
