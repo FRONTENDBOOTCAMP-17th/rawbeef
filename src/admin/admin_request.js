@@ -66,7 +66,7 @@ const renderRequests = () => {
   requestList.innerHTML = '';
   requests.forEach((req, index) => {
     const div = document.createElement('div');
-    div.className = 'relative bg-white dark:bg-gray-900  mx-auto border-t border-b border-gray-900 dark:border-white p-6 mb-4 ';
+    div.className = 'relative bg-white dark:bg-gray-900 mx-auto border-t border-b border-gray-900 dark:border-white p-4 sm:p-6 mb-4';
 
     const title = document.createElement('h2');
     title.className = 'text-xl font-bold mb-2 text-center text-gray-900 dark:text-white';
@@ -81,7 +81,7 @@ const renderRequests = () => {
     content.textContent = req.content;
 
     const adminBox = document.createElement('div');
-    adminBox.className = 'flex justify-between items-center gap-4';
+    adminBox.className = 'flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4';
 
     const inputArea = document.createElement('div');
     inputArea.className = 'flex items-center gap-4 flex-1 w-full';
@@ -103,7 +103,7 @@ const renderRequests = () => {
     inputArea.append(adminLabel, adminInput);
 
     const btnGroup = document.createElement('div');
-    btnGroup.className = 'flex space-x-6 shrink-0';
+    btnGroup.className = 'flex space-x-6 shrink-0 self-end sm:self-auto';
 
     if (!req.comment) {
       const registerBtn = document.createElement('button');

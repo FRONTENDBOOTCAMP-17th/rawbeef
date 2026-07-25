@@ -14,34 +14,34 @@
     <div id="user-header"></div>
     <script type="module" src="../component/header.js"></script>
     <script type="module" src="../component/theme.js"></script>
-    <div class="flex h-[calc(100vh-57px)] w-full border-t border-gray-200 overflow-hidden dark:border-gray-500">
+    <div class="flex flex-col md:flex-row h-auto md:h-[calc(100vh-57px)] w-full border-t border-gray-200 overflow-y-auto md:overflow-hidden dark:border-gray-500">
       <div id="sidebar-container"></div>
       <script type="module" src="./sidebar.js"></script>
 
-      <main class="flex-1 bg-white p-8 overflow-y-auto dark:bg-gray-800">
-        <div class="flex justify-between items-center w-full mb-8">
-          <div class="flex items-center gap-6">
-            <h1 class="text-3xl font-black dark:text-white">노래 관리</h1>
+      <main class="flex-1 bg-white p-4 md:p-8 overflow-y-auto dark:bg-gray-800">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full mb-8 gap-4">
+          <div class="flex flex-wrap items-center gap-3 md:gap-6">
+            <h1 class="text-2xl md:text-3xl font-black dark:text-white">노래 관리</h1>
             <div class="relative inline-block">
               <button id="selectCategoryBtn" class="px-6 py-2 border border-gray-400 text-gray-600 hover:border-red-600 hover:text-red-600 transition dark:border-gray-600 dark:text-gray-300 dark:hover:border-red-400 dark:hover:text-red-400">카테고리 선택</button>
               <ul id="categoryDropdown" class="absolute left-0 mt-2 w-48 dark:bg-gray-800 dark:border-gray-700 bg-white border border-gray-200 hidden z-10 max-h-60 overflow-y-auto shadow-lg"></ul>
             </div>
 
-            <button id="addSongBtn" class="px-6 py-2 ml-auto bg-red-300 text-white hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-400 transition">곡 추가 +</button>
+            <button id="addSongBtn" class="px-6 py-2 sm:ml-auto bg-red-300 text-white hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-400 transition">곡 추가 +</button>
           </div>
         </div>
-        <div>
-          <table class="w-full text-left border-collapse table-fixed">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-200 text-left border-collapse table-fixed">
             <thead>
               <tr class="text-gray-600 font-bold dark:text-gray-300">
-                <th class="text-center text-gray-700 dark:text-white text-xl text-bold border-b-3 w-[5%]">순위</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">노래방 번호</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[15%]">앨범 아트</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[20%]">제목</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">가수</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">카테고리</th>
-                <th class="text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[10%]">점수</th>
-                <th class="p-4 text-center text-gray-700 dark:text-white text-xl font-bold border-b-3 w-[20%]">관리</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl text-bold border-b-3 w-[5%]">순위</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[10%]">노래방 번호</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[15%]">앨범 아트</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[20%]">제목</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[10%]">가수</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[10%]">카테고리</th>
+                <th class="text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[10%]">점수</th>
+                <th class="p-4 text-center text-gray-700 dark:text-white text-sm md:text-xl font-bold border-b-3 w-[20%]">관리</th>
               </tr>
             </thead>
             <tbody id="songList"></tbody>
@@ -50,11 +50,11 @@
       </main>
     </div>
 
-    <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl p-8 w-[400px]">
-        <h2 id="newSong" class="text-2xl font-black mb-6 uppercase dark:text-white">신규 노래 등록</h2>
+    <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 px-4">
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl p-6 md:p-8 w-full max-w-100 max-h-[90vh] overflow-y-auto">
+        <h2 id="newSong" class="text-xl md:text-2xl font-black mb-6 uppercase dark:text-white">신규 노래 등록</h2>
 
-        <div class="space-y-4 text-lg">
+        <div class="space-y-4 text-base md:text-lg">
           <div>
             <label for="songNoInput" class="block font-bold text-gray-700 dark:text-gray-300 mb-1">노래방 번호</label>
             <input type="text" id="songNoInput" class="w-full border p-2 border-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-red-500 focus:bg-red-50 dark:focus:bg-gray-600 font-bold" />
@@ -82,7 +82,7 @@
         </div>
 
         <div class="mt-8">
-          <div class="flex gap-4 mb-4">
+          <div class="flex flex-wrap gap-3 md:gap-4 mb-4">
             <button id="artImageBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-purple-600 hover:text-purple-600 dark:text-white dark:border-gray-600">아트 이미지 추가</button>
             <input type="file" id="artImageInput" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden" />
             <button id="youtubeLinkBtn" class="px-4 py-2 border border-gray-400 text-gray-600 hover:border-cyan-600 hover:text-cyan-600 dark:text-white dark:border-gray-600">유튜브 링크 추가</button>
